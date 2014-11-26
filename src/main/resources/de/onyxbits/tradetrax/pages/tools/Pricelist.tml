@@ -1,0 +1,11 @@
+<html t:type="layout" title="${message:title}" instructions="${message:instructions}"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter">
+
+	<code>
+		<pre>
+			${pricelist}
+		</pre>
+	</code>
+	<a t:id="print">${message:print}</a>
+
+</html>

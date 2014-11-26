@@ -1,0 +1,76 @@
+<html t:type="layout" title="${message:title}" instructions="${message:instructions}"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter">
+
+	<t:if test="stock">
+		<p:else>
+			${message:no-stock}
+		</p:else>
+		<table class="kvtable">
+			<tr>
+				<th>${message:asset-label}:</th>
+				<td>
+					<t:if test="stock.name">${stock.name.label}</t:if>
+					<t:if test="stock.variant">
+						<div class="assetsubtype"> ${stock.variant.label}</div>
+					</t:if>
+				</td>
+			</tr>
+			<tr>
+				<th>${message:id-label}:</th>
+				<td>
+					<t:pagelink page="edit/StockEditor" context="${stock.id}">${stock.id}
+					</t:pagelink>
+				</td>
+			</tr>
+			<tr>
+				<th>${message:units-label}:</th>
+				<td>
+					${stock.unitCount}
+					<t:if test="${splitable}">
+						<div class="assetaction">
+							<t:pagelink page="edit/UnitsEditor" context="${stock.id}">${message:split}
+							</t:pagelink>
+						</div>
+					</t:if>
+				</td>
+			</tr>
+			<tr>
+				<th>${message:cost-label}:</th>
+				<td class="${buyPriceClass}">${buyPrice}</td>
+			</tr>
+
+
+			<t:if test="totalCost">
+				<tr>
+					<th>${message:totalcost-label}:</th>
+					<td class="${totalCostClass}">${totalcost}</td>
+				</tr>
+			</t:if>
+			<t:if test="stock.comment">
+				<tr>
+					<th>${message:comment-label}:</th>
+					<td>${stock.comment}</td>
+				</tr>
+			</t:if>
+		</table>
+		<p />
+		<t:form t:id="sellForm">
+			<fieldset class="form-wrapper">
+				<legend>
+					<span class="fieldset-legend">${message:liquidate-for}</span>
+				</legend>
+				<div class="fieldset-wrapper">
+					<t:errors />
+					<select t:type="select" t:id="methods"></select>
+					&nbsp;
+					<t:textfield class="numerical" t:id="sellPrice" />
+					&nbsp;
+					${currencySymbol}
+					<p />
+					<input type="submit" value="${message:liquidate}" />
+				</div>
+			</fieldset>
+		</t:form>
+	</t:if>
+
+</html>

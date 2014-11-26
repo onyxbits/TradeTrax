@@ -1,0 +1,53 @@
+<html t:type="layout" title="${message:title}" instructions="${message:instructions}"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter">
+
+	<t:form t:id="csvForm">
+		<fieldset class="form-wrapper">
+			<legend>
+				<span class="fieldset-legend">${message:csvform-title}</span>
+			</legend>
+			<div class="fieldset-wrapper">
+				<table class="blind">
+					<tr>
+						<td>
+							<t:textarea style="width:100%" rows="20" t:id="rawcsvField"
+								value="rawcsv"></t:textarea>
+						</td>
+					</tr>
+
+				</table>
+				<t:submit type="submit" value="${message:parse}" t:id="parse" />
+
+			</div>
+		</fieldset>
+	</t:form>
+
+	<p />
+	<t:if test="parsed">
+		${message:parse-result}
+	</t:if>
+
+	<t:grid source="parsed" t:id="ledger" t:model="ledgerModel"
+		t:row="row" exclude="id,profit"
+		t:reorder="name,variant,acquired,buyprice,units,liquidated,sellprice">
+		<p:buyPriceCell>
+			<t:if test="row.acquired" negate="true">
+				<i>${message:hidden}</i>
+			</t:if>
+		</p:buyPriceCell>
+		<p:sellPriceCell>
+			<t:if test="row.liquidated" negate="true">
+				<i>${message:hidden}</i>
+			</t:if>
+		</p:sellPriceCell>
+		<p:empty>
+
+		</p:empty>
+	</t:grid>
+	<p />
+	<t:if test="parsed">
+		<t:form t:id="commitForm">
+			<t:submit type="submit" value="${message:commit}" t:id="commit" />
+		</t:form>
+	</t:if>
+</html>

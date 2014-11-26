@@ -1,0 +1,14 @@
+<html t:type="layout" title="${message:title}" instructions="${message:instructions}"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter">
+
+	<dl class="admin-list">
+		<dt>
+			<t:pagelink page="tools/Pricelist">${message:pricelist-title}</t:pagelink>
+		</dt>
+		<dd>${message:pricelist-description}</dd>
+		<dt>
+			<t:pagelink page="tools/Importer">${message:importer-title}</t:pagelink>
+		</dt>
+		<dd>${message:importer-description}</dd>
+	</dl>
+</html>

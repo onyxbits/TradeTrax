@@ -1,0 +1,66 @@
+<html t:type="layout" title="${message:title}" instructions="${message:instructions}"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter">
+
+	<t:form t:id="financialForm">
+		<fieldset class="form-wrapper">
+			<legend>
+				<span class="fieldset-legend">${message:financial-title}</span>
+			</legend>
+			<div class="fieldset-wrapper">
+				<t:errors />
+				<table class="blind">
+					<tr>
+						<td title="${message:ledger-tooltip}">
+							<t:label for="financialFormLedgerTitle" />
+						</td>
+						<td>
+							<t:textfield t:id="financialFormLedgerTitle" t:label="${message:ledger-title}" />
+						</td>
+					</tr>
+					<tr>
+						<td title="${message:currency-tooltip}">
+							<t:label for="financialformcurrencysymbol" />
+						</td>
+						<td>
+							<t:textfield class="numerical" t:id="financialformcurrencysymbol"
+								t:label="${message:currency-title}" />
+						</td>
+					</tr>
+					<tr>
+						<td title="${message:decimals-tooltip}">
+							<t:label for="financialformdecimals" />
+						</td>
+						<td>
+							<t:textfield class="numerical" t:id="financialformdecimals"
+								t:label="${message:decimals-title}" />
+						</td>
+					</tr>
+				</table>
+				<t:submit type="submit" value="${message:save}" />
+			</div>
+		</fieldset>
+	</t:form>
+	<p />
+
+	<t:form t:id="uiForm">
+		<fieldset class="form-wrapper">
+			<legend>
+				<span class="fieldset-legend">${message:ui-title}</span>
+			</legend>
+			<div class="fieldset-wrapper">
+				<table class="blind">
+					<tr>
+						<td title="${message:instructions-tooltip}">
+							<t:label for="uiformhideinstructions" />
+						</td>
+						<td>
+							<t:checkbox t:id="uiformhideinstructions" t:label="${message:instructions-title}" />
+						</td>
+					</tr>
+				</table>
+
+				<t:submit type="submit" value="${message:save}" />
+			</div>
+		</fieldset>
+	</t:form>
+</html>

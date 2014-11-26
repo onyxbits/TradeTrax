@@ -1,0 +1,36 @@
+<html t:type="layout" title="${message:title}" instructions="${message:instructions}"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter">
+
+	<table class="kvtable">
+		<tr>
+			<th title="${message:created-tooltip}">${message:created-label}</th>
+			<td class="numerical">${getCreated()}</td>
+		</tr>
+		<tr>
+			<th title="${message:total-investment-tooltip}">${message:total-investment-label}</th>
+			<td class="numerical">${totalInvestment}</td>
+		</tr>
+		<tr>
+			<th title="${message:total-profit-tooltip}">${message:total-profit-label}</th>
+			<td class="numerical">${totalProfit}</td>
+		</tr>
+		<tr>
+			<th title="${message:assets-on-hand-tooltip}">${message:assets-on-hand-label}</th>
+			<td class="numerical">${assetsOnHand}</td>
+		</tr>
+		<tr>
+			<th title="${message:items-on-hand-tooltip}">${message:items-on-hand-label}</th>
+			<td class="numerical">${itemsOnHand}</td>
+		</tr>
+	</table>
+	<p />
+
+	<table t:id="ledger" t:type="grid" t:source="usage" t:model="tallyModel"
+		reorder="name,assetCount,totalUnits,totalInvestment,totalProfit"
+		exclude="totalInvestmentCounter,totalProfitCounter" t:row="row">
+		<p:nameCell>
+			<a t:id="show" t:context="${row.name}">${row.name}</a>
+		</p:nameCell>
+	</table>
+
+</html>

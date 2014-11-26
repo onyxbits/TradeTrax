@@ -1,0 +1,33 @@
+DIV.t-alert-controls { display: none; }
+DIV.t-dismiss { display: none; }
+DIV.t-message-container {
+  margin-left: 30px;
+}
+
+DIV.t-alert-container DIV.t-error {
+  background: #FFBABA url("/tradetrax/assets/1.0-SNAPSHOT-DEV/ctx/images/message-24-error.png") no-repeat 5px 5px;
+  color: #D8000C;
+  padding: 10px 10px 10px 10px;
+  border: 2px solid #D8000C;
+}
+
+DIV.t-alert-container DIV.t-success {
+  background: #DFF2BF url("/tradetrax/assets/1.0-SNAPSHOT-DEV/ctx/images/message-24-ok.png") no-repeat 5px 5px;
+  color: #4F8A10;
+  padding: 10px 10px 10px 10px;
+  border: 2px solid #4F8A10;
+}
+
+DIV.t-alert-container DIV.t-info {
+  background: #BDE5F8 url("/tradetrax/assets/1.0-SNAPSHOT-DEV/ctx/images/message-24-info.png") no-repeat 5px 5px;
+  color: #00529B;
+  padding: 10px 10px 10px 10px;
+  border: 2px solid #00529B;
+}
+
+DIV.t-alert-container DIV.t-warn {
+  background: #FEEFB3 url("/tradetrax/assets/1.0-SNAPSHOT-DEV/ctx/images/message-24-warning.png") no-repeat 5px 5px;
+  color: #9F6000;
+  padding: 10px 10px 10px 10px;
+  border: 2px solid #9F6000;
+}

@@ -1,0 +1,27 @@
+<html t:type="layout" title="${message:title}" instructions="${message:instructions}"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+      xmlns:p="tapestry:parameter">
+	
+	<t:if test="name">
+		<p:else>
+			${message:no-name}
+		</p:else>
+		<t:form t:id="editForm">
+			<fieldset class="form-wrapper">
+				<legend><span class="fieldset-legend">${name}</span></legend>
+				<div class="fieldset-wrapper">
+					<div class="fieldset-description">${status} <a t:id="show">${message:status-show}</a></div>
+					<t:errors/>
+					<t:label for="nameField" size="20" />:
+					<t:textfield t:id="nameField" t:label="${message:label}" value="name"/>
+					<p/>
+					<t:submit type="submit" value="${message:save}" t:id="save" />
+					&nbsp;
+					<t:submit type="submit" value="${message:delete}" t:mixins="confirm" t:message="${message:confirm-delete}" t:id="delete" />
+				</div>
+			</fieldset>
+		</t:form>
+		<p />
+	</t:if>
+
+</html>

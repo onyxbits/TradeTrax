@@ -1,0 +1,180 @@
+<html t:type="layout" title="${message:title}" instructions="${message:instructions}"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter">
+
+	<t:form t:id="buyForm" t:clientValidation="none">
+		<fieldset class="form-wrapper">
+			<legend>
+				<span class="fieldset-legend">${message:buyform-title}</span>
+			</legend>
+			<div class="fieldset-wrapper">
+				<t:errors />
+				<table class="blind" style="table-layout: fixed;">
+					<tr>
+						<td>
+							<t:label for="buyName" title="${message:buy-name-tooltip}" />
+						</td>
+						<td>
+							<t:textfield t:id="buyName" t:mixins="autocomplete"
+								t:label="${message:buy-name-label}" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<t:label for="buyVariant" title="${message:buy-variant-tooltip}" />
+						</td>
+						<td>
+							<t:textfield t:id="buyVariant" t:mixins="autocomplete"
+								t:label="${message:buy-variant-label}" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<t:label for="buyAmount" title="${message:buy-units-tooltip}" />
+						</td>
+						<td>
+							<t:textfield class="numerical" t:id="buyAmount"
+								t:label="${message:buy-units-label}" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<t:label for="buyPrice" title="${message:buy-price-tooltip}" />
+						</td>
+						<td>
+							<t:textfield class="numerical" t:id="buyPrice"
+								t:label="${message:buy-price-label}" />
+							${currencySymbol}
+						</td>
+					</tr>
+				</table>
+				<t:submit type="submit" value="${message:acquire}" />
+			</div>
+		</fieldset>
+	</t:form>
+
+	<p />
+
+	<table t:id="ledger" t:type="grid" t:model="ledgerModel"
+		t:source="stocks" t:rowsPerPage="25" t:pagerPosition="bottom"
+		t:exclude="variant"
+		t:reorder="name,id,acquired,buyprice,units,liquidated,sellprice,profit"
+		t:row="wrappedstock">
+		<p:nameCell>
+			<t:pagelink page="edit/NameEditor" context="wrappedstock.nameId">${wrappedstock.name}
+			</t:pagelink>
+			<t:if test="wrappedstock.variant">
+				<div class="assetsubtype">
+					<t:pagelink page="edit/VariantEditor" context="wrappedstock.variantId">${wrappedstock.variant}
+					</t:pagelink>
+				</div>
+			</t:if>
+			<t:if test="wrappedstock.stock.comment">
+				<div class="assetcommet">
+					<t:pagelink page="edit/StockEditor" context="${wrappedstock.id}">
+						<img src="${asset:context:images/message-16-info.png}" title="${wrappedstock.stock.comment}" />
+					</t:pagelink>
+				</div>
+			</t:if>
+		</p:nameCell>
+		<p:idCell>
+			<t:pagelink page="edit/StockEditor" context="wrappedstock.id">${wrappedstock.id}
+			</t:pagelink>
+		</p:idCell>
+		<p:unitsCell>
+			<t:pagelink page="edit/UnitsEditor" context="wrappedstock.id">${wrappedstock.units}
+			</t:pagelink>
+		</p:unitsCell>
+		<p:liquidatedCell>
+			<t:if test="wrappedstock.liquidated">
+				${wrappedstock.liquidated}
+				<p:else>
+					<t:pagelink page="edit/LiquidateEditor" context="wrappedstock.id">${message:liquidate-now}
+					</t:pagelink>
+				</p:else>
+			</t:if>
+		</p:liquidatedCell>
+		<p:profitCell>
+			<div class="${wrappedStock.profitClass}">
+				${wrappedstock.profit}
+			</div>
+		</p:profitCell>
+		<p:buyPriceCell>
+			<div class="${wrappedStock.buyPriceClass}">
+				${wrappedstock.buyPrice}
+			</div>
+		</p:buyPriceCell>
+		<p:sellPriceCell>
+			<div class="${wrappedStock.sellPriceClass}">
+				${wrappedstock.sellPrice}
+			</div>
+		</p:sellPriceCell>
+		<p:empty>
+			<p>
+				<i>${message:emptyset}</i>
+			</p>
+
+		</p:empty>
+	</table>
+
+	<t:form t:id="filterForm">
+		<t:checkbox t:id="showFilter" t:mixins="triggerfragment"
+			fragment="filterFragment" />
+		<t:label for="showFilter">${message:show-filter}</t:label>
+		<t:formfragment t:id="filterFragment" visible="showFilter">
+
+			<table class="kvtable">
+				<tr>
+					<th>
+						<t:label for="filterName" title="${message:filter-name-tooltip}" />
+					</th>
+					<td>
+						<t:textfield t:id="filterName" t:label="${message:filter-name-label}" />
+					</td>
+				</tr>
+				<tr>
+					<th>
+						<t:label for="filterVariant" title="${message:filter-variant-tooltip}" />
+					</th>
+					<td>
+						<t:textfield t:id="filterVariant" t:label="${message:filter-variant-label}" />
+					</td>
+				</tr>
+				<tr>
+					<th>
+						<t:label for="filterAcquisition" title="${message:filter-acquisition-tooltip}" />
+					</th>
+					<td>
+						<t:select t:id="filterAcquisitionSpan" />&nbsp;
+						<t:datefield t:id="filterAcquisition"
+							t:label="${message:filter-acquisition-label}" value="filterAcquisition" />
+					</td>
+				</tr>
+				<tr>
+					<th>
+						<t:label for="filterLiquidation" title="${message:filter-liquidation-tooltip}" />
+					</th>
+					<td>
+						<t:select t:id="filterLiquidationSpan" />&nbsp;
+						<t:datefield t:id="filterLiquidation"
+							t:label="${message:filter-liquidation-label}" value="filterLiquidation"
+							colspan="2" />
+					</td>
+				</tr>
+				<tr>
+					<th>
+						<t:label for="filterState" title="${message:filter-state-tooltip}" />
+					</th>
+					<td>
+						<t:select t:id="filterState" t:label="${message:filter-state-label}" />
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<t:submit type="submit" value="${message:filter-label}" />&nbsp;
+						<t:submit type="submit" t:id="reset" value="${message:reset-label}" />
+					</td>
+				</tr>
+			</table>
+		</t:formfragment>
+	</t:form>
+</html>

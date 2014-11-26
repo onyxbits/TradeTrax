@@ -1,0 +1,225 @@
+package de.onyxbits.tradetrax.remix;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Vector;
+
+import org.apache.tapestry5.grid.GridDataSource;
+import org.apache.tapestry5.grid.SortConstraint;
+import org.hibernate.Criteria;
+import org.hibernate.Session;
+import org.hibernate.criterion.LogicalExpression;
+import org.hibernate.criterion.Order;
+import org.hibernate.criterion.Projections;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.SimpleExpression;
+
+import de.onyxbits.tradetrax.entities.Stock;
+
+/**
+ * For displaying the stocks table in a paged grid.
+ * 
+ * @author patrick
+ * 
+ */
+public class StockPagedGridDataSource implements GridDataSource {
+
+	private Session session;
+
+	private List<WrappedStock> preparedResults;
+
+	private int startIndex;
+
+	private MoneyRepresentation moneyConverter;
+
+	private SimpleExpression nameRestriction;
+	private SimpleExpression variantRestriction;
+	private LogicalExpression stateRestriction;
+	private SimpleExpression acquisitionRestriction;
+	private SimpleExpression liquidationRestriction;
+
+	/**
+	 * Construct a new object
+	 * 
+	 * @param session
+	 *          database session from which to load objects.
+	 * @param moneyConverter
+	 *          for formatting money values.
+	 */
+	public StockPagedGridDataSource(Session session, MoneyRepresentation moneyConverter) {
+		this.session = session;
+		this.moneyConverter = moneyConverter;
+		preparedResults = new Vector<WrappedStock>();
+	}
+
+	/**
+	 * Add a name restriction
+	 * 
+	 * @param label
+	 *          (sub)string to match or null to disable name filtering.
+	 * @return this reference for method chaining.
+	 */
+	public StockPagedGridDataSource withName(String label) {
+		if (label != null) {
+			// nameRestriction = Restrictions.like("name.label", "%"+label+"%");
+			nameRestriction = Restrictions.like("name.label", "%" + label + "%");
+		}
+		else {
+			nameRestriction = null;
+		}
+		return this;
+	}
+
+	/**
+	 * Add a state restriction
+	 * 
+	 * @param filterState
+	 *          the state or null to disable statefiltering
+	 * @return this reference for method chaining.
+	 */
+	public StockPagedGridDataSource withState(StockState state) {
+		if (state != null) {
+			switch (state) {
+				case ACQUIRED: {
+					stateRestriction = Restrictions.and(Restrictions.isNotNull("acquired"),
+							Restrictions.isNull("liquidated"));
+					break;
+				}
+				case LIQUIDATED: {
+					stateRestriction = Restrictions.and(Restrictions.isNull("acquired"),
+							Restrictions.isNotNull("liquidated"));
+					break;
+				}
+				case PREBOOKED: {
+					stateRestriction = Restrictions.and(Restrictions.isNull("acquired"),
+							Restrictions.isNull("liquidated"));
+					break;
+				}
+				case FINALIZED: {
+					stateRestriction = Restrictions.and(Restrictions.isNotNull("acquired"),
+							Restrictions.isNotNull("liquidated"));
+					break;
+				}
+			}
+		}
+		else {
+			stateRestriction = null;
+		}
+		return this;
+	}
+
+	/**
+	 * Add a variant restriction
+	 * 
+	 * @param label
+	 *          (sub)string to match or null to disable variant filtering.
+	 * @return this reference for method chaining-
+	 */
+	public StockPagedGridDataSource withVariant(String label) {
+		if (label != null) {
+			variantRestriction = Restrictions.like("variant.label", "%" + label + "%");
+		}
+		else {
+			variantRestriction = null;
+		}
+		return this;
+	}
+
+	public StockPagedGridDataSource withAcquisition(Date filterAcquisition,
+			TimeSpan filterAcquisitionSpan) {
+		if (filterAcquisition == null || filterAcquisitionSpan == null) {
+			acquisitionRestriction = null;
+		}
+		else {
+			if (filterAcquisitionSpan == TimeSpan.BEFORE) {
+				acquisitionRestriction = Restrictions.le("acquired", filterAcquisition);
+			}
+			else {
+				acquisitionRestriction = Restrictions.ge("acquired", filterAcquisition);
+			}
+		}
+		return this;
+	}
+
+	public StockPagedGridDataSource withLiquidation(Date filterLiquidation,
+			TimeSpan filterLiquidationSpan) {
+		if (filterLiquidation == null || filterLiquidationSpan == null) {
+			liquidationRestriction = null;
+		}
+		else {
+			if (filterLiquidationSpan == TimeSpan.BEFORE) {
+				liquidationRestriction = Restrictions.le("liquidated", filterLiquidation);
+			}
+			else {
+				liquidationRestriction = Restrictions.ge("liquidated", filterLiquidation);
+			}
+		}
+		return this;
+	}
+
+	public int getAvailableRows() {
+		Criteria crit = session.createCriteria(Stock.class);
+		if (nameRestriction != null) {
+			crit.createAlias("name", "name");
+			crit.add(nameRestriction);
+		}
+		if (variantRestriction != null) {
+			crit.createAlias("variant", "variant");
+			crit.add(variantRestriction);
+		}
+		if (stateRestriction != null) {
+			crit.add(stateRestriction);
+		}
+		if (acquisitionRestriction != null) {
+			crit.add(acquisitionRestriction);
+		}
+		if (liquidationRestriction != null) {
+			crit.add(liquidationRestriction);
+		}
+		return ((Number) crit.setProjection(Projections.rowCount()).uniqueResult()).intValue();
+	}
+
+	public void prepare(int startIndex, int endIndex, List<SortConstraint> sortConstraints) {
+		Criteria crit = session.createCriteria(Stock.class).addOrder(Order.desc("acquired"))
+				.addOrder(Order.desc("id")).setFirstResult(startIndex)
+				.setMaxResults(endIndex - startIndex + 1);
+		if (nameRestriction != null) {
+			crit.createAlias("name", "name");
+			crit.add(nameRestriction);
+		}
+		if (variantRestriction != null) {
+			crit.createAlias("variant", "variant");
+			crit.add(variantRestriction);
+		}
+		if (stateRestriction != null) {
+			crit.add(stateRestriction);
+		}
+		if (acquisitionRestriction != null) {
+			crit.add(acquisitionRestriction);
+		}
+		if (liquidationRestriction != null) {
+			crit.add(liquidationRestriction);
+		}
+		@SuppressWarnings("unchecked")
+		List<Stock> lst = (List<Stock>) crit.list();
+		preparedResults.clear();
+		this.startIndex = startIndex;
+		for (Stock s : lst) {
+			preparedResults.add(new WrappedStock(s, moneyConverter));
+		}
+	}
+
+	public Object getRowValue(int index) {
+		try {
+			return preparedResults.get(index - startIndex);
+		}
+		catch (IndexOutOfBoundsException e) {
+			return null;
+		}
+	}
+
+	public Class<WrappedStock> getRowType() {
+		return WrappedStock.class;
+	}
+
+}

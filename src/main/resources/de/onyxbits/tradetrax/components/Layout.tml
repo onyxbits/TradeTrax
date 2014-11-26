@@ -1,0 +1,147 @@
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+	xmlns:p="tapestry:parameter">
+	<head>
+		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+		<link rel="icon" type="image/png" href="${context:favicon.png}" />
+
+		<title>${title}</title>
+		<style type="text/css">
+			DIV.t-alert-controls { display: none; }
+			DIV.t-dismiss { display: none; }
+
+
+			DIV.t-message-container {
+			margin-left: 30px;
+			}
+
+			DIV.t-alert-container
+			DIV.t-error {
+			background:
+			#FFBABA url("${context:images/message-24-error.png}") no-repeat 5px
+			5px;
+			color: #D8000C;
+			padding: 10px 10px 10px
+			10px;
+			border: 2px solid
+			#D8000C;
+			}
+
+			DIV.t-alert-container DIV.t-success {
+			background: #DFF2BF
+			url("${context:images/message-24-ok.png}") no-repeat 5px 5px;
+			color:
+			#4F8A10;
+			padding: 10px 10px
+			10px 10px;
+			border: 2px solid #4F8A10;
+			}
+
+			DIV.t-alert-container DIV.t-info {
+			background: #BDE5F8
+			url("${context:images/message-24-info.png}") no-repeat 5px 5px;
+			color:
+			#00529B;
+			padding: 10px 10px
+			10px 10px;
+			border: 2px solid #00529B;
+			}
+
+			DIV.t-alert-container DIV.t-warn {
+			background: #FEEFB3
+			url("${context:images/message-24-warning.png}") no-repeat 5px 5px;
+			color:
+			#9F6000;
+			padding: 10px 10px
+			10px 10px;
+			border: 2px solid #9F6000;
+			}
+		</style>
+	</head>
+	<body>
+		<div id="wrapper">
+			<header id="header" class="clearfix">
+				<t:if test="ledgerTitle">
+					<h3 id="ledger-title" title="${message:ledger-title-tooltip}">${ledgerTitle}</h3>
+				</t:if>
+				<div id="site-logo">
+					<t:pagelink page="index">
+						<img src="${context:images/logo.png}" alt="TradeTrax" />
+					</t:pagelink>
+				</div>
+				<nav id="navigation" role="navigation">
+					<div id="main-menu">
+						<ul class="menu">
+							<li>
+								<t:pagelink page="Index">${message:menu-tradecenter}
+								</t:pagelink>
+							</li>
+							<li>
+								<t:pagelink page="Summary">${message:menu-summary}
+								</t:pagelink>
+							</li>
+													<li>
+								<t:pagelink page="Tools">${message:menu-tools}
+								</t:pagelink>
+							</li>
+							<li>
+								<t:pagelink page="Settings">${message:menu-settings}
+								</t:pagelink>
+							</li>
+							<li>
+								<a href="http://www.onyxbits.de/tradetrax/handbook" target="_blank">${message:menu-help}</a>
+							</li>
+						</ul>
+					</div>
+				</nav>
+			</header>
+
+			<div id="main" class="clearfix">
+				<div id="primary">
+					<section id="content" role="main">
+						<t:alerts />
+						<div id="content-wrap">
+							<h1 class="page-title">${title}</h1>
+							<t:body />
+						</div>
+					</section>
+				</div>
+
+				<aside id="sidebar" role="complementary">
+					<t:if test="hideinstructions" negate="true">
+						<div class="block block-block">
+							<h2>${message:instructions}</h2>
+							<div class="content">
+								<t:delegate to="instructions" />
+							</div>
+						</div>
+					</t:if>
+					<div class="block block-block">
+						<h2>${message:search-title}</h2>
+						<t:form t:id="searchform">
+
+							<t:textfield class="numerical" t:id="searchId"
+								t:size="10" />
+	          		&nbsp;
+							<t:submit type="submit" value="${message:open}" class="form-submit" />
+
+						</t:form>
+					</div>
+				</aside>
+			</div>
+
+			<footer id="footer-bottom">
+				<div id="bottom" class="clearfix">
+					<div class="copyright">Copyright &copy;
+						2014,
+						<a href="http://www.onyxbits.de">Onyxbits</a>
+					</div>
+					<div class="credit">
+						<a href="http://www.onyxbits.de/tradetrax">TradeTrax</a>
+						${appversion}
+					</div>
+				</div>
+			</footer>
+		</div>
+	</body>
+</html>
+

@@ -1,0 +1,81 @@
+<html t:type="layout" title="${message:title}" instructions="${message:instructions}"
+      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+      xmlns:p="tapestry:parameter">
+	
+	<t:if test="stock">
+		<p:else>
+			${message:no-stock}
+		</p:else>
+		<table class="kvtable">
+			<tr>
+				<th>${message:asset-label}:</th>
+				<td><t:if test="stock.name">${stock.name.label}</t:if><t:if test="stock.variant"><div class="assetsubtype"> ${stock.variant.label}</div></t:if></td>
+			</tr>
+			<tr>
+				<th>${message:id-label}:</th>
+				<td><t:pagelink page="edit/StockEditor" context="${stock.id}">${stock.id}</t:pagelink></td>
+			</tr>
+			<tr>
+				<th>${message:units-label}:</th>
+				<td>${stock.unitCount}</td>
+			</tr>
+			<t:if test="stock.comment">
+				<tr>
+					<th>${message:comment-label}:</th>
+					<td>${stock.comment}</td>
+				</tr>
+			</t:if>
+		</table>
+		
+		<p />
+		<t:form t:id="splitForm">
+			<fieldset class="form-wrapper">
+				<legend><span class="fieldset-legend">${message:splitheading}</span></legend>
+				<div class="fieldset-wrapper">
+				<div class="fieldset-description"></div>
+					<t:errors/>
+		
+					<t:label for="sizeField" />: 
+				  	<t:textfield class="numerical" t:id="sizeField" t:label="${message:splitlabel}" value="size" size="6" />
+				  	&nbsp;
+				  	<t:submit id="split" type="submit" value="${message:split}" />
+				</div>
+			</fieldset>
+		</t:form>
+	</t:if>
+	
+	<t:if test="stocks">
+	<p />
+	${message:mergetitle}
+	<table t:type="grid" model="ledgerModel" source="stocks" rowsPerPage="40" pagerPosition="top" reorder="name,id,acquired,buyprice,units,liquidated,sellprice" row="wrappedstock" exclude="profit,variant" add="actions">
+		<p:nameCell>
+			${wrappedstock.name}
+			<t:if test="wrappedstock.variant">
+				<div class="assetsubtype">
+					${wrappedstock.variant}
+				</div>
+			</t:if>
+		</p:nameCell>
+		<p:idCell>
+			<t:pagelink page="edit/StockEditor" context="${wrappedstock.id}">${wrappedstock.id}</t:pagelink>
+		</p:idCell>
+		<p:actionsCell>
+			<t:eventlink t:event="Merge" t:context="${wrappedstock.id}">${message:merge}</t:eventlink>
+			<t:if test="${wrappedstock.liquidated}" negate="true">
+				, <t:pagelink t:page="edit/LiquidateEditor" t:context="${wrappedstock.id}">${message:liquidate}</t:pagelink>
+			</t:if>
+		</p:actionsCell>
+		<p:buyPriceCell>
+			<div class="${wrappedStock.buyPriceClass}">
+				${wrappedstock.buyPrice}
+			</div>
+		</p:buyPriceCell>
+		<p:sellPriceCell>
+			<div class="${wrappedStock.sellPriceClass}">
+				${wrappedstock.sellPrice}
+			</div>
+		</p:sellPriceCell>
+	</table>
+	</t:if>
+	
+</html>
