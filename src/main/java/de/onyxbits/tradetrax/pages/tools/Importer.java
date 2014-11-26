@@ -176,6 +176,9 @@ public class Importer {
 		}
 		// The system could handle these, but the input forms cannot, so let's not
 		// allow the user to enter values s/he can't edit.
+		if (name.length()==0) {
+			return messages.format("noname");
+		}
 		return name.replace('\n', ' ').replace('\t', ' ');
 	}
 
