@@ -26,7 +26,9 @@ import org.apache.tapestry5.services.BeanModelSource;
 import org.hibernate.Session;
 
 import de.onyxbits.tradetrax.entities.IdentUtil;
+import de.onyxbits.tradetrax.entities.Name;
 import de.onyxbits.tradetrax.entities.Stock;
+import de.onyxbits.tradetrax.entities.Variant;
 import de.onyxbits.tradetrax.pages.Index;
 import de.onyxbits.tradetrax.remix.MoneyRepresentation;
 import de.onyxbits.tradetrax.remix.WrappedStock;
@@ -128,6 +130,15 @@ public class Importer {
 		}
 		int count = 0;
 		for (WrappedStock stock : parsed) {
+			// We have to repack name/variant here because it is highly likely that
+			// the CSV contains a label several times which is not yet known to the
+			// database. So we need a save() after every findName() to make sure we
+			// don't violate the unique constraint.
+			stock.stock.setName(IdentUtil.findName(session, stock.stock.getName().getLabel()));
+			Variant v = stock.stock.getVariant();
+			if (v != null) {
+				stock.stock.setVariant(IdentUtil.findVariant(session, stock.stock.getVariant().getLabel()));
+			}
 			session.beginTransaction();
 			session.save(stock.stock);
 			session.getTransaction().commit();
@@ -142,10 +153,14 @@ public class Importer {
 		try {
 			Stock stock = new Stock();
 			// A name is a must!
-			stock.setName(IdentUtil.findName(session, cleanName(rec.get("name"))));
+			Name name = new Name();
+			name.setLabel(cleanName(rec.get("name")));
+			stock.setName(name);
 
 			if (rec.isMapped("variant")) {
-				stock.setVariant(IdentUtil.findVariant(session, cleanName(rec.get("variant"))));
+				Variant variant = new Variant();
+				variant.setLabel(cleanName(rec.get("variant")));
+				stock.setVariant(variant);
 			}
 
 			if (rec.isMapped("acquired")) {
@@ -176,7 +191,7 @@ public class Importer {
 		}
 		// The system could handle these, but the input forms cannot, so let's not
 		// allow the user to enter values s/he can't edit.
-		if (name.length()==0) {
+		if (name.length() == 0) {
 			return messages.format("noname");
 		}
 		return name.replace('\n', ' ').replace('\t', ' ');
