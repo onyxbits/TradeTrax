@@ -11,7 +11,6 @@ import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.hibernate.Session;
 
 import de.onyxbits.tradetrax.remix.MoneyRepresentation;
 import de.onyxbits.tradetrax.services.SettingsStore;
@@ -53,9 +52,6 @@ public class Settings {
 
 	@Component(id = "uiFormHideInstructions")
 	private Checkbox uiFormHideInstructionsField;
-
-	@Inject
-	private Session session;
 
 	@Inject
 	private Messages messages;
