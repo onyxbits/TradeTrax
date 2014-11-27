@@ -12,6 +12,7 @@ import org.apache.tapestry5.beaneditor.Validate;
 import org.apache.tapestry5.corelib.components.EventLink;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.TextField;
+import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Session;
@@ -109,6 +110,7 @@ public class NameEditor {
 		eventDelete=false;
 	}
 	
+	@CommitAfter
 	public Object onSuccess() {
 		if (eventDelete) {
 			doDelete();
@@ -124,9 +126,7 @@ public class NameEditor {
 			Name n = (Name) session.load(Name.class, nameId);
 			String s = n.getLabel();
 			n.setLabel(name);
-			session.beginTransaction();
 			session.update(n);
-			session.getTransaction().commit();
 			alertManager.alert(Duration.SINGLE, Severity.INFO, messages.format("renamed", s, name));
 		}
 		catch (Exception e) {
@@ -139,7 +139,6 @@ public class NameEditor {
 	private void doDelete() {
 		try {
 			Name bye = (Name) session.load(Name.class, nameId);
-			session.beginTransaction();
 			@SuppressWarnings("unchecked")
 			List<Stock> lst = session.createCriteria(Stock.class).add(Restrictions.eq("name", bye)).list();
 			for (Stock s : lst) {
@@ -147,7 +146,6 @@ public class NameEditor {
 				session.delete(s);
 			}
 			session.delete(bye);
-			session.getTransaction().commit();
 			alertManager
 					.alert(Duration.SINGLE, Severity.INFO, messages.format("deleted", bye.getLabel()));
 		}
