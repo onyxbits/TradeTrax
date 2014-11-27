@@ -203,7 +203,7 @@ public class Importer {
 		}
 		catch (Exception e) {
 		}
-		return 0;
+		return 1;
 	}
 
 	private long parsePrice(String string) {
