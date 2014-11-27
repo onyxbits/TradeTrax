@@ -12,6 +12,7 @@ import org.apache.tapestry5.beaneditor.Validate;
 import org.apache.tapestry5.corelib.components.EventLink;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.TextField;
+import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Session;
@@ -91,6 +92,7 @@ public class VariantEditor {
 		eventDelete=false;
 	}
 	
+	@CommitAfter
 	public Object onSuccess() {
 		if (eventDelete) {
 			doDelete();
@@ -106,9 +108,7 @@ public class VariantEditor {
 			Variant variant = (Variant) session.get(Variant.class, variantId);
 			String s = variant.getLabel();
 			variant.setLabel(name);
-			session.beginTransaction();
 			session.update(variant);
-			session.getTransaction().commit();
 			alertManager.alert(Duration.UNTIL_DISMISSED, Severity.INFO, messages.format("renamed",s,name));
 		}
 		catch (Exception e) {
@@ -119,7 +119,6 @@ public class VariantEditor {
 	protected void doDelete() {
 		try {
 			Object bye = session.get(Variant.class, variantId);
-			session.beginTransaction();
 			@SuppressWarnings("unchecked")
 			List<Stock> lst = session.createCriteria(Stock.class).add(Restrictions.eq("variant", bye)).list();
 			for (Stock s : lst) {
@@ -127,7 +126,6 @@ public class VariantEditor {
 				session.update(s);
 			}
 			session.delete(bye);
-			session.getTransaction().commit();
 		}
 		catch (Exception e) {
 			// Only two ways of getting here: trying to delete something that no
