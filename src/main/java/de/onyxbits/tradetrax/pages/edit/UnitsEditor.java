@@ -12,6 +12,7 @@ import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.beaneditor.PropertyModel;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.TextField;
+import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.BeanModelSource;
@@ -104,12 +105,11 @@ public class UnitsEditor {
 		return model;
 	}
 
+	@CommitAfter
 	protected Object onSuccess() {
 		try {
-			session.beginTransaction();
 			session.save(stock.splitStock(size));
 			session.update(stock);
-			session.getTransaction().commit();
 		}
 		catch (Exception e) {
 			alertManager.alert(Duration.SINGLE, Severity.ERROR,
@@ -119,6 +119,7 @@ public class UnitsEditor {
 		return getClass();
 	}
 
+	@CommitAfter
 	protected void onMerge(long id) {
 		try {
 			Stock m = (Stock) session.load(Stock.class, id);
@@ -129,10 +130,8 @@ public class UnitsEditor {
 			m.setName(null);
 			m.setVariant(null);
 			stock.setUnitCount(stock.getUnitCount() + m.getUnitCount());
-			session.beginTransaction();
 			session.update(stock);
 			session.delete(m);
-			session.getTransaction().commit();
 		}
 		catch (Exception e) {
 			e.printStackTrace();
