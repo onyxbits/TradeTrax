@@ -16,6 +16,7 @@ import org.apache.tapestry5.corelib.components.DateField;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.TextArea;
 import org.apache.tapestry5.corelib.components.TextField;
+import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Session;
@@ -221,6 +222,7 @@ public class StockEditor {
 		return Index.class;
 	}
 
+	@CommitAfter
 	private void doSave() {
 		try {
 			stock = (Stock) session.get(Stock.class, stockId);
@@ -236,9 +238,7 @@ public class StockEditor {
 			stock.setBuyPrice(mr.userToDatabase(buyPrice, 1));
 			stock.setUnitCount(units);
 			stock.setComment(comment);
-			session.beginTransaction();
 			session.saveOrUpdate(stock);
-			session.getTransaction().commit();
 			alertManager.alert(Duration.SINGLE, Severity.SUCCESS,
 					messages.format("save-success", stock.getId()));
 			focusedStockId = stock.getId();
@@ -249,15 +249,14 @@ public class StockEditor {
 		}
 	}
 
+	@CommitAfter
 	private void doDelete() {
 		try {
 			Stock bye = (Stock) session.get(Stock.class, stockId);
 			long byeid = bye.getId();
-			session.beginTransaction();
 			bye.setName(null);
 			bye.setVariant(null);
 			session.delete(bye);
-			session.getTransaction().commit();
 			alertManager.alert(Duration.SINGLE, Severity.SUCCESS,
 					messages.format("delete-success", byeid));
 			focusedStockId = 0;
