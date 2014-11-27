@@ -159,8 +159,11 @@ public class Importer {
 
 			if (rec.isMapped("variant")) {
 				Variant variant = new Variant();
-				variant.setLabel(cleanName(rec.get("variant")));
-				stock.setVariant(variant);
+				String tmp = rec.get("variant");
+				if (tmp != null) {
+					variant.setLabel(tmp);
+					stock.setVariant(variant);
+				}
 			}
 
 			if (rec.isMapped("acquired")) {
