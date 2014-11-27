@@ -189,12 +189,13 @@ public class Importer {
 		if (name == null) {
 			return null;
 		}
-		// The system could handle these, but the input forms cannot, so let's not
-		// allow the user to enter values s/he can't edit.
-		if (name.length() == 0) {
+		// The database is ok with any string, the UI is not, so prevent the user
+		// from entering what cannot be edited.
+		String ret = name.trim();
+		if (ret.length() == 0) {
 			return messages.format("noname");
 		}
-		return name.replace('\n', ' ').replace('\t', ' ');
+		return ret.replace('\n', ' ').replace('\t', ' ');
 	}
 
 	private int parseAmount(String string) {
