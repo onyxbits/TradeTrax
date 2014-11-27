@@ -82,6 +82,20 @@ public class Importer {
 	public List<WrappedStock> getParsed() {
 		return parsed;
 	}
+	
+	public String getRowBuyPrice() {
+		if (row!=null && moneyRepresentation!=null) {
+			return moneyRepresentation.databaseToUser(row.stock.getBuyPrice(),false,false);
+		}
+		return null;
+	}
+	
+	public String getRowSellPrice() {
+		if (row!=null && moneyRepresentation!=null) {
+			return moneyRepresentation.databaseToUser(row.stock.getSellPrice(),false,false);
+		}
+		return null;
+	}
 
 	public BeanModel<WrappedStock> getLedgerModel() {
 		BeanModel<WrappedStock> model = ledgerSource.createDisplayModel(WrappedStock.class, messages);
@@ -94,14 +108,15 @@ public class Importer {
 	}
 
 	public void setupRender() {
+		moneyRepresentation = new MoneyRepresentation(settingsStore);
 		if (rawcsv == null || rawcsv.length() == 0) {
 			rawcsv = "name,variant,acquired,cost,units,liquidated,returns";
 		}
 	}
 
 	public Importer onSuccessFromCsvForm() {
-		CSVParser parser = null;
 		moneyRepresentation = new MoneyRepresentation(settingsStore);
+		CSVParser parser = null;
 		parsed = new Vector<WrappedStock>();
 		try {
 			parser = new CSVParser(new StringReader(rawcsv), CSVFormat.EXCEL.withHeader());

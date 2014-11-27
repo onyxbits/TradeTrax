@@ -31,14 +31,10 @@
 		t:row="row" exclude="id,profit"
 		t:reorder="name,variant,acquired,buyprice,units,liquidated,sellprice">
 		<p:buyPriceCell>
-			<t:if test="row.acquired" negate="true">
-				<i>${message:hidden}</i>
-			</t:if>
+			${getRowBuyPrice()}
 		</p:buyPriceCell>
 		<p:sellPriceCell>
-			<t:if test="row.liquidated" negate="true">
-				<i>${message:hidden}</i>
-			</t:if>
+			${getRowSellPrice()}
 		</p:sellPriceCell>
 		<p:empty>
 
