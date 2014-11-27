@@ -12,6 +12,7 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SessionAttribute;
 import org.apache.tapestry5.beaneditor.Validate;
 import org.apache.tapestry5.corelib.components.Form;
+import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Session;
@@ -116,9 +117,9 @@ public class LiquidateEditor {
 		}
 	}
 
+	@CommitAfter
 	protected Object onSuccess() {
 		try {
-			session.beginTransaction();
 			Stock s = (Stock) session.load(Stock.class, stockId);
 			MoneyRepresentation mr = new MoneyRepresentation(settingsStore);
 			long sp = 0;
@@ -130,7 +131,6 @@ public class LiquidateEditor {
 			}
 			s.setLiquidated(new Date());
 			s.setSellPrice(sp);
-			session.getTransaction().commit();
 			focusedStockId = s.getId();
 			String profit = mr.databaseToUser((s.getSellPrice() - s.getBuyPrice()) * s.getUnitCount(),
 					false, true);
