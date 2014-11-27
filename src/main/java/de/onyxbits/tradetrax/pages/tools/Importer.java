@@ -20,6 +20,7 @@ import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.beaneditor.PropertyModel;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.TextArea;
+import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.BeanModelSource;
@@ -139,6 +140,7 @@ public class Importer {
 		return this;
 	}
 
+	@CommitAfter
 	public Object onSuccessFromCommitForm() {
 		if (parsed == null) {
 			return this;
@@ -154,9 +156,7 @@ public class Importer {
 			if (v != null) {
 				stock.stock.setVariant(IdentUtil.findVariant(session, stock.stock.getVariant().getLabel()));
 			}
-			session.beginTransaction();
 			session.save(stock.stock);
-			session.getTransaction().commit();
 			count++;
 		}
 		alertManager.alert(Duration.SINGLE, Severity.SUCCESS, messages.format("success", count));
