@@ -46,7 +46,7 @@ public class AppModule {
 		// (a random hexadecimal number), but may be further overriden by
 		// DevelopmentModule or
 		// QaModule.
-		configuration.override(SymbolConstants.APPLICATION_VERSION, "v1.0");
+		configuration.override(SymbolConstants.APPLICATION_VERSION, "v1.1");
 	}
 
 	public static void contributeApplicationDefaults(MappedConfiguration<String, Object> configuration) {
