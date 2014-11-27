@@ -3,6 +3,7 @@ package de.onyxbits.tradetrax.services;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.tapestry5.hibernate.HibernateSessionSource;
 import org.hibernate.Session;
 
 import de.onyxbits.tradetrax.entities.Setting;
@@ -12,15 +13,14 @@ public class SettingsStoreImpl implements SettingsStore {
 	private HashMap<String, Setting> store = new HashMap<String, Setting>();
 	private Session session;
 
-	public SettingsStoreImpl(Session session) {
-
+	public SettingsStoreImpl(HibernateSessionSource source) {
+		this.session = source.create();
 		@SuppressWarnings("unchecked")
 		List<Setting> lst = (List<Setting>) session.createCriteria(Setting.class).list();
 		store = new HashMap<String, Setting>();
 		for (Setting s : lst) {
 			store.put(s.getName(), s);
 		}
-		this.session = session;
 	}
 
 	public String get(String key, String value) {
