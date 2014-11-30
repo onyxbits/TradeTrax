@@ -1,5 +1,7 @@
 package de.onyxbits.tradetrax.components;
 
+import java.util.List;
+
 import org.apache.tapestry5.*;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
@@ -7,7 +9,10 @@ import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.ioc.annotations.*;
 import org.apache.tapestry5.BindingConstants;
 import org.apache.tapestry5.SymbolConstants;
+import org.hibernate.Session;
+import org.hibernate.criterion.Order;
 
+import de.onyxbits.tradetrax.entities.Bookmark;
 import de.onyxbits.tradetrax.pages.edit.StockEditor;
 import de.onyxbits.tradetrax.services.SettingsStore;
 
@@ -27,6 +32,9 @@ public class Layout {
 
 	@SessionAttribute(Layout.FOCUSID)
 	private long focusedStockId;
+	
+	@Inject
+	private Session session;
 
 	/**
 	 * The page title, for the <title> element and the <h1>element.
@@ -64,6 +72,13 @@ public class Layout {
 
 	@Inject
 	private SettingsStore settingsStore;
+	
+	@Property
+	private Bookmark bookmark;
+	
+	public List<Bookmark> getBookmarks() {
+		return session.createCriteria(Bookmark.class).addOrder(Order.asc("id")).list(); 
+	}
 
 	protected void setupRender() {
 		try {

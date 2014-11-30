@@ -13,6 +13,7 @@ import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SessionAttribute;
 import org.apache.tapestry5.beaneditor.Validate;
 import org.apache.tapestry5.corelib.components.DateField;
+import org.apache.tapestry5.corelib.components.EventLink;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.TextArea;
 import org.apache.tapestry5.corelib.components.TextField;
@@ -22,6 +23,7 @@ import org.apache.tapestry5.ioc.annotations.Inject;
 import org.hibernate.Session;
 
 import de.onyxbits.tradetrax.components.Layout;
+import de.onyxbits.tradetrax.entities.Bookmark;
 import de.onyxbits.tradetrax.entities.IdentUtil;
 import de.onyxbits.tradetrax.entities.Stock;
 import de.onyxbits.tradetrax.pages.Index;
@@ -123,6 +125,9 @@ public class StockEditor {
 	@Property
 	private boolean liquidateable;
 
+	@Component(id = "bookmark")
+	private EventLink bookmark;
+
 	public void onActivate(Long StockId) {
 		this.stockId = StockId;
 	}
@@ -182,6 +187,22 @@ public class StockEditor {
 
 	protected Long onPassivate() {
 		return stockId;
+	}
+
+	@CommitAfter
+	protected StockEditor onBookmark(long id) {
+		Bookmark bm = (Bookmark)session.get(Bookmark.class,id);
+		if (bm==null) {
+			alertManager.alert(Duration.SINGLE,Severity.INFO,messages.get("bookmark-set"));
+			bm=new Bookmark();
+			bm.setId(id);
+			session.save(bm);
+		}
+		else {
+			alertManager.alert(Duration.SINGLE,Severity.INFO,messages.get("bookmark-deleted"));
+			session.delete(bm);
+		}
+		return this;
 	}
 
 	protected void onSelectedFromDelete() {
@@ -260,6 +281,10 @@ public class StockEditor {
 			alertManager.alert(Duration.SINGLE, Severity.SUCCESS,
 					messages.format("delete-success", byeid));
 			focusedStockId = 0;
+			Bookmark bm = (Bookmark) session.get(Bookmark.class,byeid);
+			if (bm!=null) {
+				session.delete(bm);
+			}
 		}
 		catch (Exception e) {
 			alertManager.alert(Duration.SINGLE, Severity.ERROR,

@@ -1,73 +1,127 @@
 <html t:type="layout" title="${message:title}" instructions="${message:instructions}"
-      xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
-      xmlns:p="tapestry:parameter">
-	
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter">
+
 	<t:if test="stock">
 		<p:else>
 			${message:no-stock}
 		</p:else>
 		<t:form t:id="editForm">
-			<t:errors/>
+			<t:errors />
 			<table class="kvtable">
 				<tr>
 					<th title="${message:id-tooltip}">${message:id-label}:</th>
-					<td>${stock.id}</td>
+					<td>
+						${stock.id}
+						<div class="assetaction">
+							<a t:id="bookmark" context="${stock.id}">${message:bookmark}</a>
+						</div>
+					</td>
 				</tr>
 				<tr>
-					<th title="${message:name-tooltip}"><t:label for="name" size="20" />:</th>
-					<td><t:textfield t:id="name" t:label="${message:name-label}" value="name" t:mixins="autocomplete" /></td>
+					<th title="${message:name-tooltip}">
+						<t:label for="name" size="20" />
+						:
+					</th>
+					<td>
+						<t:textfield t:id="name" t:label="${message:name-label}"
+							value="name" t:mixins="autocomplete" />
+					</td>
 				</tr>
 				<tr>
-					<th title="${message:variant-tooltip}"><t:label for="variant" size="20" />:</th>
-					<td><t:textfield t:id="variant" t:label="${message:variant-label}" value="variant" t:mixins="autocomplete" /></td>
+					<th title="${message:variant-tooltip}">
+						<t:label for="variant" size="20" />
+						:
+					</th>
+					<td>
+						<t:textfield t:id="variant" t:label="${message:variant-label}"
+							value="variant" t:mixins="autocomplete" />
+					</td>
 				</tr>
 				<tr>
-					<th title="${message:units-tooltip}"><t:label for="units" size="20" />:</th>
-					<td><t:textfield class="numerical" t:id="units" t:label="${message:units-label}" value="units"/>
+					<th title="${message:units-tooltip}">
+						<t:label for="units" size="20" />
+						:
+					</th>
+					<td>
+						<t:textfield class="numerical" t:id="units"
+							t:label="${message:units-label}" value="units" />
 						<t:if test="splitable">
 							<div class="assetaction">
-								<t:pagelink page="edit/UnitsEditor" context="${stock.id}">${message:split}</t:pagelink>
+								<t:pagelink page="edit/UnitsEditor" context="${stock.id}">${message:split}
+								</t:pagelink>
 							</div>
 						</t:if>
 					</td>
 				</tr>
 				<tr>
-					<th title="${message:acquired-tooltip}"><t:label for="acquired" size="20" />:</th>
-					<td><t:datefield t:format="prop:dateFormat" t:id="acquired" t:label="${message:acquired-label}" value="acquired"/></td>
-				</tr>
-				<tr>
-					<th title="${message:buyprice-tooltip}"><t:label for="buyPrice" size="20" />:</th>
-					<td><t:textfield class="numerical" t:id="buyPrice" t:label="${message:buyprice-label}" value="buyPrice"/> ${currencySymbol}</td>
-				</tr>
-				<tr>
-					<th title="${message:liquidated-tooltip}"><t:label for="liquidated" size="20" />:</th>
+					<th title="${message:acquired-tooltip}">
+						<t:label for="acquired" size="20" />
+						:
+					</th>
 					<td>
-						<t:datefield t:format="prop:dateFormat" t:id="liquidated" t:label="${message:liquidated-label}" value="liquidated"/>
+						<t:datefield t:format="prop:dateFormat" t:id="acquired"
+							t:label="${message:acquired-label}" value="acquired" />
+					</td>
+				</tr>
+				<tr>
+					<th title="${message:buyprice-tooltip}">
+						<t:label for="buyPrice" size="20" />
+						:
+					</th>
+					<td>
+						<t:textfield class="numerical" t:id="buyPrice"
+							t:label="${message:buyprice-label}" value="buyPrice" />
+						${currencySymbol}
+					</td>
+				</tr>
+				<tr>
+					<th title="${message:liquidated-tooltip}">
+						<t:label for="liquidated" size="20" />
+						:
+					</th>
+					<td>
+						<t:datefield t:format="prop:dateFormat" t:id="liquidated"
+							t:label="${message:liquidated-label}" value="liquidated" />
 						<t:if test="liquidateable">
 							<div class="assetaction">
-								<t:pagelink page="edit/LiquidateEditor" context="${stock.id}">${message:liquidate-now}</t:pagelink>
+								<t:pagelink page="edit/LiquidateEditor" context="${stock.id}">${message:liquidate-now}
+								</t:pagelink>
 							</div>
 						</t:if>
 					</td>
 				</tr>
 				<tr>
-					<th title="${message:sellprice-tooltip}"><t:label for="sellPrice" size="20" />:</th>
-					<td><t:textfield class="numerical" t:id="sellPrice" t:label="${message:sellprice-label}" value="sellPrice"/> ${currencySymbol}</td>
+					<th title="${message:sellprice-tooltip}">
+						<t:label for="sellPrice" size="20" />
+						:
+					</th>
+					<td>
+						<t:textfield class="numerical" t:id="sellPrice"
+							t:label="${message:sellprice-label}" value="sellPrice" />
+						${currencySymbol}
+					</td>
 				</tr>
 				<tr>
 					<th title="${message:balance-tooltip}">${message:balance-label}:</th>
 					<td class="${balanceClass}">${balance}</td>
 				</tr>
 				<tr>
-					<th title="${message:comment-tooltip}"><t:label for="comment" size="20" />:</th>
-					<td><t:textarea t:id="comment" t:label="${message:comment-label}" value="comment" style="width: 100%;"/></td>
+					<th title="${message:comment-tooltip}">
+						<t:label for="comment" size="20" />
+						:
+					</th>
+					<td>
+						<t:textarea t:id="comment" t:label="${message:comment-label}"
+							value="comment" style="width: 100%;" />
+					</td>
 				</tr>
 			</table>
 			<p />
 			<t:if test="stock.id">
 				<t:submit type="submit" value="${message:save}" t:id="save" />
 				&nbsp;
-				<t:submit type="submit" value="${message:delete}" t:id="delete" t:mixins="confirm" t:message="${message:confirm-delete}"  />
+				<t:submit type="submit" value="${message:delete}" t:id="delete"
+					t:mixins="confirm" t:message="${message:confirm-delete}" />
 				<p:else>
 					<t:submit type="submit" value="${message:create}" t:id="create" />
 				</p:else>

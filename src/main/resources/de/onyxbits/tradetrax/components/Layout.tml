@@ -79,7 +79,7 @@
 								<t:pagelink page="Summary">${message:menu-summary}
 								</t:pagelink>
 							</li>
-													<li>
+							<li>
 								<t:pagelink page="Tools">${message:menu-tools}
 								</t:pagelink>
 							</li>
@@ -88,7 +88,8 @@
 								</t:pagelink>
 							</li>
 							<li>
-								<a href="http://www.onyxbits.de/tradetrax/handbook" target="_blank">${message:menu-help}</a>
+								<a href="http://www.onyxbits.de/tradetrax/handbook" target="_blank">${message:menu-help}
+								</a>
 							</li>
 						</ul>
 					</div>
@@ -125,6 +126,15 @@
 							<t:submit type="submit" value="${message:open}" class="form-submit" />
 
 						</t:form>
+						<p/>
+						<ul id="bookmarklist">
+							<t:loop source="bookmarks" value="bookmark">
+								<li>
+									<t:pagelink page="edit/StockEditor" context="bookmark.id">${bookmark.id}
+									</t:pagelink>
+								</li>
+							</t:loop>
+						</ul>
 					</div>
 				</aside>
 			</div>
