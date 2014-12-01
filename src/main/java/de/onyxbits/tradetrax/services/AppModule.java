@@ -6,6 +6,7 @@ import java.util.StringTokenizer;
 
 import org.apache.tapestry5.*;
 import org.apache.tapestry5.hibernate.HibernateConfigurer;
+import org.apache.tapestry5.hibernate.HibernateSessionSource;
 import org.apache.tapestry5.hibernate.HibernateSymbols;
 import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
@@ -13,13 +14,15 @@ import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Local;
+import org.apache.tapestry5.ioc.annotations.Startup;
+import org.apache.tapestry5.ioc.services.cron.IntervalSchedule;
+import org.apache.tapestry5.ioc.services.cron.PeriodicExecutor;
 import org.apache.tapestry5.services.ApplicationGlobals;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.RequestFilter;
 import org.apache.tapestry5.services.RequestHandler;
 import org.apache.tapestry5.services.Response;
 import org.slf4j.Logger;
-
 
 /**
  * This module is automatically included as part of the Tapestry IoC Registry,
@@ -35,6 +38,7 @@ public class AppModule {
 		// is provided inline, or requires more initialization than simply
 		// invoking the constructor.
 		binder.bind(SettingsStore.class);
+		binder.bind(EventLogger.class);
 	}
 
 	public static void contributeFactoryDefaults(MappedConfiguration<String, Object> configuration) {
@@ -143,5 +147,19 @@ public class AppModule {
 			}
 		}
 		configurer.add("hibernate-session-source", new LedgerConfigurer(dbdir));
+	}
+
+	@Startup
+	public static void scheduleJobs(HibernateSessionSource sessionSource) {
+
+		// FIXME: the logpurger is suppose to run periodically. But for some reason,
+		// the database query in it only finds and purges logentries that have been
+		// expired on boot. Logentries that expire while the system is running are
+		// ignored. It would be nice to purge logs in hte background, but we can
+		// probably get away with only doing it once when starting up.
+
+		// executor.addJob(new IntervalSchedule(1000), "Cleanup Job",
+		// new LogPurger(sessionSource));
+		new LogPurger(sessionSource).run();
 	}
 }

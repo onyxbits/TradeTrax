@@ -100,6 +100,29 @@ public class Stock implements Serializable {
 	}
 
 	/**
+	 * Create a stock using a template
+	 */
+	public Stock(Stock template) {
+		acquired = template.acquired;
+		buyPrice = template.buyPrice;
+		comment = template.comment;
+		id = template.id;
+		liquidated = template.liquidated;
+		if (template.name != null) {
+			name = new Name();
+			name.setId(template.name.getId());
+			name.setLabel(template.name.getLabel());
+		}
+		sellPrice = template.sellPrice;
+		unitCount = template.unitCount;
+		if (template.variant != null) {
+			variant = new Variant();
+			variant.setId(template.variant.getId());
+			variant.setLabel(template.variant.getLabel());
+		}
+	}
+
+	/**
 	 * Split a new Stock off from this one.
 	 * 
 	 * @param amount

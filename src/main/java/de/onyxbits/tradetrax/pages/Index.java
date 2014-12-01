@@ -29,6 +29,7 @@ import de.onyxbits.tradetrax.remix.StockPagedGridDataSource;
 import de.onyxbits.tradetrax.remix.StockState;
 import de.onyxbits.tradetrax.remix.TimeSpan;
 import de.onyxbits.tradetrax.remix.WrappedStock;
+import de.onyxbits.tradetrax.services.EventLogger;
 import de.onyxbits.tradetrax.services.SettingsStore;
 
 /**
@@ -150,8 +151,10 @@ public class Index {
 	private Select filterLiquidationSpanField;
 
 	@Inject
-	SettingsStore settingsStore;
+	private SettingsStore settingsStore;
 	
+	@Inject
+	private EventLogger eventLogger;
 
 	public void setupRender() {
 		buyAmount = 1;
@@ -214,6 +217,7 @@ public class Index {
 		item.setAcquired(now.getTime());
 		session.persist(item);
 		focusedStockId = item.getId();
+		eventLogger.acquired(item);
 		return Index.class;
 	}
 

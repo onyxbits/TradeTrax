@@ -22,6 +22,7 @@ import org.hibernate.criterion.Restrictions;
 import de.onyxbits.tradetrax.entities.Stock;
 import de.onyxbits.tradetrax.entities.Variant;
 import de.onyxbits.tradetrax.pages.Index;
+import de.onyxbits.tradetrax.services.EventLogger;
 
 public class VariantEditor {
 
@@ -43,6 +44,9 @@ public class VariantEditor {
 
 	@Inject
 	private Session session;
+	
+	@Inject
+	private EventLogger eventLogger;
 
 	@Inject
 	private AlertManager alertManager;
@@ -110,6 +114,7 @@ public class VariantEditor {
 			variant.setLabel(name);
 			session.update(variant);
 			alertManager.alert(Duration.UNTIL_DISMISSED, Severity.INFO, messages.format("renamed",s,name));
+			eventLogger.rename(s,name);
 		}
 		catch (Exception e) {
 			alertManager.alert(Duration.SINGLE, Severity.ERROR, messages.format("exception",e.getMessage()));
@@ -118,7 +123,7 @@ public class VariantEditor {
 
 	protected void doDelete() {
 		try {
-			Object bye = session.get(Variant.class, variantId);
+			Variant bye = (Variant)session.get(Variant.class, variantId);
 			@SuppressWarnings("unchecked")
 			List<Stock> lst = session.createCriteria(Stock.class).add(Restrictions.eq("variant", bye)).list();
 			for (Stock s : lst) {
@@ -126,6 +131,7 @@ public class VariantEditor {
 				session.update(s);
 			}
 			session.delete(bye);
+			eventLogger.deleted(bye.getLabel());
 		}
 		catch (Exception e) {
 			// Only two ways of getting here: trying to delete something that no

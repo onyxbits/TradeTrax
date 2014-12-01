@@ -22,6 +22,7 @@ import de.onyxbits.tradetrax.entities.Stock;
 import de.onyxbits.tradetrax.pages.Index;
 import de.onyxbits.tradetrax.remix.MoneyRepresentation;
 import de.onyxbits.tradetrax.remix.Payment;
+import de.onyxbits.tradetrax.services.EventLogger;
 import de.onyxbits.tradetrax.services.SettingsStore;
 
 public class LiquidateEditor {
@@ -50,6 +51,9 @@ public class LiquidateEditor {
 
 	@Inject
 	private Session session;
+	
+	@Inject
+	private EventLogger eventLogger;
 
 	@Inject
 	private SettingsStore settingsStore;
@@ -136,6 +140,7 @@ public class LiquidateEditor {
 					false, true);
 			alertManager.alert(Duration.SINGLE, Severity.SUCCESS,
 					messages.format("liquidate-success", stockId, profit));
+			eventLogger.liquidated(s);
 		}
 		catch (Exception e) {
 			// TODO: Figure out how we got here and give the user better feedback

@@ -3,6 +3,10 @@
 
 	<dl class="admin-list">
 		<dt>
+			<t:pagelink page="tools/LedgerLog">${message:ledgerlog-title}</t:pagelink>
+		</dt>
+		<dd>${message:ledgerlog-description}</dd>
+		<dt>
 			<t:pagelink page="tools/Pricelist">${message:pricelist-title}</t:pagelink>
 		</dt>
 		<dd>${message:pricelist-description}</dd>
@@ -10,5 +14,6 @@
 			<t:pagelink page="tools/Importer">${message:importer-title}</t:pagelink>
 		</dt>
 		<dd>${message:importer-description}</dd>
+
 	</dl>
 </html>

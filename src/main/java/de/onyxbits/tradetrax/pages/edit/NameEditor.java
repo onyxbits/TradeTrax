@@ -22,6 +22,7 @@ import org.hibernate.criterion.Restrictions;
 import de.onyxbits.tradetrax.entities.Name;
 import de.onyxbits.tradetrax.entities.Stock;
 import de.onyxbits.tradetrax.pages.Index;
+import de.onyxbits.tradetrax.services.EventLogger;
 
 /**
  * A simple editor page for changing or deleting a {@link Name} object and
@@ -56,6 +57,9 @@ public class NameEditor {
 
 	@Inject
 	private Messages messages;
+	
+	@Inject
+	private EventLogger eventLogger;
 	
 	@InjectPage
 	private Index index;
@@ -128,6 +132,7 @@ public class NameEditor {
 			n.setLabel(name);
 			session.update(n);
 			alertManager.alert(Duration.SINGLE, Severity.INFO, messages.format("renamed", s, name));
+			eventLogger.rename(s,name);
 		}
 		catch (Exception e) {
 			// TODO: Figure out how we got here and give the user better feedback
@@ -144,8 +149,10 @@ public class NameEditor {
 			for (Stock s : lst) {
 				s.setVariant(null);
 				session.delete(s);
+				eventLogger.deleted(s);
 			}
 			session.delete(bye);
+			eventLogger.deleted(bye.getLabel());
 			alertManager
 					.alert(Duration.SINGLE, Severity.INFO, messages.format("deleted", bye.getLabel()));
 		}

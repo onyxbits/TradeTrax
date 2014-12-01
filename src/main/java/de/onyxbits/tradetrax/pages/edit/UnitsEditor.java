@@ -23,6 +23,7 @@ import org.hibernate.criterion.Criterion;
 import de.onyxbits.tradetrax.entities.Stock;
 import de.onyxbits.tradetrax.remix.MoneyRepresentation;
 import de.onyxbits.tradetrax.remix.WrappedStock;
+import de.onyxbits.tradetrax.services.EventLogger;
 import de.onyxbits.tradetrax.services.SettingsStore;
 
 /**
@@ -41,7 +42,7 @@ public class UnitsEditor {
 
 	@Property
 	private WrappedStock wrappedStock;
-	
+
 	@Inject
 	private BeanModelSource ledgerSource;
 
@@ -62,13 +63,16 @@ public class UnitsEditor {
 
 	@Inject
 	private Messages messages;
-	
+
+	@Inject
+	private EventLogger eventLogger;
+
 	@Inject
 	private SettingsStore settingsStore;
-	
+
 	public List<WrappedStock> getStocks() {
 		Vector<WrappedStock> ret = new Vector<WrappedStock>();
-		MoneyRepresentation mr =  new MoneyRepresentation(settingsStore);
+		MoneyRepresentation mr = new MoneyRepresentation(settingsStore);
 		try {
 			Criteria crit = session.createCriteria(Stock.class);
 			List<Criterion> lst = stock.allowedToMergeWith();
@@ -78,7 +82,7 @@ public class UnitsEditor {
 			@SuppressWarnings("unchecked")
 			List<Stock> it = crit.list();
 			for (Stock s : it) {
-				ret.add(new WrappedStock(s,mr));
+				ret.add(new WrappedStock(s, mr));
 			}
 		}
 		catch (Exception e) {
@@ -90,11 +94,11 @@ public class UnitsEditor {
 	protected void onActivate(Long StockId) {
 		this.stockId = StockId;
 		stock = (Stock) session.get(Stock.class, stockId);
-		if (stock!=null) {
-			size= stock.getUnitCount()/2;
+		if (stock != null) {
+			size = stock.getUnitCount() / 2;
 		}
 	}
-	
+
 	public BeanModel<WrappedStock> getLedgerModel() {
 		BeanModel<WrappedStock> model = ledgerSource.createDisplayModel(WrappedStock.class, messages);
 		List<String> lst = model.getPropertyNames();
@@ -108,8 +112,10 @@ public class UnitsEditor {
 	@CommitAfter
 	protected Object onSuccess() {
 		try {
-			session.save(stock.splitStock(size));
+			Stock offspring = stock.splitStock(size);
+			session.save(offspring);
 			session.update(stock);
+			eventLogger.split(stock, offspring);
 		}
 		catch (Exception e) {
 			alertManager.alert(Duration.SINGLE, Severity.ERROR,
@@ -123,6 +129,8 @@ public class UnitsEditor {
 	protected void onMerge(long id) {
 		try {
 			Stock m = (Stock) session.load(Stock.class, id);
+			Stock backup = (Stock) session.load(Stock.class, id);
+			
 			// Hibernate doesn't like an update and a delete in the same transaction
 			// when this leads to the same row in a OneToMany mapping. Since we are
 			// deleting "m" anyways, we can stop the cascade simply by setting the
@@ -132,6 +140,7 @@ public class UnitsEditor {
 			stock.setUnitCount(stock.getUnitCount() + m.getUnitCount());
 			session.update(stock);
 			session.delete(m);
+			eventLogger.merged(stock, backup);
 		}
 		catch (Exception e) {
 			e.printStackTrace();

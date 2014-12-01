@@ -28,6 +28,7 @@ import de.onyxbits.tradetrax.entities.IdentUtil;
 import de.onyxbits.tradetrax.entities.Stock;
 import de.onyxbits.tradetrax.pages.Index;
 import de.onyxbits.tradetrax.remix.MoneyRepresentation;
+import de.onyxbits.tradetrax.services.EventLogger;
 import de.onyxbits.tradetrax.services.SettingsStore;
 
 public class StockEditor {
@@ -107,6 +108,9 @@ public class StockEditor {
 
 	@Inject
 	private Messages messages;
+	
+	@Inject
+	private EventLogger eventLogger;
 
 	@Inject
 	private SettingsStore settingsStore;
@@ -247,8 +251,12 @@ public class StockEditor {
 	private void doSave() {
 		try {
 			stock = (Stock) session.get(Stock.class, stockId);
+			Stock backup=null;
 			if (stock == null) {
 				stock = new Stock();
+			}
+			else {
+				backup = new Stock(stock);
 			}
 			MoneyRepresentation mr = new MoneyRepresentation(settingsStore);
 			stock.setName(IdentUtil.findName(session, name));
@@ -263,6 +271,12 @@ public class StockEditor {
 			alertManager.alert(Duration.SINGLE, Severity.SUCCESS,
 					messages.format("save-success", stock.getId()));
 			focusedStockId = stock.getId();
+			if (backup==null) {
+				eventLogger.acquired(stock);
+			}
+			else {
+				eventLogger.modified(backup);
+			}
 		}
 		catch (Exception e) {
 			alertManager.alert(Duration.SINGLE, Severity.ERROR,
@@ -278,13 +292,14 @@ public class StockEditor {
 			bye.setName(null);
 			bye.setVariant(null);
 			session.delete(bye);
-			alertManager.alert(Duration.SINGLE, Severity.SUCCESS,
-					messages.format("delete-success", byeid));
 			focusedStockId = 0;
 			Bookmark bm = (Bookmark) session.get(Bookmark.class,byeid);
 			if (bm!=null) {
 				session.delete(bm);
 			}
+			alertManager.alert(Duration.SINGLE, Severity.SUCCESS,
+					messages.format("delete-success", byeid));
+			eventLogger.deleted(bye);
 		}
 		catch (Exception e) {
 			alertManager.alert(Duration.SINGLE, Severity.ERROR,
