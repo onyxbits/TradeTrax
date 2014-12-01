@@ -19,6 +19,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
 
+import de.onyxbits.tradetrax.entities.Bookmark;
 import de.onyxbits.tradetrax.entities.Name;
 import de.onyxbits.tradetrax.entities.Stock;
 import de.onyxbits.tradetrax.pages.Index;
@@ -57,18 +58,18 @@ public class NameEditor {
 
 	@Inject
 	private Messages messages;
-	
+
 	@Inject
 	private EventLogger eventLogger;
-	
+
 	@InjectPage
 	private Index index;
 
 	private boolean eventDelete;
-	
-	@Component(id="show")
-  private EventLink show;
-	
+
+	@Component(id = "show")
+	private EventLink show;
+
 	protected Object onShow() {
 		Name n = (Name) session.get(Name.class, nameId);
 		if (n != null) {
@@ -76,11 +77,11 @@ public class NameEditor {
 		}
 		return index;
 	}
-	
+
 	protected void onActivate(Long nameId) {
 		this.nameId = nameId;
 	}
-	
+
 	protected void setupRender() {
 		Name n = (Name) session.get(Name.class, nameId);
 		if (n != null) {
@@ -105,15 +106,15 @@ public class NameEditor {
 			}
 		}
 	}
-	
+
 	public void onSelectedFromDelete() {
-		eventDelete=true;
+		eventDelete = true;
 	}
-	
+
 	public void onSelectedFromSave() {
-		eventDelete=false;
+		eventDelete = false;
 	}
-	
+
 	@CommitAfter
 	public Object onSuccess() {
 		if (eventDelete) {
@@ -132,21 +133,25 @@ public class NameEditor {
 			n.setLabel(name);
 			session.update(n);
 			alertManager.alert(Duration.SINGLE, Severity.INFO, messages.format("renamed", s, name));
-			eventLogger.rename(s,name);
+			eventLogger.rename(s, name);
 		}
 		catch (Exception e) {
 			// TODO: Figure out how we got here and give the user better feedback
 			alertManager.alert(Duration.SINGLE, Severity.WARN, messages.format("exception", e));
 		}
 	}
-	
 
 	private void doDelete() {
 		try {
 			Name bye = (Name) session.load(Name.class, nameId);
 			@SuppressWarnings("unchecked")
-			List<Stock> lst = session.createCriteria(Stock.class).add(Restrictions.eq("name", bye)).list();
+			List<Stock> lst = session.createCriteria(Stock.class).add(Restrictions.eq("name", bye))
+					.list();
 			for (Stock s : lst) {
+				Bookmark bm = (Bookmark) session.get(Bookmark.class, s.getId());
+				if (bm != null) {
+					session.delete(bm);
+				}
 				s.setVariant(null);
 				session.delete(s);
 				eventLogger.deleted(s);

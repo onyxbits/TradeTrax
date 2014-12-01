@@ -108,7 +108,7 @@ public class StockEditor {
 
 	@Inject
 	private Messages messages;
-	
+
 	@Inject
 	private EventLogger eventLogger;
 
@@ -136,6 +136,7 @@ public class StockEditor {
 		this.stockId = StockId;
 	}
 
+	@CommitAfter
 	protected void setupRender() {
 		try {
 			MoneyRepresentation mr = new MoneyRepresentation(settingsStore);
@@ -146,6 +147,12 @@ public class StockEditor {
 				stock.setAcquired(new Date());
 				if (stockId > 0) {
 					alertManager.alert(Duration.SINGLE, Severity.INFO, messages.format("not-found", stockId));
+					Bookmark bm = (Bookmark) session.get(Bookmark.class, stockId);
+					if (bm != null) {
+						// This is a failsave in case something deletes stock but not
+						// bookmarks. Normally we shouldn't get here.
+						session.delete(bm);
+					}
 				}
 			}
 			if (stock.getName() != null) {
@@ -195,15 +202,15 @@ public class StockEditor {
 
 	@CommitAfter
 	protected StockEditor onBookmark(long id) {
-		Bookmark bm = (Bookmark)session.get(Bookmark.class,id);
-		if (bm==null) {
-			alertManager.alert(Duration.SINGLE,Severity.INFO,messages.get("bookmark-set"));
-			bm=new Bookmark();
+		Bookmark bm = (Bookmark) session.get(Bookmark.class, id);
+		if (bm == null) {
+			alertManager.alert(Duration.SINGLE, Severity.INFO, messages.get("bookmark-set"));
+			bm = new Bookmark();
 			bm.setId(id);
 			session.save(bm);
 		}
 		else {
-			alertManager.alert(Duration.SINGLE,Severity.INFO,messages.get("bookmark-deleted"));
+			alertManager.alert(Duration.SINGLE, Severity.INFO, messages.get("bookmark-deleted"));
 			session.delete(bm);
 		}
 		return this;
@@ -251,7 +258,7 @@ public class StockEditor {
 	private void doSave() {
 		try {
 			stock = (Stock) session.get(Stock.class, stockId);
-			Stock backup=null;
+			Stock backup = null;
 			if (stock == null) {
 				stock = new Stock();
 			}
@@ -271,7 +278,7 @@ public class StockEditor {
 			alertManager.alert(Duration.SINGLE, Severity.SUCCESS,
 					messages.format("save-success", stock.getId()));
 			focusedStockId = stock.getId();
-			if (backup==null) {
+			if (backup == null) {
 				eventLogger.acquired(stock);
 			}
 			else {
@@ -293,8 +300,8 @@ public class StockEditor {
 			bye.setVariant(null);
 			session.delete(bye);
 			focusedStockId = 0;
-			Bookmark bm = (Bookmark) session.get(Bookmark.class,byeid);
-			if (bm!=null) {
+			Bookmark bm = (Bookmark) session.get(Bookmark.class, byeid);
+			if (bm != null) {
 				session.delete(bm);
 			}
 			alertManager.alert(Duration.SINGLE, Severity.SUCCESS,
