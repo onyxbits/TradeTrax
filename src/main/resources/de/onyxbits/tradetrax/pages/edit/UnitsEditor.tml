@@ -32,6 +32,7 @@
 			<fieldset class="form-wrapper">
 				<legend><span class="fieldset-legend">${message:splitheading}</span></legend>
 				<div class="fieldset-wrapper">
+				<t:if test="stock.liquidated">${message:already-liquidated}</t:if>
 				<div class="fieldset-description"></div>
 					<t:errors/>
 		
