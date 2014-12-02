@@ -128,15 +128,15 @@
 						<t:label for="filterName" title="${message:filter-name-tooltip}" />
 					</th>
 					<td>
-						<t:textfield t:id="filterName" t:label="${message:filter-name-label}" />
+						<t:textfield t:id="filterName" t:label="${message:filter-name-label}" name="filterName" onclick="SelectAll('filterName');" />
 					</td>
 				</tr>
 				<tr>
 					<th>
-						<t:label for="filterVariant" title="${message:filter-variant-tooltip}" />
+						<t:label for="filterVariant" title="${message:filter-variant-tooltip}"/>
 					</th>
 					<td>
-						<t:textfield t:id="filterVariant" t:label="${message:filter-variant-label}" />
+						<t:textfield t:id="filterVariant" t:label="${message:filter-variant-label}" name="filterVariant" onclick="SelectAll('filterVariant');" />
 					</td>
 				</tr>
 				<tr>
@@ -146,7 +146,7 @@
 					<td>
 						<t:select t:id="filterAcquisitionSpan" />&nbsp;
 						<t:datefield t:id="filterAcquisition"
-							t:label="${message:filter-acquisition-label}" value="filterAcquisition" />
+							t:label="${message:filter-acquisition-label}" value="filterAcquisition" name="filterAcquisition" onclick="SelectAll('filterAcquisition');" />
 					</td>
 				</tr>
 				<tr>
@@ -156,8 +156,7 @@
 					<td>
 						<t:select t:id="filterLiquidationSpan" />&nbsp;
 						<t:datefield t:id="filterLiquidation"
-							t:label="${message:filter-liquidation-label}" value="filterLiquidation"
-							colspan="2" />
+							t:label="${message:filter-liquidation-label}" value="filterLiquidation" name="filterLiquidation" onclick="SelectAll('filterLiquidation');" />
 					</td>
 				</tr>
 				<tr>
