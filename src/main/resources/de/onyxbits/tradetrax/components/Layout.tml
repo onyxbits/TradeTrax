@@ -120,13 +120,12 @@
 						<h2>${message:search-title}</h2>
 						<t:form t:id="searchform">
 
-							<t:textfield class="numerical" t:id="searchId"
-								t:size="10" />
+							<t:textfield t:id="search" t:size="15" />
 	          		&nbsp;
 							<t:submit type="submit" value="${message:open}" class="form-submit" />
 
 						</t:form>
-						<p/>
+						<p />
 						<ul id="bookmarklist">
 							<t:loop source="bookmarks" value="bookmark">
 								<li>

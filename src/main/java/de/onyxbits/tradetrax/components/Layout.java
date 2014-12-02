@@ -13,6 +13,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 
 import de.onyxbits.tradetrax.entities.Bookmark;
+import de.onyxbits.tradetrax.pages.Index;
 import de.onyxbits.tradetrax.pages.edit.StockEditor;
 import de.onyxbits.tradetrax.services.SettingsStore;
 
@@ -32,7 +33,7 @@ public class Layout {
 
 	@SessionAttribute(Layout.FOCUSID)
 	private long focusedStockId;
-	
+
 	@Inject
 	private Session session;
 
@@ -56,13 +57,13 @@ public class Layout {
 	private String appVersion;
 
 	@Property
-	private long searchId = 0;
+	private String search = "0";
 
 	@Property
 	private String ledgerTitle;
 
-	@Component(id = "searchId")
-	private TextField searchIdField;
+	@Component(id = "search")
+	private TextField searchField;
 
 	@Component(id = "searchForm")
 	private Form searchForm;
@@ -70,22 +71,27 @@ public class Layout {
 	@InjectPage
 	private StockEditor stockEditor;
 
+	@InjectPage
+	private Index index;
+
 	@Inject
 	private SettingsStore settingsStore;
-	
+
 	@Property
 	private Bookmark bookmark;
-	
+
 	public List<Bookmark> getBookmarks() {
-		return session.createCriteria(Bookmark.class).addOrder(Order.asc("id")).list(); 
+		return session.createCriteria(Bookmark.class).addOrder(Order.asc("id")).list();
 	}
 
 	protected void setupRender() {
 		try {
-			searchId = focusedStockId;
+			long l = focusedStockId; // make sure that we throw
+			search = l + "";
 		}
 		catch (Exception e) {
 			// Yes, this can happen (due to the annotation)! It's no biggie, though
+			search = "0";
 		}
 		ledgerTitle = settingsStore.get(SettingsStore.LEDGERTITLE, null);
 		try {
@@ -97,7 +103,16 @@ public class Layout {
 	}
 
 	public Object onSuccessFromSearchForm() {
-		stockEditor.onActivate(searchId);
-		return stockEditor;
+		try {
+			stockEditor.onActivate(Long.parseLong(search));
+			return stockEditor;
+		}
+		catch (Exception e) {
+			index.withNoFilters();
+			if (search != null) {
+				index.withFilterName(search.trim());
+			}
+		}
+		return index;
 	}
 }
