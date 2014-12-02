@@ -162,7 +162,7 @@ public class Index {
 		stocks = new StockPagedGridDataSource(session, mr).withName(filterName)
 				.withVariant(filterVariant).withState(filterState)
 				.withAcquisition(filterAcquisition, filterAcquisitionSpan)
-				.withLiquidation(filterLiquidation, filterAcquisitionSpan);
+				.withLiquidation(filterLiquidation, filterLiquidationSpan);
 		currencySymbol = mr.getCurrencySymbol();
 	}
 
