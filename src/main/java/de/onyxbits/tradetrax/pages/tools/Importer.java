@@ -83,17 +83,17 @@ public class Importer {
 	public List<WrappedStock> getParsed() {
 		return parsed;
 	}
-	
+
 	public String getRowBuyPrice() {
-		if (row!=null && moneyRepresentation!=null) {
-			return moneyRepresentation.databaseToUser(row.stock.getBuyPrice(),false,false);
+		if (row != null && moneyRepresentation != null) {
+			return moneyRepresentation.databaseToUser(row.stock.getBuyPrice(), false, false);
 		}
 		return null;
 	}
-	
+
 	public String getRowSellPrice() {
-		if (row!=null && moneyRepresentation!=null) {
-			return moneyRepresentation.databaseToUser(row.stock.getSellPrice(),false,false);
+		if (row != null && moneyRepresentation != null) {
+			return moneyRepresentation.databaseToUser(row.stock.getSellPrice(), false, false);
 		}
 		return null;
 	}
@@ -172,7 +172,7 @@ public class Importer {
 			name.setLabel(cleanName(rec.get("name")));
 			stock.setName(name);
 
-			if (rec.isMapped("variant")) {
+			if (rec.isMapped("variant") && rec.get("variant").length() > 0) {
 				Variant variant = new Variant();
 				String tmp = rec.get("variant");
 				if (tmp != null) {
