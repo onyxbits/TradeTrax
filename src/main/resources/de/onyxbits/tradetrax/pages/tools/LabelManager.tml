@@ -1,0 +1,42 @@
+<html t:type="layout" title="${message:title}" instructions="${message:instructions}"
+	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter">
+
+	<t:form t:id="actionForm" t:clientValidation="none">
+		<fieldset class="form-wrapper">
+			<legend>
+				<span class="fieldset-legend">${message:actions}</span>
+
+			</legend>
+			<div class="fieldset-wrapper">
+				<t:select t:id="actions"/>&nbsp;
+				<t:checkbox t:id="applyToNames" />&nbsp;
+				<t:label for="applyToNames" />&nbsp;
+				<t:checkbox t:id="applyToVariants" />&nbsp;
+				<t:label for="applyToVariants" />
+				<p />
+				<t:submit type="submit" value="${message:update}" />
+			</div>
+		</fieldset>
+	</t:form>
+
+	<h2>${message:names}</h2>
+	<ul class="threecolumnlist">
+		<t:loop source="names" value="name">
+			<li>
+				<t:pagelink page="edit/NameEditor" context="name.id">${name.label}
+				</t:pagelink>
+			</li>
+		</t:loop>
+
+	</ul>
+
+	<h2>${message:variants}</h2>
+	<ul class="threecolumnlist">
+		<t:loop source="variants" value="variant">
+			<li>
+				<t:pagelink page="edit/VariantEditor" context="variant.id">${variant.label}
+				</t:pagelink>
+			</li>
+		</t:loop>
+	</ul>
+</html>

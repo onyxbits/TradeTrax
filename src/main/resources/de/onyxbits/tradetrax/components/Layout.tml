@@ -134,7 +134,7 @@
 
 						</t:form>
 						<p />
-						<ul id="bookmarklist">
+						<ul class="threecolumnlist">
 							<t:loop source="bookmarks" value="bookmark">
 								<li>
 									<t:pagelink page="edit/StockEditor" context="bookmark.id">${bookmark.id}
