@@ -63,7 +63,7 @@
 					<t:errors />
 					<select t:type="select" t:id="methods"></select>
 					&nbsp;
-					<t:textfield class="numerical" t:id="sellPrice" />
+					<t:textfield class="numerical" t:id="sellPrice" name="sellprice" onclick="SelectAll('sellPrice');"/>
 					&nbsp;
 					${currencySymbol}
 					<p />

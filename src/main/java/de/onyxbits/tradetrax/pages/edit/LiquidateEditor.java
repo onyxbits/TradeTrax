@@ -51,7 +51,7 @@ public class LiquidateEditor {
 
 	@Inject
 	private Session session;
-	
+
 	@Inject
 	private EventLogger eventLogger;
 
@@ -94,16 +94,19 @@ public class LiquidateEditor {
 		stock = (Stock) session.get(Stock.class, stockId);
 		MoneyRepresentation mr = new MoneyRepresentation(settingsStore);
 		currencySymbol = mr.getCurrencySymbol();
-		if (stock != null && stock.getAcquired() != null) {
-			splitable = stock.getUnitCount() > 1;
-			long amount = stock.getBuyPrice() * stock.getUnitCount();
-			totalCost = mr.databaseToUser(amount, false, true);
-			if (amount < 0) {
-				totalCostClass = MoneyRepresentation.LOSSCLASS;
-			}
-			buyPrice = mr.databaseToUser(stock.getBuyPrice(), false, true);
-			if (stock.getBuyPrice() < 0) {
-				buyPriceClass = MoneyRepresentation.LOSSCLASS;
+		if (stock != null) {
+			sellPrice = mr.databaseToUser(stock.getSellPrice()*stock.getUnitCount(),false,false);
+			if (stock.getAcquired() != null) {
+				splitable = stock.getUnitCount() > 1;
+				long amount = stock.getBuyPrice() * stock.getUnitCount();
+				totalCost = mr.databaseToUser(amount, false, true);
+				if (amount < 0) {
+					totalCostClass = MoneyRepresentation.LOSSCLASS;
+				}
+				buyPrice = mr.databaseToUser(stock.getBuyPrice(), false, true);
+				if (stock.getBuyPrice() < 0) {
+					buyPriceClass = MoneyRepresentation.LOSSCLASS;
+				}
 			}
 		}
 	}
