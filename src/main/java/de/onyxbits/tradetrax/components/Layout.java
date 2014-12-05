@@ -53,6 +53,13 @@ public class Layout {
 	@Property
 	@Parameter(required = true, defaultPrefix = BindingConstants.LITERAL)
 	private String title;
+	
+	/**
+	 * A url to be used in the instructions block for getting more information.
+	 */
+	@Property
+	@Parameter(defaultPrefix = BindingConstants.LITERAL)
+	private String helpurl;
 
 	@Property
 	@Parameter(defaultPrefix = BindingConstants.LITERAL)

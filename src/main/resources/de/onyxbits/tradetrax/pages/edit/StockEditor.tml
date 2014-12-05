@@ -1,4 +1,4 @@
-<html t:type="layout" title="${message:title}" instructions="${message:instructions}"
+<html t:type="layout" title="${message:title}" instructions="${message:instructions}" helpurl="${message:helpurl}"
 	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter">
 
 	<t:if test="stock">

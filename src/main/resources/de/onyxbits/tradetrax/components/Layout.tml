@@ -120,6 +120,10 @@
 							<h2>${message:instructions}</h2>
 							<div class="content">
 								<t:delegate to="instructions" />
+								<t:if test="helpurl">
+									<br />
+									(<a href="${helpurl}" target="_blank">${message:helpurl}</a>)
+								</t:if>
 							</div>
 						</div>
 					</t:if>
