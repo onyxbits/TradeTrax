@@ -29,6 +29,11 @@ public interface SettingsStore {
 	public static final String HIDEINSTRUCTIONS = "hideinstructions";
 	
 	/**
+	 * Whether or not to show the calculator in the sidebar
+	 */
+	public static final String SHOWCALCULATOR = "showcalculator";
+	
+	/**
 	 * When the ledger was created
 	 */
 	public static final String CREATED = "created";

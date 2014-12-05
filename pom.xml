@@ -105,6 +105,11 @@
 			<artifactId>commons-csv</artifactId>
 			<version>1.0</version>
 		</dependency>
+		<dependency>
+			<groupId>net.objecthunter</groupId>
+			<artifactId>exp4j</artifactId>
+			<version>0.4.3.BETA-3</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>tradetrax</finalName>

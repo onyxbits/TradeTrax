@@ -1,11 +1,16 @@
 package de.onyxbits.tradetrax.components;
 
 import java.util.List;
+import java.util.Vector;
+
+import net.objecthunter.exp4j.Expression;
+import net.objecthunter.exp4j.ExpressionBuilder;
 
 import org.apache.tapestry5.*;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.TextField;
+import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.*;
 import org.apache.tapestry5.BindingConstants;
 import org.apache.tapestry5.SymbolConstants;
@@ -31,11 +36,16 @@ public class Layout {
 	 */
 	public static final String FOCUSID = "focusedStockId";
 
+	public static final String CALCRESULT = "calcresult";
+
 	@SessionAttribute(Layout.FOCUSID)
 	private long focusedStockId;
 
 	@Inject
 	private Session session;
+
+	@Inject
+	private Messages messages;
 
 	/**
 	 * The page title, for the <title> element and the <h1>element.
@@ -50,6 +60,9 @@ public class Layout {
 
 	@Property
 	private boolean hideInstructions;
+	
+	@Property
+	private boolean showCalculator;
 
 	@Property
 	@Inject
@@ -80,6 +93,23 @@ public class Layout {
 	@Property
 	private Bookmark bookmark;
 
+	@Property
+	@Persist
+	private String expression;
+
+	@Property
+	@SessionAttribute(Layout.CALCRESULT)
+	private Vector<String> results;
+
+	@Property
+	private String result;
+
+	@Component(id = "expression")
+	private TextField expressionField;
+
+	@Component(id = "calculatorform")
+	private Form calculator;
+
 	public List<Bookmark> getBookmarks() {
 		return session.createCriteria(Bookmark.class).addOrder(Order.asc("id")).list();
 	}
@@ -100,6 +130,12 @@ public class Layout {
 		}
 		catch (Exception e) {
 		}
+		try {
+			String tmp = settingsStore.get(SettingsStore.SHOWCALCULATOR, null);
+			showCalculator = Boolean.parseBoolean(tmp);
+		}
+		catch (Exception e) {
+		}
 	}
 
 	public Object onSuccessFromSearchForm() {
@@ -114,5 +150,29 @@ public class Layout {
 			}
 		}
 		return index;
+	}
+
+	public void onSuccessFromCalculatorForm() {
+		if (results == null) {
+			results = new Vector<String>();
+		}
+		if (expression == null) {
+			// People might want to clear the result list, but I don't want to clutter
+			// the form with more controls than necessary. So we creatively interpret
+			// an empty input as a wish to empty the list. This way we get around a
+			// lot of extra code as well.
+			results.clear();
+			return;
+		}
+		try {
+			Expression expr = new ExpressionBuilder(expression).build();
+			while (results.size() >= 5) {
+				results.remove(results.size() - 1);
+			}
+			results.add(0, messages.format("evaluated", expression, "" + expr.evaluate()));
+		}
+		catch (Exception exp) {
+			results.add(0, messages.format("error", expression));
+		}
 	}
 }

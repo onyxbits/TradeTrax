@@ -127,7 +127,7 @@
 						<h2>${message:search-title}</h2>
 						<t:form t:id="searchform">
 
-							<input t:id="search" name="search" size="15"
+							<input t:id="search" name="search" size="20"
 								onclick="SelectAll('search');" />
 	          		&nbsp;
 							<t:submit type="submit" value="${message:open}" class="form-submit" />
@@ -143,6 +143,28 @@
 							</t:loop>
 						</ul>
 					</div>
+					<t:if test="showcalculator">
+						<div class="block block-block">
+							<h2>${message:calculator-title}</h2>
+							<t:form t:id="calculatorform">
+
+								<input t:id="expression" name="search" size="20"
+									onclick="SelectAll('expression');" />
+	          		&nbsp;
+								<t:submit type="submit" value="${message:evaluate}"
+									class="form-submit" />
+
+							</t:form>
+							<p />
+							<t:loop source="results" value="result">
+								<code>
+									<pre>
+										${result}
+									</pre>
+								</code>
+							</t:loop>
+						</div>
+					</t:if>
 				</aside>
 			</div>
 

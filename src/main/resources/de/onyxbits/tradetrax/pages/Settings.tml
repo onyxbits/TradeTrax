@@ -57,6 +57,14 @@
 							<t:checkbox t:id="uiformhideinstructions" t:label="${message:instructions-title}" />
 						</td>
 					</tr>
+					<tr>
+						<td title="${message:calculator-tooltip}">
+							<t:label for="uiformshowcalculator" />
+						</td>
+						<td>
+							<t:checkbox t:id="uiformshowcalculator" t:label="${message:calculator-title}" />
+						</td>
+					</tr>
 				</table>
 
 				<t:submit type="submit" value="${message:save}" />

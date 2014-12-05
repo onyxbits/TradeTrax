@@ -21,15 +21,18 @@ public class Settings {
 	private String financialFormLedgerTitle;
 
 	@Property
-	@Validate(value="required")
+	@Validate(value = "required")
 	private String financialFormCurrencySymbol;
 
 	@Property
-	@Validate(value="min=0")
+	@Validate(value = "min=0")
 	private int financialFormDecimals;
 
 	@Property
 	private boolean uiFormHideInstructions;
+
+	@Property
+	private boolean uiFormShowCalculator;
 
 	@Property
 	@Validate(value = "min=25")
@@ -53,6 +56,9 @@ public class Settings {
 	@Component(id = "uiFormHideInstructions")
 	private Checkbox uiFormHideInstructionsField;
 
+	@Component(id = "uiFormShowCalculator")
+	private Checkbox uiFormShowCalculatorField;
+
 	@Inject
 	private Messages messages;
 
@@ -75,6 +81,12 @@ public class Settings {
 		}
 		catch (Exception e) {
 		}
+		try {
+			String tmp = settingsStore.get(SettingsStore.SHOWCALCULATOR, null);
+			uiFormShowCalculator = Boolean.parseBoolean(tmp);
+		}
+		catch (Exception e) {
+		}
 	}
 
 	public void onSuccessFromFinancialForm() {
@@ -85,5 +97,6 @@ public class Settings {
 
 	public void onSuccessFromUiForm() {
 		settingsStore.set(SettingsStore.HIDEINSTRUCTIONS, uiFormHideInstructions + "");
+		settingsStore.set(SettingsStore.SHOWCALCULATOR, uiFormShowCalculator + "");
 	}
 }

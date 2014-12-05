@@ -105,4 +105,5 @@
   <classpathentry kind="var" path="M2_REPO/mysql/mysql-connector-java/5.1.5/mysql-connector-java-5.1.5.jar"/>
   <classpathentry kind="var" path="M2_REPO/hsqldb/hsqldb/1.8.0.7/hsqldb-1.8.0.7.jar"/>
   <classpathentry kind="var" path="M2_REPO/org/apache/commons/commons-csv/1.0/commons-csv-1.0.jar" sourcepath="M2_REPO/org/apache/commons/commons-csv/1.0/commons-csv-1.0-sources.jar"/>
+  <classpathentry kind="var" path="M2_REPO/net/objecthunter/exp4j/0.4.3.BETA-3/exp4j-0.4.3.BETA-3.jar"/>
 </classpath>
