@@ -125,7 +125,7 @@ public class LiquidateEditor {
 	}
 
 	@CommitAfter
-	protected Object onSuccess() {
+	protected Object onSuccessFromSellForm() {
 		try {
 			Stock s = (Stock) session.load(Stock.class, stockId);
 			MoneyRepresentation mr = new MoneyRepresentation(settingsStore);
