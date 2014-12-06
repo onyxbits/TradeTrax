@@ -3,11 +3,8 @@ package de.onyxbits.tradetrax.main;
 import java.awt.Desktop;
 import java.awt.Dimension;
 import java.awt.Frame;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.RenderingHints;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -190,6 +187,7 @@ public class StandaloneServer extends JFrame implements Runnable, WindowListener
 	}
 
 	public void windowDeiconified(WindowEvent arg0) {
+
 	}
 
 	public void windowIconified(WindowEvent arg0) {
@@ -199,6 +197,10 @@ public class StandaloneServer extends JFrame implements Runnable, WindowListener
 	}
 
 	public void windowActivated(WindowEvent arg0) {
+		if (System.getProperty("app.skipwindow") != null) {
+			setState(Frame.ICONIFIED);
+			openInBrowser(mainPage);
+		}
 	}
 
 	public void windowClosed(WindowEvent arg0) {
