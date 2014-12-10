@@ -145,6 +145,7 @@ public class StockEditor {
 			if (stock == null) {
 				stock = new Stock();
 				stock.setAcquired(new Date());
+				stock.setUnitCount(1);
 				if (stockId > 0) {
 					alertManager.alert(Duration.SINGLE, Severity.INFO, messages.format("not-found", stockId));
 					Bookmark bm = (Bookmark) session.get(Bookmark.class, stockId);
