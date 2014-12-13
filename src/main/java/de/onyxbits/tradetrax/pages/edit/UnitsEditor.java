@@ -94,9 +94,7 @@ public class UnitsEditor {
 	protected void onActivate(Long StockId) {
 		this.stockId = StockId;
 		stock = (Stock) session.get(Stock.class, stockId);
-		if (stock != null) {
-			size = stock.getUnitCount() / 2;
-		}
+		size = 1;
 	}
 
 	public BeanModel<WrappedStock> getLedgerModel() {
@@ -130,7 +128,7 @@ public class UnitsEditor {
 		try {
 			Stock m = (Stock) session.load(Stock.class, id);
 			Stock backup = (Stock) session.load(Stock.class, id);
-			
+
 			// Hibernate doesn't like an update and a delete in the same transaction
 			// when this leads to the same row in a OneToMany mapping. Since we are
 			// deleting "m" anyways, we can stop the cascade simply by setting the
