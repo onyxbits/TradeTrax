@@ -247,16 +247,16 @@ public class StockEditor {
 
 	protected Object onSuccessFromEditForm() {
 		if (eventDelete) {
-			doDelete();
+			return doDelete();
 		}
 		else {
-			doSave();
+			return doSave();
 		}
-		return Index.class;
 	}
 
 	@CommitAfter
-	private void doSave() {
+	private Object doSave() {
+		Object ret = null;
 		try {
 			stock = (Stock) session.get(Stock.class, stockId);
 			Stock backup = null;
@@ -281,19 +281,22 @@ public class StockEditor {
 			focusedStockId = stock.getId();
 			if (backup == null) {
 				eventLogger.acquired(stock);
+				ret = this;
 			}
 			else {
 				eventLogger.modified(backup);
+				ret = Index.class;
 			}
 		}
 		catch (Exception e) {
 			alertManager.alert(Duration.SINGLE, Severity.ERROR,
 					messages.format("exception", e.getMessage()));
 		}
+		return ret;
 	}
 
 	@CommitAfter
-	private void doDelete() {
+	private Object doDelete() {
 		try {
 			Stock bye = (Stock) session.get(Stock.class, stockId);
 			long byeid = bye.getId();
@@ -316,6 +319,7 @@ public class StockEditor {
 			// longer exists or never existed in the first place. No need to tell the
 			// user that throwing away something non-existant failed.
 		}
+		return Index.class;
 	}
 
 }
