@@ -44,23 +44,24 @@ public class Pricelist {
 
 	@Inject
 	private Messages messages;
-	
-	@Component(id="print")
+
+	@Component(id = "print")
 	private EventLink print;
-	
+
 	public StreamResponse onPrint() {
 		if (pricelist == null) {
 			// e.g. because the user had this bookmarked
 			setupRender();
 		}
-		return new TextStreamResponse("text/plain",pricelist);
+		return new TextStreamResponse("text/plain", pricelist);
 	}
 
 	public void setupRender() {
 
 		@SuppressWarnings("unchecked")
 		List<Stock> lst = session.createCriteria(Stock.class).add(Restrictions.isNotNull("acquired"))
-				.add(Restrictions.isNull("liquidated")).add(Restrictions.ge("unitCount",1)).list();
+				.add(Restrictions.isNull("liquidated")).add(Restrictions.ge("unitCount", 1))
+				.add(Restrictions.gt("sellPrice", 0l)).list();
 		if (lst.size() == 0) {
 			pricelist = messages.get("empty");
 			return;
