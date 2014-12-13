@@ -1,5 +1,6 @@
-<html t:type="layout" title="${message:title}" instructions="${message:instructions}" helpurl="${message:helpurl}"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter">
+<html t:type="layout" title="${message:title}" instructions="${message:instructions}"
+	helpurl="${message:helpurl}" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+	xmlns:p="tapestry:parameter">
 
 	<t:form t:id="buyForm" t:clientValidation="none">
 		<fieldset class="form-wrapper">
@@ -60,12 +61,10 @@
 		t:reorder="name,id,acquired,buyprice,units,liquidated,sellprice,profit"
 		t:row="wrappedstock">
 		<p:nameCell>
-			<t:pagelink page="edit/NameEditor" context="wrappedstock.nameId">${wrappedstock.name}
-			</t:pagelink>
+			<a t:id="filterbyname" context="${wrappedstock.name}">${wrappedstock.name}</a>
 			<t:if test="wrappedstock.variant">
 				<div class="assetsubtype">
-					<t:pagelink page="edit/VariantEditor" context="wrappedstock.variantId">${wrappedstock.variant}
-					</t:pagelink>
+					<a t:id="filterbyvariant" context="${wrappedstock.variant}">${wrappedstock.variant}</a>
 				</div>
 			</t:if>
 			<t:if test="wrappedstock.stock.comment">
@@ -128,15 +127,17 @@
 						<t:label for="filterName" title="${message:filter-name-tooltip}" />
 					</th>
 					<td>
-						<t:textfield t:id="filterName" t:label="${message:filter-name-label}" name="filterName" onclick="SelectAll('filterName');" />
+						<t:textfield t:id="filterName" t:label="${message:filter-name-label}"
+							name="filterName" onclick="SelectAll('filterName');" />
 					</td>
 				</tr>
 				<tr>
 					<th>
-						<t:label for="filterVariant" title="${message:filter-variant-tooltip}"/>
+						<t:label for="filterVariant" title="${message:filter-variant-tooltip}" />
 					</th>
 					<td>
-						<t:textfield t:id="filterVariant" t:label="${message:filter-variant-label}" name="filterVariant" onclick="SelectAll('filterVariant');" />
+						<t:textfield t:id="filterVariant" t:label="${message:filter-variant-label}"
+							name="filterVariant" onclick="SelectAll('filterVariant');" />
 					</td>
 				</tr>
 				<tr>
@@ -146,7 +147,8 @@
 					<td>
 						<t:select t:id="filterAcquisitionSpan" />&nbsp;
 						<t:datefield t:id="filterAcquisition"
-							t:label="${message:filter-acquisition-label}" value="filterAcquisition" name="filterAcquisition" onclick="SelectAll('filterAcquisition');" />
+							t:label="${message:filter-acquisition-label}" value="filterAcquisition"
+							name="filterAcquisition" onclick="SelectAll('filterAcquisition');" />
 					</td>
 				</tr>
 				<tr>
@@ -156,7 +158,8 @@
 					<td>
 						<t:select t:id="filterLiquidationSpan" />&nbsp;
 						<t:datefield t:id="filterLiquidation"
-							t:label="${message:filter-liquidation-label}" value="filterLiquidation" name="filterLiquidation" onclick="SelectAll('filterLiquidation');" />
+							t:label="${message:filter-liquidation-label}" value="filterLiquidation"
+							name="filterLiquidation" onclick="SelectAll('filterLiquidation');" />
 					</td>
 				</tr>
 				<tr>
