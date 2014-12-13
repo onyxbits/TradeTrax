@@ -203,6 +203,9 @@ public class StockEditor {
 
 	@CommitAfter
 	protected StockEditor onBookmark(long id) {
+		if (id<1) {
+			return this;
+		}
 		Bookmark bm = (Bookmark) session.get(Bookmark.class, id);
 		if (bm == null) {
 			alertManager.alert(Duration.SINGLE, Severity.INFO, messages.get("bookmark-set"));

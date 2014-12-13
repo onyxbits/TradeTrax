@@ -1,5 +1,6 @@
-<html t:type="layout" title="${message:title}" instructions="${message:instructions}" helpurl="${message:helpurl}"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter">
+<html t:type="layout" title="${message:title}" instructions="${message:instructions}"
+	helpurl="${message:helpurl}" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+	xmlns:p="tapestry:parameter">
 
 	<t:if test="stock">
 		<p:else>
@@ -12,14 +13,17 @@
 					<th title="${message:id-tooltip}">${message:id-label}:</th>
 					<td>
 						${stock.id}
-						<div class="assetaction">
-							<a t:id="bookmark" context="${stock.id}">${message:bookmark}</a>
-						</div>
+						<t:if test="stock.id">
+							<div class="assetaction">
+								<a t:id="bookmark" context="${stock.id}">${message:bookmark}</a>
+							</div>
+						</t:if>
 					</td>
 				</tr>
 				<tr>
 					<th title="${message:name-tooltip}">
-						<t:label for="name" size="20" />:
+						<t:label for="name" size="20" />
+						:
 					</th>
 					<td>
 						<t:textfield t:id="name" t:label="${message:name-label}"
@@ -28,7 +32,8 @@
 				</tr>
 				<tr>
 					<th title="${message:variant-tooltip}">
-						<t:label for="variant" size="20" />:
+						<t:label for="variant" size="20" />
+						:
 					</th>
 					<td>
 						<t:textfield t:id="variant" t:label="${message:variant-label}"
@@ -37,7 +42,8 @@
 				</tr>
 				<tr>
 					<th title="${message:units-tooltip}">
-						<t:label for="units" size="20" />:
+						<t:label for="units" size="20" />
+						:
 					</th>
 					<td>
 						<t:textfield class="numerical" t:id="units"
@@ -52,7 +58,8 @@
 				</tr>
 				<tr>
 					<th title="${message:acquired-tooltip}">
-						<t:label for="acquired" size="20" />:
+						<t:label for="acquired" size="20" />
+						:
 					</th>
 					<td>
 						<t:datefield t:format="prop:dateFormat" t:id="acquired"
@@ -61,7 +68,8 @@
 				</tr>
 				<tr>
 					<th title="${message:buyprice-tooltip}">
-						<t:label for="buyPrice" size="20" />:
+						<t:label for="buyPrice" size="20" />
+						:
 					</th>
 					<td>
 						<t:textfield class="numerical" t:id="buyPrice"
@@ -71,7 +79,8 @@
 				</tr>
 				<tr>
 					<th title="${message:liquidated-tooltip}">
-						<t:label for="liquidated" size="20" />:
+						<t:label for="liquidated" size="20" />
+						:
 					</th>
 					<td>
 						<t:datefield t:format="prop:dateFormat" t:id="liquidated"
@@ -86,7 +95,8 @@
 				</tr>
 				<tr>
 					<th title="${message:sellprice-tooltip}">
-						<t:label for="sellPrice" size="20" />:
+						<t:label for="sellPrice" size="20" />
+						:
 					</th>
 					<td>
 						<t:textfield class="numerical" t:id="sellPrice"
@@ -100,7 +110,8 @@
 				</tr>
 				<tr>
 					<th title="${message:comment-tooltip}">
-						<t:label for="comment" size="20" />:
+						<t:label for="comment" size="20" />
+						:
 					</th>
 					<td>
 						<t:textarea t:id="comment" t:label="${message:comment-label}"
