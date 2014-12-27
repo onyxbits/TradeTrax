@@ -8,6 +8,7 @@ import org.apache.tapestry5.grid.GridDataSource;
 import org.apache.tapestry5.grid.SortConstraint;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.LogicalExpression;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
@@ -32,8 +33,8 @@ public class StockPagedGridDataSource implements GridDataSource {
 
 	private MoneyRepresentation moneyConverter;
 
-	private SimpleExpression nameRestriction;
-	private SimpleExpression variantRestriction;
+	private Criterion nameRestriction;
+	private Criterion variantRestriction;
 	private LogicalExpression stateRestriction;
 	private SimpleExpression acquisitionRestriction;
 	private SimpleExpression liquidationRestriction;
@@ -62,7 +63,7 @@ public class StockPagedGridDataSource implements GridDataSource {
 	public StockPagedGridDataSource withName(String label) {
 		if (label != null) {
 			// nameRestriction = Restrictions.like("name.label", "%"+label+"%");
-			nameRestriction = Restrictions.like("name.label", "%" + label + "%");
+			nameRestriction = Restrictions.ilike("name.label", "%" + label + "%");
 		}
 		else {
 			nameRestriction = null;
@@ -117,7 +118,7 @@ public class StockPagedGridDataSource implements GridDataSource {
 	 */
 	public StockPagedGridDataSource withVariant(String label) {
 		if (label != null) {
-			variantRestriction = Restrictions.like("variant.label", "%" + label + "%");
+			variantRestriction = Restrictions.ilike("variant.label", "%" + label + "%");
 		}
 		else {
 			variantRestriction = null;
