@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Vector;
 
 import org.hibernate.Session;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.SimpleExpression;
 
@@ -28,7 +29,7 @@ public class IdentUtil {
 	@SuppressWarnings("unchecked")
 	public static <T> List<String> suggestNames(Session session, String partial) {
 		Vector<String> ret = new Vector<String>();
-		SimpleExpression r = Restrictions.like("label", "%" + partial + "%");
+		Criterion r = Restrictions.ilike("label", "%" + partial + "%");
 		Iterator<Name> it = session.createCriteria(Name.class).add(r).list().iterator();
 		while (it.hasNext()) {
 			ret.add(it.next().getLabel());
@@ -48,7 +49,7 @@ public class IdentUtil {
 	@SuppressWarnings("unchecked")
 	public static <T> List<String> suggestVariants(Session session, String partial) {
 		Vector<String> ret = new Vector<String>();
-		SimpleExpression r = Restrictions.like("label", "%" + partial + "%");
+		Criterion r = Restrictions.ilike("label", "%" + partial + "%");
 		Iterator<Variant> it = session.createCriteria(Variant.class).add(r).list().iterator();
 		while (it.hasNext()) {
 			ret.add(it.next().getLabel());
