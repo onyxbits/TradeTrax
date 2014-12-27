@@ -8,15 +8,12 @@ import org.apache.tapestry5.*;
 import org.apache.tapestry5.hibernate.HibernateConfigurer;
 import org.apache.tapestry5.hibernate.HibernateSessionSource;
 import org.apache.tapestry5.hibernate.HibernateSymbols;
-import org.apache.tapestry5.ioc.Configuration;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.ioc.annotations.Startup;
-import org.apache.tapestry5.ioc.services.cron.IntervalSchedule;
-import org.apache.tapestry5.ioc.services.cron.PeriodicExecutor;
 import org.apache.tapestry5.services.ApplicationGlobals;
 import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.RequestFilter;
@@ -50,7 +47,7 @@ public class AppModule {
 		// (a random hexadecimal number), but may be further overriden by
 		// DevelopmentModule or
 		// QaModule.
-		configuration.override(SymbolConstants.APPLICATION_VERSION, "v1.2");
+		configuration.override(SymbolConstants.APPLICATION_VERSION, "v1.3");
 	}
 
 	public static void contributeApplicationDefaults(MappedConfiguration<String, Object> configuration) {
