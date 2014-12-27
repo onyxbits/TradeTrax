@@ -61,10 +61,24 @@
 		t:reorder="name,id,acquired,buyprice,units,liquidated,sellprice,profit"
 		t:row="wrappedstock">
 		<p:nameCell>
-			<a t:id="filterbyname" context="${wrappedstock.name}">${wrappedstock.name}</a>
+			<a t:id="filterbyname" context="${wrappedstock.name}">
+				<t:if test="wrappedstock.liquidated">
+					<strike>${wrappedstock.name}</strike>
+					<p:else>
+						${wrappedstock.name}
+					</p:else>
+				</t:if>
+			</a>
 			<t:if test="wrappedstock.variant">
 				<div class="assetsubtype">
-					<a t:id="filterbyvariant" context="${wrappedstock.variant}">${wrappedstock.variant}</a>
+					<a t:id="filterbyvariant" context="${wrappedstock.variant}">
+						<t:if test="wrappedstock.liquidated">
+							<strike>${wrappedstock.variant}</strike>
+							<p:else>
+								${wrappedstock.variant}
+							</p:else>
+						</t:if>
+					</a>
 				</div>
 			</t:if>
 			<t:if test="wrappedstock.stock.comment">
