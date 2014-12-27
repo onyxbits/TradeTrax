@@ -26,7 +26,7 @@
 					</th>
 					<td>
 						<t:textfield t:id="name" t:label="${message:name-label}"
-							value="name" t:mixins="autocomplete" />
+							value="name" t:mixins="autocomplete" onclick="SelectAll('name');" />
 					</td>
 				</tr>
 				<tr>
@@ -35,7 +35,7 @@
 					</th>
 					<td>
 						<t:textfield t:id="variant" t:label="${message:variant-label}"
-							value="variant" t:mixins="autocomplete" />
+							value="variant" t:mixins="autocomplete" onclick="SelectAll('variant');" />
 					</td>
 				</tr>
 				<tr>
@@ -44,7 +44,7 @@
 					</th>
 					<td>
 						<t:textfield class="numerical" t:id="units"
-							t:label="${message:units-label}" value="units" />
+							t:label="${message:units-label}" value="units" onclick="SelectAll('units');"/>
 						<t:if test="splitable">
 							<div class="assetaction">
 								<t:pagelink page="edit/UnitsEditor" context="${stock.id}">${message:split}
@@ -68,7 +68,7 @@
 					</th>
 					<td>
 						<t:textfield class="numerical" t:id="buyPrice"
-							t:label="${message:buyprice-label}" value="buyPrice" />
+							t:label="${message:buyprice-label}" value="buyPrice" onclick="SelectAll('buyPrice');"  />
 						${currencySymbol}
 					</td>
 				</tr>
@@ -93,7 +93,7 @@
 					</th>
 					<td>
 						<t:textfield class="numerical" t:id="sellPrice"
-							t:label="${message:sellprice-label}" value="sellPrice" />
+							t:label="${message:sellprice-label}" value="sellPrice" onclick="SelectAll('sellPrice');"/>
 						${currencySymbol}
 					</td>
 				</tr>
