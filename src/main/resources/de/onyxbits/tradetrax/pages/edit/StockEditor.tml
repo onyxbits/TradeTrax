@@ -12,8 +12,9 @@
 				<tr>
 					<th title="${message:id-tooltip}">${message:id-label}:</th>
 					<td>
-						${stock.id}
 						<t:if test="stock.id">
+						<p:else><i>${message:id-unassigned}</i></p:else>
+							${stock.id}
 							<div class="assetaction">
 								<a t:id="bookmark" context="${stock.id}">${message:bookmark}</a>
 								<br/>
