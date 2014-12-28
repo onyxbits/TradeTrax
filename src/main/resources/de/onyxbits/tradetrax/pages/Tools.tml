@@ -1,8 +1,13 @@
-<html t:type="layout" title="${message:title}" instructions="${message:instructions}" helpurl="${message:helpurl}"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter">
+<html t:type="layout" title="${message:title}" instructions="${message:instructions}"
+	helpurl="${message:helpurl}" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+	xmlns:p="tapestry:parameter">
 
 	<p />
 	<dl class="admin-list">
+		<dt>
+			<t:pagelink page="edit/StockEditor">${message:stockeditor-title}</t:pagelink>
+		</dt>
+		<dd>${message:stockeditor-description}</dd>
 		<dt>
 			<t:pagelink page="tools/LedgerLog">${message:ledgerlog-title}</t:pagelink>
 		</dt>
