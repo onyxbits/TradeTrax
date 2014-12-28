@@ -1,7 +1,6 @@
 package de.onyxbits.tradetrax.services;
 
 import de.onyxbits.tradetrax.entities.Stock;
-import de.onyxbits.tradetrax.entities.Variant;
 
 /**
  * Keeps a record of what happened when in the ledger
