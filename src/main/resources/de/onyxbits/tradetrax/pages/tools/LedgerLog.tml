@@ -1,9 +1,23 @@
-<html t:type="layout" title="${message:title}" instructions="${message:instructions}" helpurl="${message:helpurl}"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter">
+<html t:type="layout" title="${message:title}" instructions="${message:instructions}"
+	helpurl="${message:helpurl}" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+	xmlns:p="tapestry:parameter">
 
 	<t:grid exclude="id" reorder="timestamp,what,details" t:model="logModel"
 		source="logentries" row="row">
 		<p:timestampCell>${fulltime}</p:timestampCell>
 	</t:grid>
+	<t:form t:id="filterForm">
+		<fieldset class="form-wrapper">
+			<legend>
+				<span class="fieldset-legend">${message:filter-title}</span>
+			</legend>
+			<div class="fieldset-wrapper">
+				<t:textfield t:id="filter" name="filter"
+					onclick="SelectAll('sellPrice');" />
+					&nbsp;
+				<input type="submit" value="${message:filter}" />
+			</div>
+		</fieldset>
+	</t:form>
 
 </html>
