@@ -13,16 +13,16 @@
 		</dt>
 		<dd>${message:ledgerlog-description}</dd>
 		<dt>
-			<t:pagelink page="tools/Pricelist">${message:pricelist-title}</t:pagelink>
-		</dt>
-		<dd>${message:pricelist-description}</dd>
-		<dt>
 			<t:pagelink page="tools/LabelManager">${message:labelmanager-title}
 			</t:pagelink>
 		</dt>
 		<dd>
 			${message:labelmanager-description}
 		</dd>
+		<dt>
+			<t:pagelink page="tools/Pricelist">${message:pricelist-title}</t:pagelink>
+		</dt>
+		<dd>${message:pricelist-description}</dd>
 		<dt>
 			<t:pagelink page="tools/Importer">${message:importer-title}</t:pagelink>
 		</dt>
