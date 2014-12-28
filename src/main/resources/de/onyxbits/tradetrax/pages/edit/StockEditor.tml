@@ -16,6 +16,8 @@
 						<t:if test="stock.id">
 							<div class="assetaction">
 								<a t:id="bookmark" context="${stock.id}">${message:bookmark}</a>
+								<br/>
+								<a t:id="history">${message:show-history}</a>
 							</div>
 						</t:if>
 					</td>
@@ -112,6 +114,7 @@
 				</tr>
 			</table>
 			<p />
+			
 			<t:if test="stock.id">
 				<t:submit type="submit" value="${message:save}" t:id="save" />
 				&nbsp;
@@ -123,5 +126,6 @@
 			</t:if>
 		</t:form>
 	</t:if>
+	
 
 </html>

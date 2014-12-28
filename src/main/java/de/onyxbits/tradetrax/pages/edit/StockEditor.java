@@ -9,6 +9,7 @@ import org.apache.tapestry5.alerts.AlertManager;
 import org.apache.tapestry5.alerts.Duration;
 import org.apache.tapestry5.alerts.Severity;
 import org.apache.tapestry5.annotations.Component;
+import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SessionAttribute;
 import org.apache.tapestry5.beaneditor.Validate;
@@ -27,6 +28,7 @@ import de.onyxbits.tradetrax.entities.Bookmark;
 import de.onyxbits.tradetrax.entities.IdentUtil;
 import de.onyxbits.tradetrax.entities.Stock;
 import de.onyxbits.tradetrax.pages.Index;
+import de.onyxbits.tradetrax.pages.tools.LedgerLog;
 import de.onyxbits.tradetrax.remix.MoneyRepresentation;
 import de.onyxbits.tradetrax.services.EventLogger;
 import de.onyxbits.tradetrax.services.SettingsStore;
@@ -94,6 +96,9 @@ public class StockEditor {
 	@Component(id = "comment")
 	private TextArea commentField;
 
+	@Component(id = "history")
+	private EventLink history;
+
 	@Property
 	private String comment;
 
@@ -114,6 +119,9 @@ public class StockEditor {
 
 	@Inject
 	private SettingsStore settingsStore;
+
+	@InjectPage
+	private LedgerLog ledgerLog;
 
 	private boolean eventDelete;
 
@@ -203,7 +211,7 @@ public class StockEditor {
 
 	@CommitAfter
 	protected StockEditor onBookmark(long id) {
-		if (id<1) {
+		if (id < 1) {
 			return this;
 		}
 		Bookmark bm = (Bookmark) session.get(Bookmark.class, id);
@@ -246,6 +254,17 @@ public class StockEditor {
 		catch (ParseException e) {
 			editForm.recordError(sellPriceField, messages.get("nan"));
 		}
+	}
+
+	protected Object onHistory() {
+		try {
+			Stock stock = (Stock) session.get(Stock.class, stockId);
+			return ledgerLog.withFilter(eventLogger.grep(stock));
+		}
+		catch (Exception e) {
+			// should never get here
+		}
+		return null;
 	}
 
 	protected Object onSuccessFromEditForm() {

@@ -22,7 +22,7 @@ public class EventLoggerImpl implements EventLogger {
 		this.session = source.create();
 		this.moneyRepresentation = new MoneyRepresentation(settings);
 	}
-	
+
 	public void liquidated(Stock stock) {
 		LogEntry e = new LogEntry();
 		e.setTimestamp(new Date());
@@ -131,6 +131,8 @@ public class EventLoggerImpl implements EventLogger {
 				moneyRepresentation.databaseToUser(stock.getBuyPrice(), true, true), stock.getUnitCount(),
 				liquidation, moneyRepresentation.databaseToUser(stock.getSellPrice(), true, true), comment);
 	}
-	
 
+	public String grep(Stock stock) {
+		return messages.format("log-stock-id", stock.getId());
+	}
 }

@@ -86,4 +86,9 @@ public class LedgerLog {
 		}
 		return ret.list();
 	}
+	
+	public LedgerLog withFilter(String filter) {
+		this.filter=filter;
+		return this;
+	} 
 }

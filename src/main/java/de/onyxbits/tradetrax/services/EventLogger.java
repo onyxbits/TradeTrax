@@ -83,4 +83,14 @@ public interface EventLogger {
 	 */
 	public void deleted(String name);
 
+	/**
+	 * Create a filter expression for finding log entries that concern a specific
+	 * stock item.
+	 * 
+	 * @param stock
+	 *          the stock to search the log for
+	 * @return a string for grepping in the details messages.
+	 */
+	public String grep(Stock stock);
+
 }
