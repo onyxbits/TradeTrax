@@ -17,7 +17,7 @@ import de.onyxbits.tradetrax.entities.LogEntry;
  */
 public class LogPurger implements Runnable {
 
-	private int retention = 1000 * 60 * 60 * 24 * 7;
+	private int retention = 1000 * 60 * 60 * 24 * 30;
 	
 	private HibernateSessionSource source;
 
