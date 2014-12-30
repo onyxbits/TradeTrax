@@ -2,10 +2,6 @@
 	helpurl="${message:helpurl}" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
 	xmlns:p="tapestry:parameter">
 
-	<t:grid exclude="id" reorder="timestamp,what,details" t:model="logModel"
-		source="logentries" row="row">
-		<p:timestampCell>${fulltime}</p:timestampCell>
-	</t:grid>
 	<t:form t:id="filterForm">
 		<fieldset class="form-wrapper">
 			<legend>
@@ -19,5 +15,10 @@
 			</div>
 		</fieldset>
 	</t:form>
+	<t:grid exclude="id" reorder="timestamp,what,details" t:model="logModel"
+		source="logentries" row="row">
+		<p:timestampCell>${fulltime}</p:timestampCell>
+	</t:grid>
+
 
 </html>
