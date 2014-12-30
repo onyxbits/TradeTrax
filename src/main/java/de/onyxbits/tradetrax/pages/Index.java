@@ -104,6 +104,13 @@ public class Index {
 	@Property
 	private String filterName;
 
+	@Persist
+	@Property
+	private String filterLocation;
+
+	@Component(id = "filterLocation")
+	private TextField filterLocationField;
+
 	@Component(id = "filterName")
 	private TextField filterNameField;
 
@@ -150,16 +157,16 @@ public class Index {
 
 	@Component(id = "filterLiquidationSpan")
 	private Select filterLiquidationSpanField;
-	
-	@Component(id="filterByName")
+
+	@Component(id = "filterByName")
 	private EventLink filterByNameLink;
-	
-	@Component(id="filterByVariant")
+
+	@Component(id = "filterByVariant")
 	private EventLink filterByVariantLink;
 
 	@Inject
 	private SettingsStore settingsStore;
-	
+
 	@Inject
 	private EventLogger eventLogger;
 
@@ -168,6 +175,7 @@ public class Index {
 		MoneyRepresentation mr = new MoneyRepresentation(settingsStore);
 		stocks = new StockPagedGridDataSource(session, mr).withName(filterName)
 				.withVariant(filterVariant).withState(filterState)
+				.withLocation(filterLocation)
 				.withAcquisition(filterAcquisition, filterAcquisitionSpan)
 				.withLiquidation(filterLiquidation, filterLiquidationSpan);
 		currencySymbol = mr.getCurrencySymbol();
@@ -200,15 +208,15 @@ public class Index {
 			buyForm.recordError(buyPriceField, messages.get("invalid-numberformat"));
 		}
 	}
-	
+
 	public Object onFilterByVariant(String name) {
 		return this.withNoFilters().withFilterVariant(name);
 	}
-	
+
 	public Object onFilterByName(String name) {
 		return this.withNoFilters().withFilterName(name);
 	}
-	
+
 	@CommitAfter
 	public Object onSuccessFromBuyForm() {
 		Stock item = new Stock();
@@ -223,10 +231,10 @@ public class Index {
 			// We already validated this
 		}
 		Calendar now = Calendar.getInstance();
-		now.set(Calendar.MILLISECOND,0);
-		now.set(Calendar.SECOND,0);
-		now.set(Calendar.MINUTE,0);
-		now.set(Calendar.HOUR_OF_DAY,0);
+		now.set(Calendar.MILLISECOND, 0);
+		now.set(Calendar.SECOND, 0);
+		now.set(Calendar.MINUTE, 0);
+		now.set(Calendar.HOUR_OF_DAY, 0);
 
 		item.setUnitCount(buyAmount);
 		item.setAcquired(now.getTime());
@@ -243,6 +251,7 @@ public class Index {
 		filterVariant = null;
 		filterAcquisition = null;
 		filterLiquidation = null;
+		filterLocation = null;
 		// ... then just fall through to the success action.
 	}
 

@@ -156,6 +156,15 @@
 				</tr>
 				<tr>
 					<th>
+						<t:label for="filterLocation" title="${message:filter-location-tooltip}" />
+					</th>
+					<td>
+						<t:textfield t:id="filterLocation" t:label="${message:filter-location-label}"
+							name="filterLocation" onclick="SelectAll('filterLocation');" />
+					</td>
+				</tr>
+				<tr>
+					<th>
 						<t:label for="filterAcquisition" title="${message:filter-acquisition-tooltip}" />
 					</th>
 					<td>

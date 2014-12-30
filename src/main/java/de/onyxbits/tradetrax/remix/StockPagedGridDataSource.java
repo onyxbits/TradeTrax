@@ -39,6 +39,8 @@ public class StockPagedGridDataSource implements GridDataSource {
 	private SimpleExpression acquisitionRestriction;
 	private SimpleExpression liquidationRestriction;
 
+	private Criterion locationRestriction;
+
 	/**
 	 * Construct a new object
 	 * 
@@ -114,7 +116,7 @@ public class StockPagedGridDataSource implements GridDataSource {
 	 * 
 	 * @param label
 	 *          (sub)string to match or null to disable variant filtering.
-	 * @return this reference for method chaining-
+	 * @return this reference for method chaining.
 	 */
 	public StockPagedGridDataSource withVariant(String label) {
 		if (label != null) {
@@ -122,6 +124,23 @@ public class StockPagedGridDataSource implements GridDataSource {
 		}
 		else {
 			variantRestriction = null;
+		}
+		return this;
+	}
+
+	/**
+	 * Add a location restriction
+	 * 
+	 * @param filterLocation
+	 *          (sub)string to match or null to disable location filtering.
+	 * @return this reference for method chaining.
+	 */
+	public StockPagedGridDataSource withLocation(String location) {
+		if (location != null) {
+			locationRestriction = Restrictions.ilike("location", "%" + location + "%");
+		}
+		else {
+			locationRestriction = null;
 		}
 		return this;
 	}
@@ -200,6 +219,9 @@ public class StockPagedGridDataSource implements GridDataSource {
 		}
 		if (liquidationRestriction != null) {
 			crit.add(liquidationRestriction);
+		}
+		if (locationRestriction != null) {
+			crit.add(locationRestriction);
 		}
 		@SuppressWarnings("unchecked")
 		List<Stock> lst = (List<Stock>) crit.list();
