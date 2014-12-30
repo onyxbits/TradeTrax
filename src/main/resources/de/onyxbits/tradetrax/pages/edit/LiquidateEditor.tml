@@ -46,6 +46,12 @@
 					<td class="${totalCostClass}">${totalcost}</td>
 				</tr>
 			</t:if>
+			<t:if test="stock.location">
+				<tr>
+					<th>${message:location-label}:</th>
+					<td>${stock.location}</td>
+				</tr>
+			</t:if>
 			<t:if test="stock.comment">
 				<tr>
 					<th>${message:comment-label}:</th>

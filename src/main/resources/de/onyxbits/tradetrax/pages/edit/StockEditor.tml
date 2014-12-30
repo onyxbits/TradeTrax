@@ -42,6 +42,15 @@
 					</td>
 				</tr>
 				<tr>
+					<th title="${message:location-tooltip}">
+						<t:label for="location" size="20" />:
+					</th>
+					<td>
+						<t:textfield t:id="location" t:label="${message:location-label}"
+							value="location" onclick="SelectAll('location');" />
+					</td>
+				</tr>
+				<tr>
 					<th title="${message:units-tooltip}">
 						<t:label for="units" size="20" />:
 					</th>

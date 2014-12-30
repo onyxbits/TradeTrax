@@ -58,6 +58,9 @@ public class StockEditor {
 
 	@Component(id = "name")
 	private TextField nameField;
+	
+	@Component(id="location")
+	private TextField locationField;
 
 	@Property
 	@Validate("required,minlength=3")
@@ -68,6 +71,9 @@ public class StockEditor {
 
 	@Property
 	private String variant;
+	
+	@Property
+	private String location;
 
 	@Component(id = "buyPrice")
 	private TextField buyPriceField;
@@ -180,6 +186,7 @@ public class StockEditor {
 			liquidateable = (liquidated == null && stock.getId() > 0);
 			comment = stock.getComment();
 			splitable = stock.getUnitCount() > 1;
+			location=stock.getLocation();
 			long bal = 0;
 			if (stock.getLiquidated() != null) {
 				bal = stock.getSellPrice() * stock.getUnitCount();
@@ -297,6 +304,7 @@ public class StockEditor {
 			stock.setBuyPrice(mr.userToDatabase(buyPrice, 1));
 			stock.setUnitCount(units);
 			stock.setComment(comment);
+			stock.setLocation(location);
 			session.saveOrUpdate(stock);
 			alertManager.alert(Duration.SINGLE, Severity.SUCCESS,
 					messages.format("save-success", stock.getId()));

@@ -127,7 +127,11 @@ public class EventLoggerImpl implements EventLogger {
 		if (comment == null) {
 			comment = "";
 		}
-		return messages.format("log-stock", stock.getId(), name, variant, acquisition,
+		String location = stock.getLocation();
+		if (location == null) {
+			location = "";
+		}
+		return messages.format("log-stock", stock.getId(), name, variant, location, acquisition,
 				moneyRepresentation.databaseToUser(stock.getBuyPrice(), true, true), stock.getUnitCount(),
 				liquidation, moneyRepresentation.databaseToUser(stock.getSellPrice(), true, true), comment);
 	}

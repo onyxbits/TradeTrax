@@ -39,6 +39,12 @@ public class Stock implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
+	
+	/**
+	 * Optional storage location identifier (free form text)
+	 */
+	@Column(name="location")
+	private String location;
 
 	/**
 	 * Optional comment (free form text).
@@ -115,6 +121,7 @@ public class Stock implements Serializable {
 		}
 		sellPrice = template.sellPrice;
 		unitCount = template.unitCount;
+		location = template.location;
 		if (template.variant != null) {
 			variant = new Variant();
 			variant.setId(template.variant.getId());
@@ -324,5 +331,19 @@ public class Stock implements Serializable {
 	 */
 	public void setLiquidated(Date liquidated) {
 		this.liquidated = liquidated;
+	}
+
+	/**
+	 * @return the location
+	 */
+	public String getLocation() {
+		return location;
+	}
+
+	/**
+	 * @param location the location to set
+	 */
+	public void setLocation(String location) {
+		this.location = location;
 	}
 }
