@@ -33,6 +33,7 @@ import de.onyxbits.tradetrax.entities.Variant;
 import de.onyxbits.tradetrax.pages.Index;
 import de.onyxbits.tradetrax.remix.MoneyRepresentation;
 import de.onyxbits.tradetrax.remix.WrappedStock;
+import de.onyxbits.tradetrax.services.EventLogger;
 import de.onyxbits.tradetrax.services.SettingsStore;
 
 /**
@@ -79,6 +80,9 @@ public class Importer {
 
 	@Persist
 	private List<WrappedStock> parsed;
+	
+	@Inject
+	private EventLogger eventLogger;
 
 	public List<WrappedStock> getParsed() {
 		return parsed;
@@ -97,7 +101,7 @@ public class Importer {
 		}
 		return null;
 	}
-
+	
 	public BeanModel<WrappedStock> getLedgerModel() {
 		BeanModel<WrappedStock> model = ledgerSource.createDisplayModel(WrappedStock.class, messages);
 		List<String> lst = model.getPropertyNames();
@@ -111,7 +115,7 @@ public class Importer {
 	public void setupRender() {
 		moneyRepresentation = new MoneyRepresentation(settingsStore);
 		if (rawcsv == null || rawcsv.length() == 0) {
-			rawcsv = "name,variant,acquired,cost,units,liquidated,returns";
+			rawcsv = "name,variant,location,acquired,cost,units,liquidated,returns";
 		}
 	}
 
@@ -157,6 +161,7 @@ public class Importer {
 				stock.stock.setVariant(IdentUtil.findVariant(session, stock.stock.getVariant().getLabel()));
 			}
 			session.save(stock.stock);
+			eventLogger.acquired(stock.stock);
 			count++;
 		}
 		alertManager.alert(Duration.SINGLE, Severity.SUCCESS, messages.format("success", count));
@@ -195,6 +200,9 @@ public class Importer {
 			}
 			if (rec.isMapped("returns")) {
 				stock.setSellPrice(parsePrice(rec.get("returns")));
+			}
+			if (rec.isMapped("location")) {
+				stock.setLocation(rec.get("location"));
 			}
 			return stock;
 		}
