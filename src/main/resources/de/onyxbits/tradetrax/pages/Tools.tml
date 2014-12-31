@@ -5,10 +5,6 @@
 	<p />
 	<dl class="admin-list">
 		<dt>
-			<t:pagelink page="edit/StockEditor">${message:stockeditor-title}</t:pagelink>
-		</dt>
-		<dd>${message:stockeditor-description}</dd>
-		<dt>
 			<t:pagelink page="tools/LedgerLog">${message:ledgerlog-title}</t:pagelink>
 		</dt>
 		<dd>${message:ledgerlog-description}</dd>

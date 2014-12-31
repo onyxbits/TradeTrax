@@ -49,6 +49,7 @@
 					</tr>
 				</table>
 				<t:submit type="submit" value="${message:acquire}" />
+				<div class="assetaction"><t:pagelink page="edit/StockEditor">${message:full-form}</t:pagelink></div>
 			</div>
 		</fieldset>
 	</t:form>
