@@ -18,6 +18,8 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 
 import de.onyxbits.tradetrax.entities.Bookmark;
+import de.onyxbits.tradetrax.main.MinusPercentage;
+import de.onyxbits.tradetrax.main.PlusPercentage;
 import de.onyxbits.tradetrax.pages.Index;
 import de.onyxbits.tradetrax.pages.edit.StockEditor;
 import de.onyxbits.tradetrax.services.SettingsStore;
@@ -53,7 +55,7 @@ public class Layout {
 	@Property
 	@Parameter(required = true, defaultPrefix = BindingConstants.LITERAL)
 	private String title;
-	
+
 	/**
 	 * A url to be used in the instructions block for getting more information.
 	 */
@@ -67,7 +69,7 @@ public class Layout {
 
 	@Property
 	private boolean hideInstructions;
-	
+
 	@Property
 	private boolean showCalculator;
 
@@ -172,7 +174,8 @@ public class Layout {
 			return;
 		}
 		try {
-			Expression expr = new ExpressionBuilder(expression).build();
+			Expression expr = new ExpressionBuilder(expression).operator(new PlusPercentage(),
+					new MinusPercentage()).build();
 			while (results.size() >= 5) {
 				results.remove(results.size() - 1);
 			}
