@@ -241,6 +241,7 @@ public class Index {
 		session.persist(item);
 		focusedStockId = item.getId();
 		eventLogger.acquired(item);
+		withNoFilters();
 		return Index.class;
 	}
 
