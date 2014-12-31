@@ -62,12 +62,14 @@
 		t:row="wrappedstock">
 		<p:nameCell>
 			<a t:id="filterbyname" context="${wrappedstock.name}">
-				<t:if test="wrappedstock.liquidated">
-					<strike>${wrappedstock.name}</strike>
-					<p:else>
-						${wrappedstock.name}
-					</p:else>
-				</t:if>
+				<div class="assettype">
+					<t:if test="wrappedstock.liquidated">
+						<strike>${wrappedstock.name}</strike>
+						<p:else>
+							${wrappedstock.name}
+						</p:else>
+					</t:if>
+				</div>
 			</a>
 			<t:if test="wrappedstock.variant">
 				<div class="assetsubtype">
