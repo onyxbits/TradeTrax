@@ -17,7 +17,7 @@ import de.onyxbits.tradetrax.entities.LogEntry;
  */
 public class LogPurger implements Runnable {
 
-	private int retention = 1000 * 60 * 60 * 24 * 30;
+	private long retention = 1000l * 60l * 60l * 24l * 30l;
 	
 	private HibernateSessionSource source;
 
@@ -30,7 +30,7 @@ public class LogPurger implements Runnable {
 		session.clear();
 		Timestamp ts = new Timestamp(System.currentTimeMillis() - retention);
 		@SuppressWarnings("unchecked")
-		List<LogEntry> lst = session.createCriteria(LogEntry.class).add(Restrictions.le("timestamp",ts)).list();
+		List<LogEntry> lst = session.createCriteria(LogEntry.class).add(Restrictions.lt("timestamp",ts)).list();
 		if (lst.size() > 0) {
 			session.beginTransaction();
 			for (LogEntry e : lst) {
