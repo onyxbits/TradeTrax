@@ -81,13 +81,18 @@
 					</a>
 				</div>
 			</t:if>
-			<t:if test="wrappedstock.stock.comment">
-				<div class="assetcommet">
+			<div class="assetannotations">
+				<t:if test="wrappedstock.stock.comment">
 					<t:pagelink page="edit/StockEditor" context="${wrappedstock.id}">
-						<img src="${asset:context:images/message-16-info.png}" title="${wrappedstock.stock.comment}" />
+						<img src="${asset:context:images/comment-16.png}" title="${wrappedstock.stock.comment}" />
 					</t:pagelink>
-				</div>
-			</t:if>
+				</t:if>
+				<t:if test="wrappedstock.stock.location">
+					<t:pagelink page="edit/StockEditor" context="${wrappedstock.id}">
+						<img src="${asset:context:images/location-16.png}" title="${wrappedstock.stock.location}" />
+					</t:pagelink>
+				</t:if>
+			</div>
 		</p:nameCell>
 		<p:idCell>
 			<t:pagelink page="edit/StockEditor" context="wrappedstock.id">${wrappedstock.id}
