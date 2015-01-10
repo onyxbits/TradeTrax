@@ -41,6 +41,8 @@ public class StockPagedGridDataSource implements GridDataSource {
 
 	private Criterion locationRestriction;
 
+	private Criterion commentRestriction;
+
 	/**
 	 * Construct a new object
 	 * 
@@ -129,6 +131,23 @@ public class StockPagedGridDataSource implements GridDataSource {
 	}
 
 	/**
+	 * Add a comment restriction
+	 * 
+	 * @param comment
+	 *          (sub) string to match or null to disable comment filtering.
+	 * @return this reference for method chaining.
+	 */
+	public StockPagedGridDataSource withComment(String comment) {
+		if (comment != null) {
+			commentRestriction = Restrictions.ilike("comment", "%" + comment + "%");
+		}
+		else {
+			commentRestriction = null;
+		}
+		return this;
+	}
+
+	/**
 	 * Add a location restriction
 	 * 
 	 * @param filterLocation
@@ -196,6 +215,12 @@ public class StockPagedGridDataSource implements GridDataSource {
 		if (liquidationRestriction != null) {
 			crit.add(liquidationRestriction);
 		}
+		if (locationRestriction != null) {
+			crit.add(locationRestriction);
+		}
+		if (commentRestriction != null) {
+			crit.add(commentRestriction);
+		}
 		return ((Number) crit.setProjection(Projections.rowCount()).uniqueResult()).intValue();
 	}
 
@@ -223,6 +248,9 @@ public class StockPagedGridDataSource implements GridDataSource {
 		if (locationRestriction != null) {
 			crit.add(locationRestriction);
 		}
+		if (commentRestriction != null) {
+			crit.add(commentRestriction);
+		}
 		@SuppressWarnings("unchecked")
 		List<Stock> lst = (List<Stock>) crit.list();
 		preparedResults.clear();
@@ -244,5 +272,4 @@ public class StockPagedGridDataSource implements GridDataSource {
 	public Class<WrappedStock> getRowType() {
 		return WrappedStock.class;
 	}
-
 }

@@ -111,6 +111,13 @@ public class Index {
 	@Component(id = "filterLocation")
 	private TextField filterLocationField;
 
+	@Persist
+	@Property
+	private String filterComment;
+
+	@Component(id = "filterComment")
+	private TextField filterCommentField;
+
 	@Component(id = "filterName")
 	private TextField filterNameField;
 
@@ -174,9 +181,8 @@ public class Index {
 		buyAmount = 1;
 		MoneyRepresentation mr = new MoneyRepresentation(settingsStore);
 		stocks = new StockPagedGridDataSource(session, mr).withName(filterName)
-				.withVariant(filterVariant).withState(filterState)
-				.withLocation(filterLocation)
-				.withAcquisition(filterAcquisition, filterAcquisitionSpan)
+				.withVariant(filterVariant).withState(filterState).withLocation(filterLocation)
+				.withComment(filterComment).withAcquisition(filterAcquisition, filterAcquisitionSpan)
 				.withLiquidation(filterLiquidation, filterLiquidationSpan);
 		currencySymbol = mr.getCurrencySymbol();
 	}
@@ -253,6 +259,7 @@ public class Index {
 		filterAcquisition = null;
 		filterLiquidation = null;
 		filterLocation = null;
+		filterComment = null;
 		// ... then just fall through to the success action.
 	}
 
@@ -262,7 +269,12 @@ public class Index {
 
 	public Index withNoFilters() {
 		filterName = null;
+		filterState = null;
 		filterVariant = null;
+		filterAcquisition = null;
+		filterLiquidation = null;
+		filterLocation = null;
+		filterComment = null;
 		showFilter = false;
 		return this;
 	}

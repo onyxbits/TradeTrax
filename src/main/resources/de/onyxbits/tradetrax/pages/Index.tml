@@ -173,6 +173,15 @@
 				</tr>
 				<tr>
 					<th>
+						<t:label for="filterComment" title="${message:filter-comment-tooltip}" />
+					</th>
+					<td>
+						<t:textfield t:id="filterComment" t:label="${message:filter-comment-label}"
+							name="filterComment" onclick="SelectAll('filterComment');" />
+					</td>
+				</tr>
+				<tr>
+					<th>
 						<t:label for="filterAcquisition" title="${message:filter-acquisition-tooltip}" />
 					</th>
 					<td>
