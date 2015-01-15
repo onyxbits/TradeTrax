@@ -11,6 +11,10 @@
 			<td class="numerical">${totalInvestment}</td>
 		</tr>
 		<tr>
+			<th title="${message:expected-profit-tooltip}">${message:expected-profit-label}</th>
+			<td class="numerical">${expectedProfit}</td>
+		</tr>
+		<tr>
 			<th title="${message:total-profit-tooltip}">${message:total-profit-label}</th>
 			<td class="numerical">${totalProfit}</td>
 		</tr>

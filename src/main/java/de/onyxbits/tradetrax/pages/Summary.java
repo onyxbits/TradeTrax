@@ -33,6 +33,9 @@ public class Summary {
 	private String totalProfit;
 
 	@Property
+	private String expectedProfit;
+
+	@Property
 	private int assetsOnHand;
 
 	@Property
@@ -112,6 +115,7 @@ public class Summary {
 		List<Stock> lst = session.createCriteria(Stock.class).list();
 		long profit = 0;
 		long investment = 0;
+		long futureProfit = 0;
 		for (Stock stock : lst) {
 			if (stock.getAcquired() != null) {
 				TalliedStock ts = getCounterFor(stock);
@@ -120,6 +124,7 @@ public class Summary {
 					investment += inv;
 					assetsOnHand++;
 					itemsOnHand += stock.getUnitCount();
+					futureProfit += (stock.getSellPrice() - stock.getBuyPrice()) * stock.getUnitCount();
 					ts.assetCount++;
 					ts.totalUnits += stock.getUnitCount();
 					ts.totalInvestmentCounter += inv;
@@ -133,6 +138,7 @@ public class Summary {
 		}
 		totalInvestment = mr.databaseToUser(investment, false, true);
 		totalProfit = mr.databaseToUser(profit, false, true);
+		expectedProfit = mr.databaseToUser(futureProfit, false, true);
 		Iterator<String> it = tallied.keySet().iterator();
 		while (it.hasNext()) {
 			TalliedStock ts = tallied.get(it.next());
