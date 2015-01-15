@@ -20,7 +20,7 @@ public class LedgerConfig {
 	 * The presence of a file by this name in the ledger toggles network
 	 * accessibility.
 	 */
-	public static final String PUBLICACCESS = "public_access";
+	public static final String PUBLICACCESS = "network.cfg";
 
 	private InetSocketAddress address;
 	private File ledger;
