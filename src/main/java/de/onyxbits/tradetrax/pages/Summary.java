@@ -124,7 +124,9 @@ public class Summary {
 					investment += inv;
 					assetsOnHand++;
 					itemsOnHand += stock.getUnitCount();
-					futureProfit += (stock.getSellPrice() - stock.getBuyPrice()) * stock.getUnitCount();
+					if (stock.getSellPrice() != 0) {
+						futureProfit += (stock.getSellPrice() - stock.getBuyPrice()) * stock.getUnitCount();
+					}
 					ts.assetCount++;
 					ts.totalUnits += stock.getUnitCount();
 					ts.totalInvestmentCounter += inv;
