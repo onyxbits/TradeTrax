@@ -131,8 +131,14 @@ public class AppModule {
 	public void contributeHibernateSessionSource(OrderedConfiguration<HibernateConfigurer> configurer) {
 
 		String path = globals.getServletContext().getInitParameter("ledger");
-		File dbdir=new File(System.getProperty("user.dir"));
-		if (path!=null) {
+		// WARNING: This is here for the benefit of developers so they can switch
+		// ledgers without having to use the StandaloneServer. WAR deployments
+		// should be configured through the web.xml file and not a system property.
+		// System properties apply to the whole servlet container, making it
+		// impossible to serve multiple ledgers at once.
+		path = System.getProperty("app.ledger", path);
+		File dbdir = new File(System.getProperty("user.dir"));
+		if (path != null) {
 			dbdir = new File(path);
 		}
 		configurer.add("hibernate-session-source", new LedgerConfigurer(dbdir));
