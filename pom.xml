@@ -222,7 +222,7 @@
 	</repositories>
 
 	<properties>
-		<jettyVersion>7.2.0.v20101020</jettyVersion>
+		<jettyVersion>9.3.0.M1</jettyVersion>
 		<tapestry-release-version>5.3.8</tapestry-release-version>
 		<servlet-api-release-version>2.5</servlet-api-release-version>
 		<testng-release-version>5.14.10</testng-release-version>

@@ -130,18 +130,10 @@ public class AppModule {
 
 	public void contributeHibernateSessionSource(OrderedConfiguration<HibernateConfigurer> configurer) {
 
-		String path = globals.getServletContext().getContextPath();
-		if (path.equals("/") || path.length() == 0) {
-			path += "default";
-		}
-		path = "/ledgers/" + path;
-		File dbdir = new File(System.getProperty("app.datadir", System.getProperty("user.dir")));
-		StringTokenizer st = new StringTokenizer(path, "/");
-		while (st.hasMoreTokens()) {
-			String token = st.nextToken();
-			if (token.length() != 0) {
-				dbdir = new File(dbdir, token);
-			}
+		String path = globals.getServletContext().getInitParameter("ledger");
+		File dbdir=new File(System.getProperty("user.dir"));
+		if (path!=null) {
+			dbdir = new File(path);
 		}
 		configurer.add("hibernate-session-source", new LedgerConfigurer(dbdir));
 	}
