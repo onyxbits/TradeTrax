@@ -248,6 +248,7 @@ public class Index {
 		focusedStockId = item.getId();
 		eventLogger.acquired(item);
 		withNoFilters();
+		ledger.reset();
 		return Index.class;
 	}
 
