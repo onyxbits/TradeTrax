@@ -49,93 +49,95 @@
 					</tr>
 				</table>
 				<t:submit type="submit" value="${message:acquire}" />
-				<div class="assetaction"><t:pagelink page="edit/StockEditor">${message:full-form}</t:pagelink></div>
+				<div class="assetaction">
+					<t:pagelink page="edit/StockEditor">${message:full-form}</t:pagelink>
+				</div>
 			</div>
 		</fieldset>
 	</t:form>
 
 	<p />
 
-	<table t:id="ledger" t:type="grid" t:model="ledgerModel"
-		t:source="stocks" t:rowsPerPage="25" t:pagerPosition="bottom"
-		t:exclude="variant"
-		t:reorder="name,id,acquired,buyprice,units,liquidated,sellprice,profit"
-		t:row="wrappedstock">
-		<p:nameCell>
-			<a t:id="filterbyname" context="${wrappedstock.name}">
-				<div class="assettype">
-					<t:if test="wrappedstock.liquidated">
-						<strike>${wrappedstock.name}</strike>
-						<p:else>
-							${wrappedstock.name}
-						</p:else>
-					</t:if>
-				</div>
-			</a>
-			<t:if test="wrappedstock.variant">
-				<div class="assetsubtype">
-					<a t:id="filterbyvariant" context="${wrappedstock.variant}">
+	<div id="table-scroll">
+		<table t:id="ledger" t:type="grid" t:model="ledgerModel"
+			t:source="stocks" t:rowsPerPage="25" t:pagerPosition="bottom"
+			t:include="${ledgercolumns}" t:row="wrappedstock">
+			<p:assetCell>
+				<a t:id="filterbyname" context="${wrappedstock.name}">
+					<div class="assettype">
 						<t:if test="wrappedstock.liquidated">
-							<strike>${wrappedstock.variant}</strike>
+							<strike>${wrappedstock.name}</strike>
 							<p:else>
-								${wrappedstock.variant}
+								${wrappedstock.name}
 							</p:else>
 						</t:if>
-					</a>
+					</div>
+				</a>
+				<t:if test="wrappedstock.variant">
+					<div class="assetsubtype">
+						<a t:id="filterbyvariant" context="${wrappedstock.variant}">
+							<t:if test="wrappedstock.liquidated">
+								<strike>${wrappedstock.variant}</strike>
+								<p:else>
+									${wrappedstock.variant}
+								</p:else>
+							</t:if>
+						</a>
+					</div>
+				</t:if>
+				<div class="assetannotations">
+					<t:if test="wrappedstock.stock.comment">
+						<t:pagelink page="edit/StockEditor" context="${wrappedstock.id}">
+							<img src="${asset:context:images/comment-16.png}" title="${wrappedstock.stock.comment}" />
+						</t:pagelink>
+					</t:if>
+					<t:if test="wrappedstock.stock.location">
+						<t:pagelink page="edit/StockEditor" context="${wrappedstock.id}">
+							<img src="${asset:context:images/location-16.png}" title="${wrappedstock.stock.location}" />
+						</t:pagelink>
+					</t:if>
 				</div>
-			</t:if>
-			<div class="assetannotations">
-				<t:if test="wrappedstock.stock.comment">
-					<t:pagelink page="edit/StockEditor" context="${wrappedstock.id}">
-						<img src="${asset:context:images/comment-16.png}" title="${wrappedstock.stock.comment}" />
-					</t:pagelink>
+			</p:assetCell>
+			<p:idCell>
+				<t:pagelink page="edit/StockEditor" context="wrappedstock.id">${wrappedstock.id}
+				</t:pagelink>
+			</p:idCell>
+			<p:unitsCell>
+				<t:pagelink page="edit/UnitsEditor" context="wrappedstock.id">${wrappedstock.units}
+				</t:pagelink>
+			</p:unitsCell>
+			<p:liquidatedCell>
+				<t:if test="wrappedstock.liquidated">
+					${wrappedstock.liquidated}
+					<p:else>
+						<t:pagelink page="edit/LiquidateEditor" context="wrappedstock.id">${message:liquidate-now}
+						</t:pagelink>
+					</p:else>
 				</t:if>
-				<t:if test="wrappedstock.stock.location">
-					<t:pagelink page="edit/StockEditor" context="${wrappedstock.id}">
-						<img src="${asset:context:images/location-16.png}" title="${wrappedstock.stock.location}" />
-					</t:pagelink>
-				</t:if>
-			</div>
-		</p:nameCell>
-		<p:idCell>
-			<t:pagelink page="edit/StockEditor" context="wrappedstock.id">${wrappedstock.id}
-			</t:pagelink>
-		</p:idCell>
-		<p:unitsCell>
-			<t:pagelink page="edit/UnitsEditor" context="wrappedstock.id">${wrappedstock.units}
-			</t:pagelink>
-		</p:unitsCell>
-		<p:liquidatedCell>
-			<t:if test="wrappedstock.liquidated">
-				${wrappedstock.liquidated}
-				<p:else>
-					<t:pagelink page="edit/LiquidateEditor" context="wrappedstock.id">${message:liquidate-now}
-					</t:pagelink>
-				</p:else>
-			</t:if>
-		</p:liquidatedCell>
-		<p:profitCell>
-			<div class="${wrappedStock.profitClass}">
-				${wrappedstock.profit}
-			</div>
-		</p:profitCell>
-		<p:buyPriceCell>
-			<div class="${wrappedStock.buyPriceClass}">
-				${wrappedstock.buyPrice}
-			</div>
-		</p:buyPriceCell>
-		<p:sellPriceCell>
-			<div class="${wrappedStock.sellPriceClass}">
-				${wrappedstock.sellPrice}
-			</div>
-		</p:sellPriceCell>
-		<p:empty>
-			<p>
-				<i>${message:emptyset}</i>
-			</p>
+			</p:liquidatedCell>
+			<p:profitCell>
+				<div class="${wrappedStock.profitClass}">
+					${wrappedstock.profit}
+				</div>
+			</p:profitCell>
+			<p:buyPriceCell>
+				<div class="${wrappedStock.buyPriceClass}">
+					${wrappedstock.buyPrice}
+				</div>
+			</p:buyPriceCell>
+			<p:sellPriceCell>
+				<div class="${wrappedStock.sellPriceClass}">
+					${wrappedstock.sellPrice}
+				</div>
+			</p:sellPriceCell>
+			<p:empty>
+				<p>
+					<i>${message:emptyset}</i>
+				</p>
 
-		</p:empty>
-	</table>
+			</p:empty>
+		</table>
+	</div>
 
 	<t:form t:id="filterForm">
 		<t:checkbox t:id="showFilter" t:mixins="triggerfragment"

@@ -25,6 +25,7 @@ import org.hibernate.Session;
 import de.onyxbits.tradetrax.components.Layout;
 import de.onyxbits.tradetrax.entities.IdentUtil;
 import de.onyxbits.tradetrax.entities.Stock;
+import de.onyxbits.tradetrax.remix.LedgerColumns;
 import de.onyxbits.tradetrax.remix.MoneyRepresentation;
 import de.onyxbits.tradetrax.remix.StockPagedGridDataSource;
 import de.onyxbits.tradetrax.remix.StockState;
@@ -176,6 +177,10 @@ public class Index {
 
 	@Inject
 	private EventLogger eventLogger;
+	
+	public String getLedgerColumns() {
+		return settingsStore.get(SettingsStore.TCLCOLUMNS,LedgerColumns.DEFAULT);
+	}
 
 	public void setupRender() {
 		buyAmount = 1;

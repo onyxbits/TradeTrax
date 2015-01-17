@@ -1,8 +1,12 @@
 package de.onyxbits.tradetrax.pages;
 
 import java.util.Currency;
+import java.util.List;
 import java.util.Locale;
+import java.util.Vector;
 
+import org.apache.tapestry5.SelectModel;
+import org.apache.tapestry5.ValueEncoder;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.Validate;
@@ -11,7 +15,11 @@ import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.ioc.services.TypeCoercer;
+import org.apache.tapestry5.util.EnumSelectModel;
+import org.apache.tapestry5.util.EnumValueEncoder;
 
+import de.onyxbits.tradetrax.remix.LedgerColumns;
 import de.onyxbits.tradetrax.remix.MoneyRepresentation;
 import de.onyxbits.tradetrax.services.SettingsStore;
 
@@ -65,6 +73,22 @@ public class Settings {
 	@Inject
 	private SettingsStore settingsStore;
 
+	@Inject
+	private TypeCoercer typeCoercer;
+
+	@Component(id = "tcForm")
+	private Form tcForm;
+	
+	@Property
+	private final ValueEncoder<LedgerColumns> ledgerColumnsEncoder = new EnumValueEncoder<LedgerColumns>(
+			typeCoercer, LedgerColumns.class);
+
+	@Property
+	private List<LedgerColumns> ledgerColumnsList = new Vector<LedgerColumns>();
+
+	@Property
+	private final SelectModel ledgerColumnsModel = new EnumSelectModel(LedgerColumns.class, messages);
+
 	public void setupRender() {
 		MoneyRepresentation mr = new MoneyRepresentation(settingsStore);
 		financialFormLedgerTitle = settingsStore.get(SettingsStore.LEDGERTITLE, null);
@@ -87,6 +111,13 @@ public class Settings {
 		}
 		catch (Exception e) {
 		}
+		try {
+			ledgerColumnsList = LedgerColumns.fromCsv(settingsStore.get(SettingsStore.TCLCOLUMNS,
+					LedgerColumns.DEFAULT));
+		}
+		catch (Exception e) {
+
+		}
 	}
 
 	public void onSuccessFromFinancialForm() {
@@ -98,5 +129,15 @@ public class Settings {
 	public void onSuccessFromUiForm() {
 		settingsStore.set(SettingsStore.HIDEINSTRUCTIONS, uiFormHideInstructions + "");
 		settingsStore.set(SettingsStore.SHOWCALCULATOR, uiFormShowCalculator + "");
+	}
+	
+	public void onValidateFromTcForm() {
+		if (ledgerColumnsList.size()==0) {
+			tcForm.recordError(messages.get("error-empty-ledger"));
+		}
+	}
+
+	public void onSuccessFromTcForm() {
+		settingsStore.set(SettingsStore.TCLCOLUMNS, LedgerColumns.toCsv(ledgerColumnsList));
 	}
 }

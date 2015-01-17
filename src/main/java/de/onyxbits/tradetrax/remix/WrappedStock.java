@@ -19,25 +19,25 @@ public class WrappedStock {
 
 	@Property
 	public String acquired;
-	
+
 	@Property
 	public String liquidated;
 
 	@Property
 	public String name;
-	
+
 	@Property
 	public String variant;
-	
+
 	@Property
 	public String buyPrice;
-	
+
 	@Property
 	public String sellPrice;
-	
+
 	@Property
 	public String profit;
-	
+
 	@Property
 	public int units;
 
@@ -64,9 +64,22 @@ public class WrappedStock {
 	@NonVisual
 	@Property
 	public Long nameId;
+	
+	@Property
+	public String comment;
+	
+	@Property
+	public String location;
 
 	@Property
 	public long id;
+
+	/**
+	 * A summary that is created dynamically in the TML. It's only declared here
+	 * to not make the template engine complain about a missing field.
+	 */
+	@Property
+	public String asset;
 
 	private static DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM);
 
@@ -104,5 +117,7 @@ public class WrappedStock {
 				profitClass = MoneyRepresentation.LOSSCLASS;
 			}
 		}
+		comment = stock.getComment();
+		location = stock.getLocation();
 	}
 }

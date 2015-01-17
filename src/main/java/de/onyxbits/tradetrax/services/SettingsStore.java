@@ -34,6 +34,11 @@ public interface SettingsStore {
 	public static final String SHOWCALCULATOR = "showcalculator";
 	
 	/**
+	 * Columns to show for the tradecenter ledger.
+	 */
+	public static final String TCLCOLUMNS = "tclcolumns"; 
+	
+	/**
 	 * When the ledger was created
 	 */
 	public static final String CREATED = "created";

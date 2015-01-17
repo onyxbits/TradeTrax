@@ -1,5 +1,6 @@
-<html t:type="layout" title="${message:title}" instructions="${message:instructions}" helpurl="${message:helpurl}"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter">
+<html t:type="layout" title="${message:title}" instructions="${message:instructions}"
+	helpurl="${message:helpurl}" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+	xmlns:p="tapestry:parameter">
 
 	<t:form t:id="financialForm">
 		<fieldset class="form-wrapper">
@@ -68,6 +69,21 @@
 				</table>
 
 				<t:submit type="submit" value="${message:save}" />
+			</div>
+		</fieldset>
+	</t:form>
+
+	<t:form t:id="tcForm">
+		<fieldset class="form-wrapper">
+			<legend>
+				<span class="fieldset-legend">${message:tc-title}</span>
+			</legend>
+			<div class="fieldset-wrapper">
+				<t:errors />
+				<t:palette t:id="ledgerColumnsList" encoder="ledgerColumnsEncoder"
+					model="ledgerColumnsModel" reorder="true" availableLabel="${message:ledger-available}"
+					selectedLabel="${message:ledger-selected}" />
+				<input type="submit" value="${message:save}" />
 			</div>
 		</fieldset>
 	</t:form>

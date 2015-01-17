@@ -1215,3 +1215,7 @@ ul.threecolumnlist {
   -webkit-columns: 3;
   -moz-columns: 3;
 }
+
+#table-scroll {
+  overflow:auto;  
+}
