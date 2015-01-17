@@ -60,6 +60,9 @@ public class AppModule {
 		// the first locale name is the default when there's no reasonable match).
 		configuration.add(SymbolConstants.SUPPORTED_LOCALES, "en");
 		configuration.add(HibernateSymbols.DEFAULT_CONFIGURATION, "false");
+		configuration.add(ComponentParameterConstants.GRIDCOLUMNS_SORTABLE_ASSET,"context:/images/sort-sortable.png");
+		configuration.add(ComponentParameterConstants.GRIDCOLUMNS_ASCENDING_ASSET,"context:/images/sort-asc.png");
+		configuration.add(ComponentParameterConstants.GRIDCOLUMNS_DESCENDING_ASSET,"context:/images/sort-desc.png");
 	}
 
 	/**

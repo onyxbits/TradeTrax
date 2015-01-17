@@ -224,10 +224,45 @@ public class StockPagedGridDataSource implements GridDataSource {
 		return ((Number) crit.setProjection(Projections.rowCount()).uniqueResult()).intValue();
 	}
 
+	private void attachOrder(Criteria crit, SortConstraint sc) {
+		// NOTE: the logic of the columns we allow to be sort is inverse of the
+		// database logic, hence asc becomes desc.
+		switch (sc.getColumnSort()) {
+			case ASCENDING: {
+				crit.addOrder(Order.desc(sc.getPropertyModel().getId()));
+				break;
+			}
+			case DESCENDING: {
+				crit.addOrder(Order.asc(sc.getPropertyModel().getId()));
+				break;
+			}
+			default: {
+			}
+		}
+	}
+
 	public void prepare(int startIndex, int endIndex, List<SortConstraint> sortConstraints) {
-		Criteria crit = session.createCriteria(Stock.class).addOrder(Order.desc("acquired"))
-				.addOrder(Order.desc("id")).setFirstResult(startIndex)
+		Criteria crit = session.createCriteria(Stock.class).setFirstResult(startIndex)
 				.setMaxResults(endIndex - startIndex + 1);
+		for (SortConstraint sc : sortConstraints) {
+			System.err.println(sc.getPropertyModel().getId());
+			if ("buyPrice".equals(sc.getPropertyModel().getId())) {
+				attachOrder(crit, sc);
+			}
+			if ("acquired".equals(sc.getPropertyModel().getId())) {
+				attachOrder(crit, sc);
+			}
+			if ("liquidated".equals(sc.getPropertyModel().getId())) {
+				attachOrder(crit, sc);
+			}
+			if ("sellPrice".equals(sc.getPropertyModel().getId())) {
+				attachOrder(crit, sc);
+			}
+		}
+		if (sortConstraints.size() == 0) {
+			crit.addOrder(Order.desc("acquired"));
+		}
+		crit.addOrder(Order.desc("id"));
 		if (nameRestriction != null) {
 			crit.createAlias("name", "name");
 			crit.add(nameRestriction);

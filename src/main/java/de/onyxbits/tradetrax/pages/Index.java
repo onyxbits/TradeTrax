@@ -199,6 +199,10 @@ public class Index {
 			PropertyModel nameColumn = model.getById(s);
 			nameColumn.sortable(false);
 		}
+		model.get("acquired").sortable(true);
+		model.get("buyPrice").sortable(true);
+		model.get("liquidated").sortable(true);
+		model.get("sellPrice").sortable(true);
 		return model;
 	}
 
@@ -266,6 +270,7 @@ public class Index {
 		filterLiquidation = null;
 		filterLocation = null;
 		filterComment = null;
+		ledger.reset();
 		// ... then just fall through to the success action.
 	}
 
