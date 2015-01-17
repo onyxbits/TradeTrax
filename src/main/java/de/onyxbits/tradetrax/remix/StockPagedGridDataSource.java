@@ -245,7 +245,6 @@ public class StockPagedGridDataSource implements GridDataSource {
 		Criteria crit = session.createCriteria(Stock.class).setFirstResult(startIndex)
 				.setMaxResults(endIndex - startIndex + 1);
 		for (SortConstraint sc : sortConstraints) {
-			System.err.println(sc.getPropertyModel().getId());
 			if ("buyPrice".equals(sc.getPropertyModel().getId())) {
 				attachOrder(crit, sc);
 			}
