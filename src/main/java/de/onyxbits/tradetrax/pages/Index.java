@@ -25,6 +25,7 @@ import org.hibernate.Session;
 import de.onyxbits.tradetrax.components.Layout;
 import de.onyxbits.tradetrax.entities.IdentUtil;
 import de.onyxbits.tradetrax.entities.Stock;
+import de.onyxbits.tradetrax.remix.AcquisitionFields;
 import de.onyxbits.tradetrax.remix.LedgerColumns;
 import de.onyxbits.tradetrax.remix.MoneyRepresentation;
 import de.onyxbits.tradetrax.remix.StockPagedGridDataSource;
@@ -66,7 +67,13 @@ public class Index {
 	private String buyVariant;
 
 	@Property
-	private String buyPrice;
+	private String buyCost;
+	
+	@Property
+	private String buyReturns;
+	
+	@Property
+	private String buyLocation;
 
 	@Property
 	private int buyAmount;
@@ -89,8 +96,14 @@ public class Index {
 	@Component(id = "buyAmount")
 	private TextField buyAmountField;
 
-	@Component(id = "buyPrice")
-	private TextField buyPriceField;
+	@Component(id = "buyCost")
+	private TextField buyCostField;
+	
+	@Component(id="buyReturns")
+	private TextField buyReturnsField;
+	
+	@Component(id="buyLocation")
+	private TextField buyLocationFiels;
 
 	@Component(id = "ledger")
 	private Grid ledger;
@@ -181,6 +194,14 @@ public class Index {
 	public String getLedgerColumns() {
 		return settingsStore.get(SettingsStore.TCLCOLUMNS,LedgerColumns.DEFAULT);
 	}
+	
+	public String styleFor(String tag) {
+		String tmp = settingsStore.get(SettingsStore.TCACFIELDS,AcquisitionFields.DEFAULT);
+		if (!tmp.contains(tag)) {
+			return "display:none;";
+		}
+		return "";
+	}
 
 	public void setupRender() {
 		buyAmount = 1;
@@ -217,10 +238,16 @@ public class Index {
 	public void onValidateFromBuyForm() {
 		MoneyRepresentation mr = new MoneyRepresentation(settingsStore);
 		try {
-			mr.userToDatabase(buyPrice, 1);
+			mr.userToDatabase(buyCost, 1);
 		}
 		catch (ParseException e) {
-			buyForm.recordError(buyPriceField, messages.get("invalid-numberformat"));
+			buyForm.recordError(buyCostField, messages.get("invalid-numberformat"));
+		}
+		try {
+			mr.userToDatabase(buyReturns, 1);
+		}
+		catch (ParseException e) {
+			buyForm.recordError(buyReturnsField, messages.get("invalid-numberformat"));
 		}
 	}
 
@@ -240,7 +267,8 @@ public class Index {
 		item.setName(IdentUtil.findName(session, buyName));
 		item.setVariant(IdentUtil.findVariant(session, buyVariant));
 		try {
-			item.setBuyPrice(mr.userToDatabase(buyPrice, 1));
+			item.setBuyPrice(mr.userToDatabase(buyCost, 1));
+			item.setSellPrice(mr.userToDatabase(buyReturns,1));
 		}
 		catch (ParseException e) {
 			// We already validated this
@@ -251,6 +279,7 @@ public class Index {
 		now.set(Calendar.MINUTE, 0);
 		now.set(Calendar.HOUR_OF_DAY, 0);
 
+		item.setLocation(buyLocation);
 		item.setUnitCount(buyAmount);
 		item.setAcquired(now.getTime());
 		session.persist(item);

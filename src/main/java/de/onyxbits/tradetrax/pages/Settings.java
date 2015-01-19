@@ -19,6 +19,7 @@ import org.apache.tapestry5.ioc.services.TypeCoercer;
 import org.apache.tapestry5.util.EnumSelectModel;
 import org.apache.tapestry5.util.EnumValueEncoder;
 
+import de.onyxbits.tradetrax.remix.AcquisitionFields;
 import de.onyxbits.tradetrax.remix.LedgerColumns;
 import de.onyxbits.tradetrax.remix.MoneyRepresentation;
 import de.onyxbits.tradetrax.services.SettingsStore;
@@ -78,13 +79,24 @@ public class Settings {
 
 	@Component(id = "tcForm")
 	private Form tcForm;
-	
+
 	@Property
 	private final ValueEncoder<LedgerColumns> ledgerColumnsEncoder = new EnumValueEncoder<LedgerColumns>(
 			typeCoercer, LedgerColumns.class);
 
 	@Property
 	private List<LedgerColumns> ledgerColumnsList = new Vector<LedgerColumns>();
+
+	@Property
+	private final SelectModel acquisitionFieldsModel = new EnumSelectModel(AcquisitionFields.class,
+			messages);
+
+	@Property
+	private final ValueEncoder<AcquisitionFields> acquisitionFieldsEncoder = new EnumValueEncoder<AcquisitionFields>(
+			typeCoercer, AcquisitionFields.class);
+
+	@Property
+	private List<AcquisitionFields> acquisitionFieldsList = new Vector<AcquisitionFields>();
 
 	@Property
 	private final SelectModel ledgerColumnsModel = new EnumSelectModel(LedgerColumns.class, messages);
@@ -118,6 +130,13 @@ public class Settings {
 		catch (Exception e) {
 
 		}
+		try {
+			acquisitionFieldsList = AcquisitionFields.fromCsv(settingsStore.get(
+					SettingsStore.TCACFIELDS, AcquisitionFields.DEFAULT));
+		}
+		catch (Exception e) {
+
+		}
 	}
 
 	public void onSuccessFromFinancialForm() {
@@ -130,14 +149,15 @@ public class Settings {
 		settingsStore.set(SettingsStore.HIDEINSTRUCTIONS, uiFormHideInstructions + "");
 		settingsStore.set(SettingsStore.SHOWCALCULATOR, uiFormShowCalculator + "");
 	}
-	
+
 	public void onValidateFromTcForm() {
-		if (ledgerColumnsList.size()==0) {
+		if (ledgerColumnsList.size() == 0) {
 			tcForm.recordError(messages.get("error-empty-ledger"));
 		}
 	}
 
 	public void onSuccessFromTcForm() {
 		settingsStore.set(SettingsStore.TCLCOLUMNS, LedgerColumns.toCsv(ledgerColumnsList));
+		settingsStore.set(SettingsStore.TCACFIELDS, AcquisitionFields.toCsv(acquisitionFieldsList));
 	}
 }

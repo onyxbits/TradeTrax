@@ -36,7 +36,12 @@ public interface SettingsStore {
 	/**
 	 * Columns to show for the tradecenter ledger.
 	 */
-	public static final String TCLCOLUMNS = "tclcolumns"; 
+	public static final String TCLCOLUMNS = "tclcolumns";
+	
+	/**
+	 * Fields to show on the tradecenter acquisition form.
+	 */
+	public static final String TCACFIELDS = "tcafields";
 	
 	/**
 	 * When the ledger was created

@@ -80,6 +80,10 @@
 			</legend>
 			<div class="fieldset-wrapper">
 				<t:errors />
+				<t:palette t:id="acquisitionFieldsList" encoder="acquisitionFieldsEncoder"
+					model="acquisitionFieldsModel" availableLabel="${message:acquisition-available}"
+					selectedLabel="${message:acquisition-selected}" />
+				<p />
 				<t:palette t:id="ledgerColumnsList" encoder="ledgerColumnsEncoder"
 					model="ledgerColumnsModel" reorder="true" availableLabel="${message:ledger-available}"
 					selectedLabel="${message:ledger-selected}" />

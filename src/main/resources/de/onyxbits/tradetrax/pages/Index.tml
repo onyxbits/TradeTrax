@@ -19,7 +19,7 @@
 								t:label="${message:buy-name-label}" />
 						</td>
 					</tr>
-					<tr>
+					<tr style="${styleFor('buyVariant')}">
 						<td>
 							<t:label for="buyVariant" title="${message:buy-variant-tooltip}" />
 						</td>
@@ -28,7 +28,8 @@
 								t:label="${message:buy-variant-label}" />
 						</td>
 					</tr>
-					<tr>
+
+					<tr style="${styleFor('buyAmount')}">
 						<td>
 							<t:label for="buyAmount" title="${message:buy-units-tooltip}" />
 						</td>
@@ -37,20 +38,40 @@
 								t:label="${message:buy-units-label}" />
 						</td>
 					</tr>
-					<tr>
+
+					<tr style="${styleFor('buyLocation')}">
 						<td>
-							<t:label for="buyPrice" title="${message:buy-price-tooltip}" />
+							<t:label for="buyLocation" title="${message:buy-location-tooltip}" />
 						</td>
 						<td>
-							<t:textfield class="numerical" t:id="buyPrice"
-								t:label="${message:buy-price-label}" />
+							<t:textfield t:id="buyLocation" t:label="${message:buy-location-label}" />
+						</td>
+					</tr>
+
+					<tr style="${styleFor('buyCost')}">
+						<td>
+							<t:label for="buyCost" title="${message:buy-cost-tooltip}" />
+						</td>
+						<td>
+							<t:textfield class="numerical" t:id="buyCost"
+								t:label="${message:buy-cost-label}" />
+							${currencySymbol}
+						</td>
+					</tr>
+					<tr style="${styleFor('buyReturns')}">
+						<td>
+							<t:label for="buyReturns" title="${message:buy-returns-tooltip}" />
+						</td>
+						<td>
+							<t:textfield class="numerical" t:id="buyReturns"
+								t:label="${message:buy-returns-label}" />
 							${currencySymbol}
 						</td>
 					</tr>
 				</table>
 				<t:submit type="submit" value="${message:acquire}" />
-				<div class="assetaction">
-					<t:pagelink page="edit/StockEditor">${message:full-form}</t:pagelink>
+				<div class="assetaction" style="${styleFor('buyAdvanced')}">
+					<t:pagelink page="edit/StockEditor">${message:advanced-form}</t:pagelink>
 				</div>
 			</div>
 		</fieldset>
