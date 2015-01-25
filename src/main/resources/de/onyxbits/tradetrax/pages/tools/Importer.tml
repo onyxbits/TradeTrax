@@ -28,7 +28,7 @@
 	</t:if>
 
 	<t:grid source="parsed" t:id="ledger" t:model="ledgerModel"
-		t:row="row" exclude="id,profit" add="location"
+		t:row="row" exclude="id,profit,comment,asset"
 		t:reorder="name,variant,location,acquired,buyprice,units,liquidated,sellprice">
 		<p:buyPriceCell>
 			${getRowBuyPrice()}
