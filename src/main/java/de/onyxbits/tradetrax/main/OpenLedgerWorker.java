@@ -37,6 +37,8 @@ public class OpenLedgerWorker extends SwingWorker<Exception, Object> {
 		}
 		catch (Exception ignore) {
 		}
+		standaloneServer.pushRecentList(ledgerConfig.getLedger());
+		standaloneServer.loadRecentList();
 		standaloneServer.setLoading(false);
 	}
 

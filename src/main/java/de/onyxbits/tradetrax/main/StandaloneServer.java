@@ -23,6 +23,7 @@ import java.util.ResourceBundle;
 import java.util.Vector;
 import java.util.prefs.Preferences;
 
+import javax.management.Query;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JEditorPane;
@@ -85,6 +86,7 @@ public class StandaloneServer extends JFrame implements Runnable, WindowListener
 	private JMenuItem openLedger;
 	private JCheckBoxMenuItem openPublic;
 	private JMenuItem quit;
+	private JMenuItem[] recent = new JMenuItem[5];
 
 	private static final String[] ICONRESOURCES = {
 			"appicon-16.png",
@@ -134,6 +136,12 @@ public class StandaloneServer extends JFrame implements Runnable, WindowListener
 		file.add(addLedger);
 		file.add(openLedger);
 		file.add(new JSeparator());
+		for (int i = 0; i < recent.length; i++) {
+			recent[i] = new JMenuItem((i + 1) + ": ");
+			file.add(recent[i]);
+			configureRecentListEntry(i,null);
+		}
+		file.add(new JSeparator());
 		file.add(openPublic);
 		file.add(new JSeparator());
 		file.add(quit);
@@ -162,7 +170,7 @@ public class StandaloneServer extends JFrame implements Runnable, WindowListener
 	 *           whatever server.start() chokes up
 	 */
 	protected void openLedger(LedgerConfig cfg) throws Exception {
-		
+
 		if (server != null && server.isRunning()) {
 			try {
 				server.stop();
@@ -172,7 +180,7 @@ public class StandaloneServer extends JFrame implements Runnable, WindowListener
 				e.printStackTrace();
 			}
 		}
-		
+
 		server = new Server(cfg.getAddress());
 		server.setStopAtShutdown(true);
 		WebAppContext app = new WebAppContext();
@@ -189,6 +197,75 @@ public class StandaloneServer extends JFrame implements Runnable, WindowListener
 		server.setHandler(app);
 		server.start();
 		openInBrowser();
+	}
+
+	/**
+	 * Put a new file on top of the recently loaded ledger list
+	 * 
+	 * @param ledger
+	 *          file to push into the list (will only be pushed if it is not yet
+	 *          in there).
+	 */
+	public void pushRecentList(File ledger) {
+		Vector<String> list = new Vector<String>();
+		Preferences prefs = Preferences.userNodeForPackage(PrefKeys.class);
+
+		for (int i = 0; i < recent.length; i++) {
+			String tmp = prefs.get(PrefKeys.RECENT + i, null);
+			if (ledger.getAbsolutePath().equals(tmp)) {
+				return; // It's in the list -> don't change it.
+			}
+			list.add(tmp);
+		}
+		list.add(0, ledger.getAbsolutePath());
+		for (int i = 0; i < recent.length; i++) {
+			if (list.get(i) == null) {
+				prefs.remove(PrefKeys.RECENT + i);
+			}
+			else {
+				prefs.put(PrefKeys.RECENT + i, list.get(i));
+			}
+		}
+	}
+
+	/**
+	 * (Re)Load the list of recent ledgers in the file menu.
+	 */
+	protected void loadRecentList() {
+		for (int i = 0; i < recent.length; i++) {
+			Preferences prefs = Preferences.userNodeForPackage(PrefKeys.class);
+			String fname = prefs.get(PrefKeys.RECENT + i, null);
+			if (fname == null) {
+				configureRecentListEntry(i,null);
+			}
+			else {
+				configureRecentListEntry(i,new File(fname));
+			}
+		}
+	}
+
+	/**
+	 * (Re-)Configure an item in the recent ledgers list
+	 * 
+	 * @param pos
+	 *          array index
+	 * @param file
+	 *          the file to add at the position or null to clear the position.
+	 */
+	private void configureRecentListEntry(int pos, File file) {
+		recent[pos].setEnabled(file != null);
+		recent[pos].setMnemonic(KeyStroke.getKeyStroke("" + (pos + 1)).getKeyCode());
+		if (file == null) {
+			recent[pos].setText((pos + 1) + ": ");
+			recent[pos].setToolTipText("");
+		}
+		else {
+			recent[pos].setText((pos + 1) + ": " + file.getName());
+			// NOTE: It is meaningful to show the pathname as tooltip, so we get a
+			// free ride here, abusing the tooltip as a datastorage to get the path to
+			// the eventhandler. It's not clean, but it saves us some code.
+			recent[pos].setToolTipText(file.getAbsolutePath());
+		}
 	}
 
 	protected void setLoadingName(String name) {
@@ -220,7 +297,7 @@ public class StandaloneServer extends JFrame implements Runnable, WindowListener
 			LedgerConfig cfg = new LedgerConfig();
 			File f = new File(wac.getInitParameter("ledger"));
 			cfg.setLedger(f);
-			setTitle("TradeTrax: "+f.getName());
+			setTitle("TradeTrax: " + f.getName());
 			openPublic.setSelected(cfg.isPublicAccess());
 		}
 	}
@@ -262,6 +339,10 @@ public class StandaloneServer extends JFrame implements Runnable, WindowListener
 		addLedger.addActionListener(this);
 		openLedger.addActionListener(this);
 		openPublic.addActionListener(this);
+		for (JMenuItem mi : recent) {
+			mi.addActionListener(this);
+			mi.setEnabled(false);
+		}
 		pack();
 		setSize(300, 200);
 		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -321,6 +402,14 @@ public class StandaloneServer extends JFrame implements Runnable, WindowListener
 			if (jfc.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
 				LedgerConfig cfg = new LedgerConfig();
 				cfg.setLedger(jfc.getSelectedFile());
+				new OpenLedgerWorker(this, cfg).execute();
+			}
+		}
+
+		for (JMenuItem mi : recent) {
+			if (mi == src) {
+				LedgerConfig cfg = new LedgerConfig();
+				cfg.setLedger(new File(mi.getToolTipText()));
 				new OpenLedgerWorker(this, cfg).execute();
 			}
 		}
