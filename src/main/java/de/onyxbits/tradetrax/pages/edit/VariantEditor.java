@@ -22,6 +22,7 @@ import org.hibernate.criterion.Restrictions;
 import de.onyxbits.tradetrax.entities.Stock;
 import de.onyxbits.tradetrax.entities.Variant;
 import de.onyxbits.tradetrax.pages.Index;
+import de.onyxbits.tradetrax.pages.tools.LabelManager;
 import de.onyxbits.tradetrax.services.EventLogger;
 
 public class VariantEditor {
@@ -104,7 +105,7 @@ public class VariantEditor {
 		else {
 			doSave();
 		}
-		return Index.class;
+		return LabelManager.class;
 	}
 	
 	protected void doSave() {

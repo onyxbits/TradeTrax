@@ -23,7 +23,6 @@ import java.util.ResourceBundle;
 import java.util.Vector;
 import java.util.prefs.Preferences;
 
-import javax.management.Query;
 import javax.swing.ImageIcon;
 import javax.swing.JCheckBoxMenuItem;
 import javax.swing.JEditorPane;

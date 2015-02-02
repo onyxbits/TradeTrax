@@ -23,6 +23,7 @@ import de.onyxbits.tradetrax.entities.Bookmark;
 import de.onyxbits.tradetrax.entities.Name;
 import de.onyxbits.tradetrax.entities.Stock;
 import de.onyxbits.tradetrax.pages.Index;
+import de.onyxbits.tradetrax.pages.tools.LabelManager;
 import de.onyxbits.tradetrax.services.EventLogger;
 
 /**
@@ -123,7 +124,7 @@ public class NameEditor {
 		else {
 			doSave();
 		}
-		return Index.class;
+		return LabelManager.class;
 	}
 
 	private void doSave() {
