@@ -3,6 +3,7 @@ package de.onyxbits.tradetrax.pages.tools;
 import java.io.StringReader;
 import java.sql.Timestamp;
 import java.text.DateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Vector;
@@ -243,6 +244,14 @@ public class Importer {
 	}
 
 	private Date parseDate(String string) {
+		if (string!=null && string.length()==0) {
+			Calendar now = Calendar.getInstance();
+			now.set(Calendar.MILLISECOND, 0);
+			now.set(Calendar.SECOND, 0);
+			now.set(Calendar.MINUTE, 0);
+			now.set(Calendar.HOUR_OF_DAY, 0);
+			return now.getTime();
+		}
 		try {
 			return Timestamp.valueOf(string);
 		}
