@@ -48,15 +48,15 @@
 	<t:if test="stocks">
 	<p />
 	${message:mergetitle}
-	<table t:type="grid" model="ledgerModel" source="stocks" rowsPerPage="40" pagerPosition="top" reorder="name,id,acquired,buyprice,units,liquidated,sellprice" row="wrappedstock" exclude="profit,variant" add="actions">
-		<p:nameCell>
+	<table t:type="grid" model="ledgerModel" source="stocks" rowsPerPage="40" pagerPosition="top" reorder="asset,id,acquired,buyprice,units,liquidated,sellprice" row="wrappedstock" exclude="profit,variant,name,location,comment" add="actions">
+		<p:assetCell>
 			${wrappedstock.name}
 			<t:if test="wrappedstock.variant">
 				<div class="assetsubtype">
 					${wrappedstock.variant}
 				</div>
 			</t:if>
-		</p:nameCell>
+		</p:assetCell>
 		<p:idCell>
 			<t:pagelink page="edit/StockEditor" context="${wrappedstock.id}">${wrappedstock.id}</t:pagelink>
 		</p:idCell>
