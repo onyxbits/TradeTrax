@@ -10,7 +10,6 @@ import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.beaneditor.PropertyModel;
 import org.apache.tapestry5.beaneditor.Validate;
 import org.apache.tapestry5.corelib.components.DateField;
-import org.apache.tapestry5.corelib.components.EventLink;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Grid;
 import org.apache.tapestry5.corelib.components.Select;
@@ -179,12 +178,6 @@ public class Index {
 	@Component(id = "filterLiquidationSpan")
 	private Select filterLiquidationSpanField;
 
-	@Component(id = "filterByName")
-	private EventLink filterByNameLink;
-
-	@Component(id = "filterByVariant")
-	private EventLink filterByVariantLink;
-
 	@Inject
 	private SettingsStore settingsStore;
 
@@ -249,14 +242,6 @@ public class Index {
 		catch (ParseException e) {
 			buyForm.recordError(buyReturnsField, messages.get("invalid-numberformat"));
 		}
-	}
-
-	public Object onFilterByVariant(String name) {
-		return this.withNoFilters().withFilterVariant(name);
-	}
-
-	public Object onFilterByName(String name) {
-		return this.withNoFilters().withFilterName(name);
 	}
 
 	@CommitAfter

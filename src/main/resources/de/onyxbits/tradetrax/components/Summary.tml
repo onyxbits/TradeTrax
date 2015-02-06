@@ -1,0 +1,37 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	<a t:id="filterbyname" context="${wrappedstock.name}">
+		<div class="assettype">
+			<t:if test="wrappedstock.liquidated">
+				<strike>${wrappedstock.name}</strike>
+				<p:else>
+					${wrappedstock.name}
+				</p:else>
+			</t:if>
+		</div>
+	</a>
+	<t:if test="wrappedstock.variant">
+		<div class="assetsubtype">
+			<a t:id="filterbyvariant" context="${wrappedstock.variant}">
+				<t:if test="wrappedstock.liquidated">
+					<strike>${wrappedstock.variant}</strike>
+					<p:else>
+						${wrappedstock.variant}
+					</p:else>
+				</t:if>
+			</a>
+		</div>
+	</t:if>
+	<div class="assetannotations">
+		<t:if test="wrappedstock.stock.comment">
+			<t:pagelink page="edit/StockEditor" context="${wrappedstock.id}">
+				<img src="${asset:context:images/comment-16.png}" title="${wrappedstock.stock.comment}" />
+			</t:pagelink>
+		</t:if>
+		<t:if test="wrappedstock.stock.location">
+			<t:pagelink page="edit/StockEditor" context="${wrappedstock.id}">
+				<img src="${asset:context:images/location-16.png}" title="${wrappedstock.stock.location}" />
+			</t:pagelink>
+		</t:if>
+	</div>
+</t:container>
