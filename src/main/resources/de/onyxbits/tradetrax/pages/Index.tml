@@ -84,7 +84,7 @@
 			t:source="stocks" t:rowsPerPage="25" t:pagerPosition="bottom"
 			t:include="${ledgercolumns}" t:row="wrappedstock">
 			<p:assetCell>
-				<t:Summary wrappedstock="wrappedstock" />
+				<t:SummaryValue wrappedstock="wrappedstock" />
 			</p:assetCell>
 			<p:idCell>
 				<t:pagelink page="edit/StockEditor" context="wrappedstock.id">${wrappedstock.id}

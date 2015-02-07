@@ -15,7 +15,7 @@ import de.onyxbits.tradetrax.remix.WrappedStock;
  * @author patrick
  * 
  */
-public class Summary {
+public class SummaryValue {
 	
 	@Component(id = "filterByName")
 	private EventLink filterByNameLink;

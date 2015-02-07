@@ -65,7 +65,7 @@
 			reorder="asset,id,acquired,buyprice,units,liquidated,sellprice" row="wrappedstock"
 			exclude="profit,variant,name,location,comment" add="actions">
 			<p:assetCell>
-				<t:Summary wrappedstock="wrappedstock" />
+				<t:SummaryValue wrappedstock="wrappedstock" />
 			</p:assetCell>
 			<p:idCell>
 				<t:pagelink page="edit/StockEditor" context="${wrappedstock.id}">${wrappedstock.id}
