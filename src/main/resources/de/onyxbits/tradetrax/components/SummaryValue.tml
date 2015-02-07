@@ -1,36 +1,36 @@
 <t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
 	xmlns:p="tapestry:parameter">
-	<a t:id="filterbyname" context="${wrappedstock.name}">
+	<a t:id="filterbyname" context="${stock.name.label}">
 		<div class="assettype">
-			<t:if test="wrappedstock.liquidated">
-				<strike>${wrappedstock.name}</strike>
+			<t:if test="stock.liquidated">
+				<strike>${stock.name.label}</strike>
 				<p:else>
-					${wrappedstock.name}
+					${stock.name.label}
 				</p:else>
 			</t:if>
 		</div>
 	</a>
-	<t:if test="wrappedstock.variant">
+	<t:if test="stock.variant">
 		<div class="assetsubtype">
-			<a t:id="filterbyvariant" context="${wrappedstock.variant}">
-				<t:if test="wrappedstock.liquidated">
-					<strike>${wrappedstock.variant}</strike>
+			<a t:id="filterbyvariant" context="${stock.variant.label}">
+				<t:if test="stock.liquidated">
+					<strike>${stock.variant.label}</strike>
 					<p:else>
-						${wrappedstock.variant}
+						${stock.variant.label}
 					</p:else>
 				</t:if>
 			</a>
 		</div>
 	</t:if>
 	<div class="assetannotations">
-		<t:if test="wrappedstock.stock.comment">
-			<t:pagelink page="edit/StockEditor" context="${wrappedstock.id}">
-				<img src="${asset:context:images/comment-16.png}" title="${wrappedstock.stock.comment}" />
+		<t:if test="stock.comment">
+			<t:pagelink page="edit/StockEditor" context="${stock.id}">
+				<img src="${asset:context:images/comment-16.png}" title="${stock.comment}" />
 			</t:pagelink>
 		</t:if>
-		<t:if test="wrappedstock.stock.location">
-			<t:pagelink page="edit/StockEditor" context="${wrappedstock.id}">
-				<img src="${asset:context:images/location-16.png}" title="${wrappedstock.stock.location}" />
+		<t:if test="stock.location">
+			<t:pagelink page="edit/StockEditor" context="${stock.id}">
+				<img src="${asset:context:images/location-16.png}" title="${stock.location}" />
 			</t:pagelink>
 		</t:if>
 	</div>

@@ -6,8 +6,8 @@ import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.corelib.components.EventLink;
 
+import de.onyxbits.tradetrax.entities.Stock;
 import de.onyxbits.tradetrax.pages.Index;
-import de.onyxbits.tradetrax.remix.WrappedStock;
 
 /**
  * Prints a summary of a {@link WrappedStock}.
@@ -25,7 +25,7 @@ public class SummaryValue {
 
 	@Property
 	@Parameter(required=true)
-	private WrappedStock wrappedStock;
+	private Stock stock;
 	
 	@InjectPage
 	private Index index;
