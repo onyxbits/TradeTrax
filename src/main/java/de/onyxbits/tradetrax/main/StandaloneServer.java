@@ -278,10 +278,12 @@ public class StandaloneServer extends JFrame implements Runnable, WindowListener
 	 *          true to show the loading bar.
 	 */
 	protected void setLoading(boolean busy) {
-		quit.setEnabled(!busy);
 		addLedger.setEnabled(!busy);
 		openLedger.setEnabled(!busy);
 		openPublic.setEnabled(!busy);
+		for (JMenuItem mi:recent) {
+			mi.setEnabled(!busy);
+		}
 		JPanel content = (JPanel) getContentPane();
 		CardLayout cl = (CardLayout) content.getLayout();
 		if (busy) {
