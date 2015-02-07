@@ -46,7 +46,8 @@
 					<div class="fieldset-description"></div>
 					<t:errors />
 
-					<t:label for="sizeField" />:
+					<t:label for="sizeField" />
+					:
 					<t:textfield class="numerical" t:id="sizeField"
 						t:label="${message:splitlabel}" value="size" size="6" />
 				  	&nbsp;
@@ -70,6 +71,12 @@
 				<t:pagelink page="edit/StockEditor" context="${wrappedstock.id}">${wrappedstock.id}
 				</t:pagelink>
 			</p:idCell>
+			<p:acquiredCell>
+				<t:DateValue date="wrappedstock.stock.acquired" />
+			</p:acquiredCell>
+			<p:liquidatedCell>
+				<t:DateValue date="wrappedstock.stock.liquidated" />
+			</p:liquidatedCell>
 			<p:actionsCell>
 				<t:eventlink t:event="Merge" t:context="${wrappedstock.id}">${message:merge}
 				</t:eventlink>

@@ -84,7 +84,7 @@
 			t:source="stocks" t:rowsPerPage="25" t:pagerPosition="bottom"
 			t:include="${ledgercolumns}" t:row="wrappedstock">
 			<p:assetCell>
-				<t:Summary wrappedstock="wrappedstock"/>
+				<t:Summary wrappedstock="wrappedstock" />
 			</p:assetCell>
 			<p:idCell>
 				<t:pagelink page="edit/StockEditor" context="wrappedstock.id">${wrappedstock.id}
@@ -94,9 +94,12 @@
 				<t:pagelink page="edit/UnitsEditor" context="wrappedstock.id">${wrappedstock.units}
 				</t:pagelink>
 			</p:unitsCell>
+			<p:acquiredCell>
+				<t:DateValue date="wrappedstock.stock.acquired" />
+			</p:acquiredCell>
 			<p:liquidatedCell>
 				<t:if test="wrappedstock.liquidated">
-					${wrappedstock.liquidated}
+					<t:DateValue date="wrappedstock.stock.liquidated" />
 					<p:else>
 						<t:pagelink page="edit/LiquidateEditor" context="wrappedstock.id">${message:liquidate-now}
 						</t:pagelink>
