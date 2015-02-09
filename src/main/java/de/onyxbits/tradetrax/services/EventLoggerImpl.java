@@ -26,7 +26,9 @@ public class EventLoggerImpl implements EventLogger {
 	public void liquidated(Stock stock) {
 		LogEntry e = new LogEntry();
 		e.setTimestamp(new Date());
-		e.setDetails(messages.format("log-event-liquidated-details", stock.getId()));
+		String profit = moneyRepresentation.databaseToUser((stock.getSellPrice() - stock.getBuyPrice())
+				* stock.getUnitCount(), false, true);
+		e.setDetails(messages.format("log-event-liquidated-details", stock.getId(), profit));
 		e.setWhat(messages.get("log-event-liquidated"));
 		session.beginTransaction();
 		session.save(e);
