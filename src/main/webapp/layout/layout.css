@@ -1219,3 +1219,9 @@ ul.threecolumnlist {
 #table-scroll {
   overflow:auto;  
 }
+
+div.jumplink {
+  font-size: small;
+  float: right;
+  display: inline;
+}

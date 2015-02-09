@@ -67,10 +67,10 @@ public class Index {
 
 	@Property
 	private String buyCost;
-	
+
 	@Property
 	private String buyReturns;
-	
+
 	@Property
 	private String buyLocation;
 
@@ -97,11 +97,11 @@ public class Index {
 
 	@Component(id = "buyCost")
 	private TextField buyCostField;
-	
-	@Component(id="buyReturns")
+
+	@Component(id = "buyReturns")
 	private TextField buyReturnsField;
-	
-	@Component(id="buyLocation")
+
+	@Component(id = "buyLocation")
 	private TextField buyLocationFiels;
 
 	@Component(id = "ledger")
@@ -183,13 +183,16 @@ public class Index {
 
 	@Inject
 	private EventLogger eventLogger;
-	
+
+	@Property
+	private boolean showJumplinks;
+
 	public String getLedgerColumns() {
-		return settingsStore.get(SettingsStore.TCLCOLUMNS,LedgerColumns.DEFAULT);
+		return settingsStore.get(SettingsStore.TCLCOLUMNS, LedgerColumns.DEFAULT);
 	}
-	
+
 	public String styleFor(String tag) {
-		String tmp = settingsStore.get(SettingsStore.TCACFIELDS,AcquisitionFields.DEFAULT);
+		String tmp = settingsStore.get(SettingsStore.TCACFIELDS, AcquisitionFields.DEFAULT);
 		if (!tmp.contains(tag)) {
 			return "display:none;";
 		}
@@ -203,9 +206,11 @@ public class Index {
 				.withVariant(filterVariant).withState(filterState).withLocation(filterLocation)
 				.withComment(filterComment).withAcquisition(filterAcquisition, filterAcquisitionSpan)
 				.withLiquidation(filterLiquidation, filterLiquidationSpan);
-		if (!showFilter && stocks.getAvailableRows()>25) {
-			showFilter=true;
+		int count = stocks.getAvailableRows();
+		if (!showFilter && count >= ledger.getRowsPerPage()) {
+			showFilter = true;
 		}
+		showJumplinks = count > 10;
 		currencySymbol = mr.getCurrencySymbol();
 	}
 
@@ -256,7 +261,7 @@ public class Index {
 		item.setVariant(IdentUtil.findVariant(session, buyVariant));
 		try {
 			item.setBuyPrice(mr.userToDatabase(buyCost, 1));
-			item.setSellPrice(mr.userToDatabase(buyReturns,1));
+			item.setSellPrice(mr.userToDatabase(buyReturns, 1));
 		}
 		catch (ParseException e) {
 			// We already validated this

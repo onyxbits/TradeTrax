@@ -70,6 +70,7 @@
 		</script>
 	</head>
 	<body>
+		<a name="top"/>
 		<div id="wrapper">
 			<header id="header" class="clearfix">
 				<t:if test="ledgerTitle">
@@ -192,6 +193,7 @@
 				</div>
 			</footer>
 		</div>
+		<a name="bottom"/>
 	</body>
 </html>
 
