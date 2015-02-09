@@ -203,6 +203,9 @@ public class Index {
 				.withVariant(filterVariant).withState(filterState).withLocation(filterLocation)
 				.withComment(filterComment).withAcquisition(filterAcquisition, filterAcquisitionSpan)
 				.withLiquidation(filterLiquidation, filterLiquidationSpan);
+		if (!showFilter && stocks.getAvailableRows()>25) {
+			showFilter=true;
+		}
 		currencySymbol = mr.getCurrencySymbol();
 	}
 
