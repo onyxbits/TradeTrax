@@ -29,7 +29,7 @@
 	</table>
 	<p />
 
-	<table t:id="ledger" t:type="grid" t:source="usage" t:model="tallyModel"
+	<table t:id="ledger" t:type="grid" t:source="usage" t:model="tallyModel" rowsPerPage="50"
 		reorder="name,assetCount,totalUnits,totalInvestment,totalProfit"
 		exclude="totalInvestmentCounter,totalProfitCounter" t:row="row">
 		<p:nameCell>
