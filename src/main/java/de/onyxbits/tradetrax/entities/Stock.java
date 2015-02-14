@@ -209,6 +209,26 @@ public class Stock implements Serializable {
 	}
 
 	/**
+	 * Calculate the total aquisition cost, disregarding whether or not the asset
+	 * has been acquired.
+	 * 
+	 * @return buyprice times unitcount
+	 */
+	public long calcTotalCost() {
+		return buyPrice * unitCount;
+	}
+
+	/**
+	 * Calculate the total returns, disregarding whetehr or not the asset has been
+	 * liquidated.
+	 * 
+	 * @return sellprice times unit
+	 */
+	public long calcTotalReturns() {
+		return sellPrice * unitCount;
+	}
+
+	/**
 	 * Calculate the financial impact of the stock in its current state on the
 	 * owner's wallet.
 	 * 

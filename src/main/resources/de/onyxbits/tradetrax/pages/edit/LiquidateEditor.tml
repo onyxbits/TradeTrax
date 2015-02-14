@@ -36,14 +36,14 @@
 			</tr>
 			<tr>
 				<th>${message:cost-label}:</th>
-				<td class="${buyPriceClass}">${buyPrice}</td>
+				<td><t:moneyvalue amount="${stock.buyprice}"/></td>
 			</tr>
 
 
 			<t:if test="totalCost">
 				<tr>
 					<th>${message:totalcost-label}:</th>
-					<td class="${totalCostClass}">${totalcost}</td>
+					<td><t:moneyvalue amount="${stock.calcTotalCost()}"/></td>
 				</tr>
 			</t:if>
 			<t:if test="stock.location">
