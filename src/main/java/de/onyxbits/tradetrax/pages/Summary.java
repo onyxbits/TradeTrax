@@ -20,7 +20,6 @@ import org.apache.tapestry5.services.BeanModelSource;
 import org.hibernate.Session;
 
 import de.onyxbits.tradetrax.entities.Stock;
-import de.onyxbits.tradetrax.remix.MoneyRepresentation;
 import de.onyxbits.tradetrax.remix.TalliedStock;
 import de.onyxbits.tradetrax.services.SettingsStore;
 
@@ -111,7 +110,7 @@ public class Summary {
 		// in a background service and cache the results.
 		usage = new Vector<TalliedStock>();
 		tallied = new HashMap<String, TalliedStock>();
-		MoneyRepresentation mr = new MoneyRepresentation(settingsStore);
+		@SuppressWarnings("unchecked")
 		List<Stock> lst = session.createCriteria(Stock.class).list();
 		for (Stock stock : lst) {
 			if (stock.getAcquired() != null) {
