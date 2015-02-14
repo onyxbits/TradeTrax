@@ -22,16 +22,6 @@ import de.onyxbits.tradetrax.services.SettingsStore;
 public class MoneyRepresentation {
 
 	/**
-	 * CSS class to use for formating a loss
-	 */
-	public static final String LOSSCLASS = "lossformat";
-
-	/**
-	 * CSS class to use for formating a profit
-	 */
-	public static final String PROFITCLASS = "profitformat";
-
-	/**
 	 * Scaling factor
 	 */
 	public static final long FACTOR = 10 * 10 * 10 * 10;

@@ -73,18 +73,7 @@ public class LiquidateEditor {
 	private String currencySymbol;
 
 	@Property
-	private String totalCost;
-
-	@Property
-	private String totalCostClass = MoneyRepresentation.PROFITCLASS;
-
-	@Property
 	private boolean splitable;
-
-	@Property
-	private String buyPrice;
-	@Property
-	private String buyPriceClass = MoneyRepresentation.PROFITCLASS;
 
 	protected void onActivate(Long stockId) {
 		this.stockId = stockId;
@@ -95,19 +84,8 @@ public class LiquidateEditor {
 		MoneyRepresentation mr = new MoneyRepresentation(settingsStore);
 		currencySymbol = mr.getCurrencySymbol();
 		if (stock != null) {
-			sellPrice = mr.databaseToUser(stock.getSellPrice()*stock.getUnitCount(),false,false);
-			if (stock.getAcquired() != null) {
-				splitable = stock.getUnitCount() > 1;
-				long amount = stock.getBuyPrice() * stock.getUnitCount();
-				totalCost = mr.databaseToUser(amount, false, true);
-				if (amount < 0) {
-					totalCostClass = MoneyRepresentation.LOSSCLASS;
-				}
-				buyPrice = mr.databaseToUser(stock.getBuyPrice(), false, true);
-				if (stock.getBuyPrice() < 0) {
-					buyPriceClass = MoneyRepresentation.LOSSCLASS;
-				}
-			}
+			sellPrice = mr.databaseToUser(stock.getSellPrice() * stock.getUnitCount(), false, false);
+			splitable = stock.getUnitCount() > 1;
 		}
 	}
 

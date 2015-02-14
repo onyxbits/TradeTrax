@@ -1,5 +1,6 @@
-<html t:type="layout" title="${message:title}" instructions="${message:instructions}" helpurl="${message:helpurl}"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter">
+<html t:type="layout" title="${message:title}" instructions="${message:instructions}"
+	helpurl="${message:helpurl}" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+	xmlns:p="tapestry:parameter">
 
 	<t:if test="stock">
 		<p:else>
@@ -31,18 +32,6 @@
 					</t:if>
 				</td>
 			</tr>
-			<tr>
-				<th>${message:cost-label}:</th>
-				<td><t:moneyvalue amount="${stock.buyprice}"/></td>
-			</tr>
-
-
-			<t:if test="totalCost">
-				<tr>
-					<th>${message:totalcost-label}:</th>
-					<td><t:moneyvalue amount="${stock.calcTotalCost()}"/></td>
-				</tr>
-			</t:if>
 			<t:if test="stock.location">
 				<tr>
 					<th>${message:location-label}:</th>
@@ -55,6 +44,20 @@
 					<td>${stock.comment}</td>
 				</tr>
 			</t:if>
+			<tr>
+				<th>${message:cost-label}:</th>
+				<td>
+					<t:moneyvalue amount="${stock.buyprice}" />
+				</td>
+			</tr>
+
+			<tr>
+				<th>${message:totalcost-label}:</th>
+				<td>
+					<t:moneyvalue amount="${stock.calcTotalCost()}" />
+				</td>
+			</tr>
+
 		</table>
 		<p />
 		<t:form t:id="sellForm">
@@ -66,7 +69,8 @@
 					<t:errors />
 					<select t:type="select" t:id="methods"></select>
 					&nbsp;
-					<t:textfield class="numerical" t:id="sellPrice" name="sellprice" onclick="SelectAll('sellPrice');"/>
+					<t:textfield class="numerical" t:id="sellPrice" name="sellprice"
+						onclick="SelectAll('sellPrice');" />
 					&nbsp;
 					${currencySymbol}
 					<p />

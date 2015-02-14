@@ -41,17 +41,6 @@ public class WrappedStock {
 	@Property
 	public int units;
 
-	@NonVisual
-	@Property
-	public String buyPriceClass = MoneyRepresentation.PROFITCLASS;
-
-	@NonVisual
-	@Property
-	public String sellPriceClass = MoneyRepresentation.PROFITCLASS;
-
-	@NonVisual
-	@Property
-	public String profitClass = MoneyRepresentation.PROFITCLASS;
 
 	@NonVisual
 	@Property
@@ -99,23 +88,14 @@ public class WrappedStock {
 		if (stock.getAcquired() != null) {
 			buyPrice = moneyConverter.databaseToUser(stock.getBuyPrice(), false, false);
 			acquired = dateFormat.format(stock.getAcquired());
-			if (stock.getBuyPrice() < 0) {
-				buyPriceClass = MoneyRepresentation.LOSSCLASS;
-			}
 		}
 		if (stock.getLiquidated() != null) {
 			sellPrice = moneyConverter.databaseToUser(stock.getSellPrice(), false, false);
 			liquidated = dateFormat.format(stock.getLiquidated());
-			if (stock.getSellPrice() < 0) {
-				sellPriceClass = MoneyRepresentation.LOSSCLASS;
-			}
 		}
 		if (acquired != null && liquidated != null) {
 			long amount = (stock.getSellPrice() - stock.getBuyPrice()) * stock.getUnitCount();
 			profit = moneyConverter.databaseToUser(amount, false, false);
-			if (amount < 0) {
-				profitClass = MoneyRepresentation.LOSSCLASS;
-			}
 		}
 		comment = stock.getComment();
 		location = stock.getLocation();
