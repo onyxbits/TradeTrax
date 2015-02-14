@@ -15,6 +15,7 @@ import de.onyxbits.tradetrax.entities.Stock;
  * @author patrick
  * 
  */
+@Deprecated
 public class WrappedStock {
 
 	@Property
