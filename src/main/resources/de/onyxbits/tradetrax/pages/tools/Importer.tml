@@ -29,29 +29,29 @@
 	</t:if>
 
 	<t:grid source="parsed" t:id="ledger" t:model="ledgerModel"
-		t:row="row" exclude="id,profit,comment,asset"
-		t:reorder="name,variant,location,acquired,buyprice,units,liquidated,sellprice">
-		<p:buyPriceCell>
-			${getRowBuyPrice()}
-		</p:buyPriceCell>
-		<p:sellPriceCell>
-			${getRowSellPrice()}
-		</p:sellPriceCell>
+		t:row="row" exclude="id,profit,comment,asset" add="name,variant"
+		t:reorder="name,variant,location,acquired,buyprice,unitCount,liquidated,sellprice">
+		<p:nameCell>
+			<t:if test="row.name">${row.name.label}</t:if>
+		</p:nameCell>
+		<p:variantCell>
+			<t:if test="row.variant">${row.variant.label}</t:if>
+		</p:variantCell>
 		<p:acquiredCell>
-			<t:DateValue date="row.stock.acquired" />
+			<t:DateValue date="row.acquired" />
 		</p:acquiredCell>
 		<p:liquidatedCell>
-			<t:DateValue date="row.stock.liquidated" />
+			<t:DateValue date="row.liquidated" />
 		</p:liquidatedCell>
 		<p:buypriceCell>
-			<t:MoneyValue amount="${row.stock.buyPrice}" addsymbol="false"/>
+			<t:MoneyValue amount="row.buyPrice" addsymbol="false" />
 		</p:buypriceCell>
 		<p:sellpriceCell>
-			<t:MoneyValue amount="${row.stock.sellPrice}" addsymbol="false"/>
+			<t:MoneyValue amount="row.sellPrice" addsymbol="false" />
 		</p:sellpriceCell>
 		<p:empty>
 		</p:empty>
-		<p:locationCell>${row.stock.location}</p:locationCell>
+		<p:locationCell>${row.location}</p:locationCell>
 	</t:grid>
 	<p />
 	<t:if test="parsed">

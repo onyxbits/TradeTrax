@@ -33,7 +33,6 @@ import de.onyxbits.tradetrax.entities.Stock;
 import de.onyxbits.tradetrax.entities.Variant;
 import de.onyxbits.tradetrax.pages.Index;
 import de.onyxbits.tradetrax.remix.MoneyRepresentation;
-import de.onyxbits.tradetrax.remix.WrappedStock;
 import de.onyxbits.tradetrax.services.EventLogger;
 import de.onyxbits.tradetrax.services.SettingsStore;
 
@@ -74,37 +73,20 @@ public class Importer {
 	private String rawcsv;
 
 	@Property
-	private WrappedStock row;
+	private Stock row;
 
 	private MoneyRepresentation moneyRepresentation;
 	private DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM);
 
 	@Persist
-	private List<WrappedStock> parsed;
-	
+	@Property
+	private List<Stock> parsed;
+
 	@Inject
 	private EventLogger eventLogger;
 
-	public List<WrappedStock> getParsed() {
-		return parsed;
-	}
-
-	public String getRowBuyPrice() {
-		if (row != null && moneyRepresentation != null) {
-			return moneyRepresentation.databaseToUser(row.stock.getBuyPrice(), false, false);
-		}
-		return null;
-	}
-
-	public String getRowSellPrice() {
-		if (row != null && moneyRepresentation != null) {
-			return moneyRepresentation.databaseToUser(row.stock.getSellPrice(), false, false);
-		}
-		return null;
-	}
-	
-	public BeanModel<WrappedStock> getLedgerModel() {
-		BeanModel<WrappedStock> model = ledgerSource.createDisplayModel(WrappedStock.class, messages);
+	public BeanModel<Stock> getLedgerModel() {
+		BeanModel<Stock> model = ledgerSource.createDisplayModel(Stock.class, messages);
 		List<String> lst = model.getPropertyNames();
 		for (String s : lst) {
 			PropertyModel nameColumn = model.getById(s);
@@ -114,22 +96,21 @@ public class Importer {
 	}
 
 	public void setupRender() {
-		moneyRepresentation = new MoneyRepresentation(settingsStore);
 		if (rawcsv == null || rawcsv.length() == 0) {
 			rawcsv = "name,variant,location,acquired,cost,units,liquidated,returns";
 		}
 	}
 
 	public Importer onSuccessFromCsvForm() {
-		moneyRepresentation = new MoneyRepresentation(settingsStore);
 		CSVParser parser = null;
-		parsed = new Vector<WrappedStock>();
+		parsed = new Vector<Stock>();
+		moneyRepresentation = new MoneyRepresentation(settingsStore);
 		try {
 			parser = new CSVParser(new StringReader(rawcsv), CSVFormat.EXCEL.withHeader());
 			for (CSVRecord rec : parser) {
 				Stock stock = recordToStock(rec);
 				if (stock != null) {
-					parsed.add(new WrappedStock(stock, moneyRepresentation));
+					parsed.add(stock);
 				}
 			}
 		}
@@ -151,18 +132,18 @@ public class Importer {
 			return this;
 		}
 		int count = 0;
-		for (WrappedStock stock : parsed) {
+		for (Stock stock : parsed) {
 			// We have to repack name/variant here because it is highly likely that
 			// the CSV contains a label several times which is not yet known to the
 			// database. So we need a save() after every findName() to make sure we
 			// don't violate the unique constraint.
-			stock.stock.setName(IdentUtil.findName(session, stock.stock.getName().getLabel()));
-			Variant v = stock.stock.getVariant();
+			stock.setName(IdentUtil.findName(session, stock.getName().getLabel()));
+			Variant v = stock.getVariant();
 			if (v != null) {
-				stock.stock.setVariant(IdentUtil.findVariant(session, stock.stock.getVariant().getLabel()));
+				stock.setVariant(IdentUtil.findVariant(session, stock.getVariant().getLabel()));
 			}
-			session.save(stock.stock);
-			eventLogger.acquired(stock.stock);
+			session.save(stock);
+			eventLogger.acquired(stock);
 			count++;
 		}
 		alertManager.alert(Duration.SINGLE, Severity.SUCCESS, messages.format("success", count));
@@ -239,12 +220,13 @@ public class Importer {
 			return moneyRepresentation.userToDatabase(string, 1);
 		}
 		catch (Exception e) {
+			e.printStackTrace();
 		}
 		return 0;
 	}
 
 	private Date parseDate(String string) {
-		if (string!=null && string.length()==0) {
+		if (string != null && string.length() == 0) {
 			Calendar now = Calendar.getInstance();
 			now.set(Calendar.MILLISECOND, 0);
 			now.set(Calendar.SECOND, 0);
