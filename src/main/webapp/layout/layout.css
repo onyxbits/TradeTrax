@@ -1107,6 +1107,7 @@ ul.inline li {
 
 
 .units { text-align: right; }
+.unitCount { text-align: right; }
 .id { text-align: right; }
 .buyPrice { text-align: right; }
 .sellPrice { text-align: right; }

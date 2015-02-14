@@ -1,7 +1,6 @@
 package de.onyxbits.tradetrax.pages.edit;
 
 import java.util.List;
-import java.util.Vector;
 
 import org.apache.tapestry5.alerts.AlertManager;
 import org.apache.tapestry5.alerts.Duration;
@@ -21,8 +20,6 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 
 import de.onyxbits.tradetrax.entities.Stock;
-import de.onyxbits.tradetrax.remix.MoneyRepresentation;
-import de.onyxbits.tradetrax.remix.WrappedStock;
 import de.onyxbits.tradetrax.services.EventLogger;
 import de.onyxbits.tradetrax.services.SettingsStore;
 
@@ -41,7 +38,7 @@ public class UnitsEditor {
 	private Stock stock;
 
 	@Property
-	private WrappedStock wrappedStock;
+	private Stock row;
 
 	@Inject
 	private BeanModelSource ledgerSource;
@@ -70,25 +67,14 @@ public class UnitsEditor {
 	@Inject
 	private SettingsStore settingsStore;
 
-	public List<WrappedStock> getStocks() {
-		Vector<WrappedStock> ret = new Vector<WrappedStock>();
-		MoneyRepresentation mr = new MoneyRepresentation(settingsStore);
-		try {
-			Criteria crit = session.createCriteria(Stock.class);
-			List<Criterion> lst = stock.allowedToMergeWith();
-			for (Criterion c : lst) {
-				crit.add(c);
-			}
-			@SuppressWarnings("unchecked")
-			List<Stock> it = crit.list();
-			for (Stock s : it) {
-				ret.add(new WrappedStock(s, mr));
-			}
+	@SuppressWarnings("unchecked")
+	public List<Stock> getStocks() {
+		Criteria crit = session.createCriteria(Stock.class);
+		List<Criterion> lst = stock.allowedToMergeWith();
+		for (Criterion c : lst) {
+			crit.add(c);
 		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-		return ret;
+		return crit.list();
 	}
 
 	protected void onActivate(Long StockId) {
@@ -97,8 +83,8 @@ public class UnitsEditor {
 		size = 1;
 	}
 
-	public BeanModel<WrappedStock> getLedgerModel() {
-		BeanModel<WrappedStock> model = ledgerSource.createDisplayModel(WrappedStock.class, messages);
+	public BeanModel<Stock> getLedgerModel() {
+		BeanModel<Stock> model = ledgerSource.createDisplayModel(Stock.class, messages);
 		List<String> lst = model.getPropertyNames();
 		for (String s : lst) {
 			PropertyModel nameColumn = model.getById(s);
