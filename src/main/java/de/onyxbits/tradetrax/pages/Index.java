@@ -323,5 +323,13 @@ public class Index {
 		showFilter = true;
 		return this;
 	}
+	
+	public String hasFilterName() {
+		return filterName;
+	}
+	
+	public String hasFilterVariant() {
+		return filterVariant;
+	}
 
 }

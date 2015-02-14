@@ -32,11 +32,21 @@ public class SummaryValue {
 	
 
 	public Object onFilterByVariant(String name) {
-		return index.withNoFilters().withFilterVariant(name);
+		if (name==null || name.equals(index.hasFilterVariant())) {
+			return index.withFilterVariant(null);
+		}
+		else {
+			return index.withFilterVariant(name);
+		}
 	}
 
 	public Object onFilterByName(String name) {
-		return index.withNoFilters().withFilterName(name);
+		if (name==null || name.equals(index.hasFilterName())) {
+			return index.withFilterName(null);
+		}
+		else {
+			return index.withFilterName(name);
+		}
 	}
 	
 	
