@@ -10,10 +10,7 @@
 			<tr>
 				<th>${message:asset-label}:</th>
 				<td>
-					<t:if test="stock.name">${stock.name.label}</t:if>
-					<t:if test="stock.variant">
-						<div class="assetsubtype"> ${stock.variant.label}</div>
-					</t:if>
+					<t:summaryvalue stock="stock" />
 				</td>
 			</tr>
 			<tr>
