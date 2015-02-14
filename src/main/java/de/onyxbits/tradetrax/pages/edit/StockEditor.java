@@ -132,12 +132,6 @@ public class StockEditor {
 	private boolean eventDelete;
 
 	@Property
-	private String balance;
-
-	@Property
-	private String balanceClass = MoneyRepresentation.PROFITCLASS;
-
-	@Property
 	private boolean splitable;
 
 	@Property
@@ -187,17 +181,6 @@ public class StockEditor {
 			comment = stock.getComment();
 			splitable = stock.getUnitCount() > 1;
 			location=stock.getLocation();
-			long bal = 0;
-			if (stock.getLiquidated() != null) {
-				bal = stock.getSellPrice() * stock.getUnitCount();
-			}
-			if (stock.getAcquired() != null) {
-				bal -= stock.getBuyPrice() * stock.getUnitCount();
-			}
-			balance = mr.databaseToUser(bal, false, true);
-			if (bal < 0) {
-				balanceClass = MoneyRepresentation.LOSSCLASS;
-			}
 		}
 		catch (Exception e) {
 			e.printStackTrace();

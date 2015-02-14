@@ -81,10 +81,13 @@
 
 	<t:if test="showjumplinks">
 		<div class="jumplink">
-			<a href="#bottom" class="jumplink">${message:jump-down}
-			<img src="${context:/images/arrow-asc.png}" /></a>
+			<a href="#bottom" class="jumplink">
+				${message:jump-down}
+				<img src="${context:/images/arrow-asc.png}" />
+			</a>
 		</div>
-	</t:if><div class="clearfix"></div>
+	</t:if>
+	<div class="clearfix"></div>
 	<div id="table-scroll">
 		<table t:id="ledger" t:type="grid" t:model="ledgerModel"
 			t:source="stocks" t:rowsPerPage="25" t:pagerPosition="bottom"
@@ -93,18 +96,18 @@
 				<t:SummaryValue stock="wrappedstock.stock" />
 			</p:assetCell>
 			<p:idCell>
-				<t:pagelink page="edit/StockEditor" context="wrappedstock.id">${wrappedstock.id}
+				<t:pagelink page="edit/StockEditor" context="wrappedstock.stock.id">${wrappedstock.id}
 				</t:pagelink>
 			</p:idCell>
 			<p:unitsCell>
-				<t:pagelink page="edit/UnitsEditor" context="wrappedstock.id">${wrappedstock.units}
+				<t:pagelink page="edit/UnitsEditor" context="wrappedstock.stock.id">${wrappedstock.units}
 				</t:pagelink>
 			</p:unitsCell>
 			<p:acquiredCell>
 				<t:DateValue date="wrappedstock.stock.acquired" />
 			</p:acquiredCell>
 			<p:liquidatedCell>
-				<t:if test="wrappedstock.liquidated">
+				<t:if test="wrappedstock.stock.liquidated">
 					<t:DateValue date="wrappedstock.stock.liquidated" />
 					<p:else>
 						<t:pagelink page="edit/LiquidateEditor" context="wrappedstock.id">${message:liquidate-now}
@@ -113,19 +116,18 @@
 				</t:if>
 			</p:liquidatedCell>
 			<p:profitCell>
-				<div class="${wrappedStock.profitClass}">
-					${wrappedstock.profit}
-				</div>
+				<t:if test="${wrappedstock.stock.liquidated}">
+					<t:moneyvalue amount="${wrappedStock.stock.calcProfit()}"
+						addSymbol="false" />
+				</t:if>
 			</p:profitCell>
 			<p:buyPriceCell>
-				<div class="${wrappedStock.buyPriceClass}">
-					${wrappedstock.buyPrice}
-				</div>
+				<t:moneyvalue amount="${wrappedStock.stock.buyPrice}"
+					addSymbol="false" />
 			</p:buyPriceCell>
 			<p:sellPriceCell>
-				<div class="${wrappedStock.sellPriceClass}">
-					${wrappedstock.sellPrice}
-				</div>
+				<t:moneyvalue amount="${wrappedStock.stock.sellPrice}"
+					addSymbol="false" />
 			</p:sellPriceCell>
 			<p:empty>
 				<p>
@@ -142,8 +144,10 @@
 		<t:label for="showFilter">${message:show-filter}</t:label>
 		<t:if test="showjumplinks">
 			<div class="jumplink">
-				<a href="#top" class="jumplink">${message:jump-up}
-				<img src="${context:/images/arrow-desc.png}" /></a>
+				<a href="#top" class="jumplink">
+					${message:jump-up}
+					<img src="${context:/images/arrow-desc.png}" />
+				</a>
 			</div>
 		</t:if>
 		<t:formfragment t:id="filterFragment" visible="showFilter">

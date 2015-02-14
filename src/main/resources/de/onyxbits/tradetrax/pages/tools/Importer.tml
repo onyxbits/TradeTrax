@@ -43,6 +43,12 @@
 		<p:liquidatedCell>
 			<t:DateValue date="row.stock.liquidated" />
 		</p:liquidatedCell>
+		<p:buypriceCell>
+			<t:MoneyValue amount="${row.stock.buyPrice}" addsymbol="false"/>
+		</p:buypriceCell>
+		<p:sellpriceCell>
+			<t:MoneyValue amount="${row.stock.sellPrice}" addsymbol="false"/>
+		</p:sellpriceCell>
 		<p:empty>
 		</p:empty>
 		<p:locationCell>${row.stock.location}</p:locationCell>

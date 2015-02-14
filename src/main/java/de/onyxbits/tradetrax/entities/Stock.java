@@ -39,11 +39,11 @@ public class Stock implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	
+
 	/**
 	 * Optional storage location identifier (free form text)
 	 */
-	@Column(name="location")
+	@Column(name = "location")
 	private String location;
 
 	/**
@@ -199,6 +199,33 @@ public class Stock implements Serializable {
 	}
 
 	/**
+	 * Calculate the profit, disregarding of whether the asset has been acquired
+	 * and liquidated.
+	 * 
+	 * @return the profit in database format.
+	 */
+	public long calcProfit() {
+		return (sellPrice - buyPrice) * unitCount;
+	}
+
+	/**
+	 * Calculate the financial impact of the stock in its current state on the
+	 * owner's wallet.
+	 * 
+	 * @return the balance in database format.
+	 */
+	public long calcBalance() {
+		long bal = 0;
+		if (liquidated != null) {
+			bal = sellPrice * unitCount;
+		}
+		if (acquired != null) {
+			bal -= buyPrice * unitCount;
+		}
+		return bal;
+	}
+
+	/**
 	 * @return the comment
 	 */
 	public String getComment() {
@@ -341,7 +368,8 @@ public class Stock implements Serializable {
 	}
 
 	/**
-	 * @param location the location to set
+	 * @param location
+	 *          the location to set
 	 */
 	public void setLocation(String location) {
 		this.location = location;

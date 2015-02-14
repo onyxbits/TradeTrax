@@ -20,14 +20,10 @@ public class TalliedStock implements Comparable<TalliedStock>{
 	public int totalUnits;
 
 	@Property
-	public String totalInvestment;
+	public long totalInvestment;
 	
 	@Property
-	public String totalProfit;
-
-	public long totalInvestmentCounter;
-	
-	public long totalProfitCounter;
+	public long totalProfit;
 
 	public int compareTo(TalliedStock arg0) {
 		return name.compareTo(arg0.name);

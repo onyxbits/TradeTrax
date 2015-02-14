@@ -27,13 +27,13 @@ import de.onyxbits.tradetrax.services.SettingsStore;
 public class Summary {
 
 	@Property
-	private String totalInvestment;
+	private long totalInvestment;
 
 	@Property
-	private String totalProfit;
+	private long totalProfit;
 
 	@Property
-	private String expectedProfit;
+	private long expectedProfit;
 
 	@Property
 	private int assetsOnHand;
@@ -113,39 +113,31 @@ public class Summary {
 		tallied = new HashMap<String, TalliedStock>();
 		MoneyRepresentation mr = new MoneyRepresentation(settingsStore);
 		List<Stock> lst = session.createCriteria(Stock.class).list();
-		long profit = 0;
-		long investment = 0;
-		long futureProfit = 0;
 		for (Stock stock : lst) {
 			if (stock.getAcquired() != null) {
 				TalliedStock ts = getCounterFor(stock);
 				if (stock.getLiquidated() == null) {
 					long inv = stock.getBuyPrice() * stock.getUnitCount();
-					investment += inv;
+					totalInvestment += inv;
 					assetsOnHand++;
 					itemsOnHand += stock.getUnitCount();
 					if (stock.getSellPrice() != 0) {
-						futureProfit += (stock.getSellPrice() - stock.getBuyPrice()) * stock.getUnitCount();
+						expectedProfit += (stock.getSellPrice() - stock.getBuyPrice()) * stock.getUnitCount();
 					}
 					ts.assetCount++;
 					ts.totalUnits += stock.getUnitCount();
-					ts.totalInvestmentCounter += inv;
+					ts.totalInvestment += inv;
 				}
 				else {
 					long pro = (stock.getSellPrice() - stock.getBuyPrice()) * stock.getUnitCount();
-					profit += pro;
-					ts.totalProfitCounter += pro;
+					totalProfit += pro;
+					ts.totalProfit += pro;
 				}
 			}
 		}
-		totalInvestment = mr.databaseToUser(investment, false, true);
-		totalProfit = mr.databaseToUser(profit, false, true);
-		expectedProfit = mr.databaseToUser(futureProfit, false, true);
 		Iterator<String> it = tallied.keySet().iterator();
 		while (it.hasNext()) {
 			TalliedStock ts = tallied.get(it.next());
-			ts.totalInvestment = mr.databaseToUser(ts.totalInvestmentCounter, false, true);
-			ts.totalProfit = mr.databaseToUser(ts.totalProfitCounter, false, true);
 			usage.add(ts);
 		}
 		Collections.sort(usage);

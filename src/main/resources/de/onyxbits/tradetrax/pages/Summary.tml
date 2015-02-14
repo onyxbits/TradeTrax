@@ -1,22 +1,11 @@
-<html t:type="layout" title="${message:title}" instructions="${message:instructions}" helpurl="${message:helpurl}"
-	xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd" xmlns:p="tapestry:parameter">
+<html t:type="layout" title="${message:title}" instructions="${message:instructions}"
+	helpurl="${message:helpurl}" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
+	xmlns:p="tapestry:parameter">
 
 	<table class="kvtable">
 		<tr>
 			<th title="${message:created-tooltip}">${message:created-label}</th>
 			<td class="numerical">${getCreated()}</td>
-		</tr>
-		<tr>
-			<th title="${message:total-investment-tooltip}">${message:total-investment-label}</th>
-			<td class="numerical">${totalInvestment}</td>
-		</tr>
-		<tr>
-			<th title="${message:expected-profit-tooltip}">${message:expected-profit-label}</th>
-			<td class="numerical">${expectedProfit}</td>
-		</tr>
-		<tr>
-			<th title="${message:total-profit-tooltip}">${message:total-profit-label}</th>
-			<td class="numerical">${totalProfit}</td>
 		</tr>
 		<tr>
 			<th title="${message:assets-on-hand-tooltip}">${message:assets-on-hand-label}</th>
@@ -26,15 +15,39 @@
 			<th title="${message:items-on-hand-tooltip}">${message:items-on-hand-label}</th>
 			<td class="numerical">${itemsOnHand}</td>
 		</tr>
+		<tr>
+			<th title="${message:total-investment-tooltip}">${message:total-investment-label}</th>
+			<td class="numerical">
+				<t:moneyvalue amount="${totalInvestment}" />
+			</td>
+		</tr>
+		<tr>
+			<th title="${message:expected-profit-tooltip}">${message:expected-profit-label}</th>
+			<td class="numerical">
+				<t:moneyvalue amount="${expectedProfit}" />
+			</td>
+		</tr>
+		<tr>
+			<th title="${message:total-profit-tooltip}">${message:total-profit-label}</th>
+			<td class="numerical">
+				<t:moneyvalue amount="${totalProfit}" />
+			</td>
+		</tr>
 	</table>
 	<p />
 
-	<table t:id="ledger" t:type="grid" t:source="usage" t:model="tallyModel" rowsPerPage="50"
-		reorder="name,assetCount,totalUnits,totalInvestment,totalProfit"
-		exclude="totalInvestmentCounter,totalProfitCounter" t:row="row">
+	<table t:id="ledger" t:type="grid" t:source="usage" t:model="tallyModel"
+		rowsPerPage="50" reorder="name,assetCount,totalUnits,totalInvestment,totalProfit"
+		t:row="row">
 		<p:nameCell>
 			<a t:id="show" t:context="${row.name}">${row.name}</a>
 		</p:nameCell>
+		<p:totalInvestmentCell>
+			<t:moneyvalue amount="${row.totalInvestment}" />
+		</p:totalInvestmentCell>
+		<p:totalProfitCell>
+			<t:moneyvalue amount="${row.totalProfit}" />
+		</p:totalProfitCell>
 	</table>
 
 </html>

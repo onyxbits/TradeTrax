@@ -13,11 +13,13 @@
 					<th title="${message:id-tooltip}">${message:id-label}:</th>
 					<td>
 						<t:if test="stock.id">
-						<p:else><i>${message:id-unassigned}</i></p:else>
+							<p:else>
+								<i>${message:id-unassigned}</i>
+							</p:else>
 							${stock.id}
 							<div class="assetaction">
 								<a t:id="bookmark" context="${stock.id}">${message:bookmark}</a>
-								<br/>
+								<br />
 								<a t:id="history">${message:show-history}</a>
 							</div>
 						</t:if>
@@ -56,7 +58,7 @@
 					</th>
 					<td>
 						<t:textfield class="numerical" t:id="units"
-							t:label="${message:units-label}" value="units" onclick="SelectAll('units');"/>
+							t:label="${message:units-label}" value="units" onclick="SelectAll('units');" />
 						<t:if test="splitable">
 							<div class="assetaction">
 								<t:pagelink page="edit/UnitsEditor" context="${stock.id}">${message:split}
@@ -80,7 +82,8 @@
 					</th>
 					<td>
 						<t:textfield class="numerical" t:id="buyPrice"
-							t:label="${message:buyprice-label}" value="buyPrice" onclick="SelectAll('buyPrice');"  />
+							t:label="${message:buyprice-label}" value="buyPrice"
+							onclick="SelectAll('buyPrice');" />
 						${currencySymbol}
 					</td>
 				</tr>
@@ -105,17 +108,21 @@
 					</th>
 					<td>
 						<t:textfield class="numerical" t:id="sellPrice"
-							t:label="${message:sellprice-label}" value="sellPrice" onclick="SelectAll('sellPrice');"/>
+							t:label="${message:sellprice-label}" value="sellPrice"
+							onclick="SelectAll('sellPrice');" />
 						${currencySymbol}
 					</td>
 				</tr>
 				<tr>
 					<th title="${message:balance-tooltip}">${message:balance-label}:</th>
-					<td class="${balanceClass}">${balance}</td>
+					<td>
+						<t:moneyvalue amount="${stock.calcBalance()}" precise="true" />
+					</td>
 				</tr>
 				<tr>
 					<th title="${message:comment-tooltip}">
-						<t:label for="comment" size="20" />:
+						<t:label for="comment" size="20" />
+						:
 					</th>
 					<td>
 						<t:textarea t:id="comment" t:label="${message:comment-label}"
@@ -124,7 +131,7 @@
 				</tr>
 			</table>
 			<p />
-			
+
 			<t:if test="stock.id">
 				<t:submit type="submit" value="${message:save}" t:id="save" />
 				&nbsp;
@@ -136,6 +143,6 @@
 			</t:if>
 		</t:form>
 	</t:if>
-	
+
 
 </html>
