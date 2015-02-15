@@ -89,46 +89,54 @@
 	</t:if>
 	<div class="clearfix"></div>
 	<div id="table-scroll">
-		<table t:id="ledger" t:type="grid" t:model="ledgerModel"
-			t:source="stocks" t:rowsPerPage="25" t:pagerPosition="bottom"
-			t:include="${ledgercolumns}" t:row="wrappedstock">
+		<table t:id="ledger" t:type="grid" t:model="ledgerModel" row="row"
+			t:source="stocks" t:rowsPerPage="25" t:pagerPosition="bottom">
 			<p:assetCell>
-				<t:SummaryValue stock="wrappedstock.stock" />
+				<t:SummaryValue stock="row" />
 			</p:assetCell>
+			<p:nameCell>
+				<t:if test="row.name">
+					${row.name.label}
+				</t:if>
+			</p:nameCell>
+			<p:variantCell>
+				<t:if test="row.variant">
+					${row.variant.label}
+				</t:if>
+			</p:variantCell>
 			<p:idCell>
-				<t:pagelink page="edit/StockEditor" context="wrappedstock.stock.id">${wrappedstock.id}
+				<t:pagelink page="edit/StockEditor" context="row.id">${row.id}
 				</t:pagelink>
 			</p:idCell>
 			<p:unitsCell>
-				<t:pagelink page="edit/UnitsEditor" context="wrappedstock.stock.id">${wrappedstock.units}
+				<t:pagelink page="edit/UnitsEditor" context="row.id">${row.unitCount}
 				</t:pagelink>
 			</p:unitsCell>
 			<p:acquiredCell>
-				<t:DateValue date="wrappedstock.stock.acquired" />
+				<t:DateValue date="row.acquired" />
 			</p:acquiredCell>
 			<p:liquidatedCell>
-				<t:if test="wrappedstock.stock.liquidated">
-					<t:DateValue date="wrappedstock.stock.liquidated" />
+				<t:if test="row.liquidated">
+					<t:DateValue date="row.liquidated" />
 					<p:else>
-						<t:pagelink page="edit/LiquidateEditor" context="wrappedstock.id">${message:liquidate-now}
+						<t:pagelink page="edit/LiquidateEditor" context="row.id">${message:liquidate-now}
 						</t:pagelink>
 					</p:else>
 				</t:if>
 			</p:liquidatedCell>
 			<p:profitCell>
-				<t:if test="${wrappedstock.stock.liquidated}">
-					<t:moneyvalue amount="${wrappedStock.stock.calcProfit()}"
-						addSymbol="false" />
+				<t:if test="${row.liquidated}">
+					<t:moneyvalue amount="${row.calcProfit()}" addSymbol="false" />
 				</t:if>
 			</p:profitCell>
 			<p:buyPriceCell>
-				<t:moneyvalue amount="${wrappedStock.stock.buyPrice}"
-					addSymbol="false" />
+				<t:moneyvalue amount="${row.buyPrice}" addSymbol="false" />
 			</p:buyPriceCell>
 			<p:sellPriceCell>
-				<t:moneyvalue amount="${wrappedStock.stock.sellPrice}"
-					addSymbol="false" />
+				<t:moneyvalue amount="${row.sellPrice}" addSymbol="false" />
 			</p:sellPriceCell>
+			<p:locationCell>${row.location}</p:locationCell>
+			<p:commentCell>${row.comment}</p:commentCell>
 			<p:empty>
 				<p>
 					<i>${message:emptyset}</i>

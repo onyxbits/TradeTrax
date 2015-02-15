@@ -27,11 +27,9 @@ public class StockPagedGridDataSource implements GridDataSource {
 
 	private Session session;
 
-	private List<WrappedStock> preparedResults;
+	private List<Stock> preparedResults;
 
 	private int startIndex;
-
-	private MoneyRepresentation moneyConverter;
 
 	private Criterion nameRestriction;
 	private Criterion variantRestriction;
@@ -51,10 +49,9 @@ public class StockPagedGridDataSource implements GridDataSource {
 	 * @param moneyConverter
 	 *          for formatting money values.
 	 */
-	public StockPagedGridDataSource(Session session, MoneyRepresentation moneyConverter) {
+	public StockPagedGridDataSource(Session session) {
 		this.session = session;
-		this.moneyConverter = moneyConverter;
-		preparedResults = new Vector<WrappedStock>();
+		preparedResults = new Vector<Stock>();
 	}
 
 	/**
@@ -241,6 +238,7 @@ public class StockPagedGridDataSource implements GridDataSource {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void prepare(int startIndex, int endIndex, List<SortConstraint> sortConstraints) {
 		Criteria crit = session.createCriteria(Stock.class).setFirstResult(startIndex)
 				.setMaxResults(endIndex - startIndex + 1);
@@ -285,13 +283,8 @@ public class StockPagedGridDataSource implements GridDataSource {
 		if (commentRestriction != null) {
 			crit.add(commentRestriction);
 		}
-		@SuppressWarnings("unchecked")
-		List<Stock> lst = (List<Stock>) crit.list();
-		preparedResults.clear();
+		this.preparedResults= crit.list();
 		this.startIndex = startIndex;
-		for (Stock s : lst) {
-			preparedResults.add(new WrappedStock(s, moneyConverter));
-		}
 	}
 
 	public Object getRowValue(int index) {
@@ -303,7 +296,7 @@ public class StockPagedGridDataSource implements GridDataSource {
 		}
 	}
 
-	public Class<WrappedStock> getRowType() {
-		return WrappedStock.class;
+	public Class<Stock> getRowType() {
+		return Stock.class;
 	}
 }

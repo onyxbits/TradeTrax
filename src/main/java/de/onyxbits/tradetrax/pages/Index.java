@@ -30,7 +30,6 @@ import de.onyxbits.tradetrax.remix.MoneyRepresentation;
 import de.onyxbits.tradetrax.remix.StockPagedGridDataSource;
 import de.onyxbits.tradetrax.remix.StockState;
 import de.onyxbits.tradetrax.remix.TimeSpan;
-import de.onyxbits.tradetrax.remix.WrappedStock;
 import de.onyxbits.tradetrax.services.EventLogger;
 import de.onyxbits.tradetrax.services.SettingsStore;
 
@@ -81,7 +80,7 @@ public class Index {
 	private StockPagedGridDataSource stocks;
 
 	@Property
-	private WrappedStock wrappedStock;
+	private Stock row;
 
 	@Component(id = "buyform")
 	private Form buyForm;
@@ -187,10 +186,6 @@ public class Index {
 	@Property
 	private boolean showJumplinks;
 
-	public String getLedgerColumns() {
-		return settingsStore.get(SettingsStore.TCLCOLUMNS, LedgerColumns.DEFAULT);
-	}
-
 	public String styleFor(String tag) {
 		String tmp = settingsStore.get(SettingsStore.TCACFIELDS, AcquisitionFields.DEFAULT);
 		if (!tmp.contains(tag)) {
@@ -202,9 +197,9 @@ public class Index {
 	public void setupRender() {
 		buyAmount = 1;
 		MoneyRepresentation mr = new MoneyRepresentation(settingsStore);
-		stocks = new StockPagedGridDataSource(session, mr).withName(filterName)
-				.withVariant(filterVariant).withState(filterState).withLocation(filterLocation)
-				.withComment(filterComment).withAcquisition(filterAcquisition, filterAcquisitionSpan)
+		stocks = new StockPagedGridDataSource(session).withName(filterName).withVariant(filterVariant)
+				.withState(filterState).withLocation(filterLocation).withComment(filterComment)
+				.withAcquisition(filterAcquisition, filterAcquisitionSpan)
 				.withLiquidation(filterLiquidation, filterLiquidationSpan);
 		int count = stocks.getAvailableRows();
 		if (!showFilter && count >= ledger.getRowsPerPage()) {
@@ -214,17 +209,25 @@ public class Index {
 		currencySymbol = mr.getCurrencySymbol();
 	}
 
-	public BeanModel<WrappedStock> getLedgerModel() {
-		BeanModel<WrappedStock> model = ledgerSource.createDisplayModel(WrappedStock.class, messages);
-		List<String> lst = model.getPropertyNames();
-		for (String s : lst) {
-			PropertyModel nameColumn = model.getById(s);
-			nameColumn.sortable(false);
+	public BeanModel<Object> getLedgerModel() {
+		BeanModel<Object> model = ledgerSource.createDisplayModel(Object.class, messages);
+		List<LedgerColumns> tmp = LedgerColumns.fromCsv(settingsStore.get(SettingsStore.TCLCOLUMNS,
+				LedgerColumns.DEFAULT));
+		for (LedgerColumns col : tmp) {
+			PropertyModel pm = model.addEmpty(col.getName());
+			if ("buyPrice".equals(col.getName())) {
+				pm.sortable(true);
+			}
+			if ("sellPrice".equals(col.getName())) {
+				pm.sortable(true);
+			}
+			if ("liquidated".equals(col.getName())) {
+				pm.sortable(true);
+			}
+			if ("acquired".equals(col.getName())) {
+				pm.sortable(true);
+			}
 		}
-		model.get("acquired").sortable(true);
-		model.get("buyPrice").sortable(true);
-		model.get("liquidated").sortable(true);
-		model.get("sellPrice").sortable(true);
 		return model;
 	}
 
@@ -323,11 +326,11 @@ public class Index {
 		showFilter = true;
 		return this;
 	}
-	
+
 	public String hasFilterName() {
 		return filterName;
 	}
-	
+
 	public String hasFilterVariant() {
 		return filterVariant;
 	}
