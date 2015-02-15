@@ -94,8 +94,9 @@ public class MoneyRepresentationImpl implements MoneyRepresentation {
 	}
 
 	private void checkSettings() {
-		String digits = settingsStore.get(SettingsStore.DECIMALS, null);
-		if (digits != null) {
+		String old = numberFormat.getMaximumFractionDigits()+"";
+		String digits = settingsStore.get(SettingsStore.DECIMALS, old);
+		if (!old.equals(digits)) {
 			try {
 				int count = Integer.parseInt(digits);
 				numberFormat.setMaximumFractionDigits(count);
