@@ -84,7 +84,7 @@
 						<t:textfield class="numerical" t:id="buyPrice"
 							t:label="${message:buyprice-label}" value="buyPrice"
 							onclick="SelectAll('buyPrice');" />
-						${currencySymbol}
+							&nbsp;<t:currencysymbolvalue/>
 					</td>
 				</tr>
 				<tr>
@@ -110,7 +110,7 @@
 						<t:textfield class="numerical" t:id="sellPrice"
 							t:label="${message:sellprice-label}" value="sellPrice"
 							onclick="SelectAll('sellPrice');" />
-						${currencySymbol}
+							&nbsp;<t:currencysymbolvalue/>
 					</td>
 				</tr>
 				<tr>

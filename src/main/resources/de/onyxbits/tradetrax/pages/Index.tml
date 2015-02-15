@@ -55,7 +55,7 @@
 						<td>
 							<t:textfield class="numerical" t:id="buyCost"
 								t:label="${message:buy-cost-label}" />
-							${currencySymbol}
+							&nbsp;<t:currencysymbolvalue/>
 						</td>
 					</tr>
 					<tr style="${styleFor('buyReturns')}">
@@ -65,7 +65,7 @@
 						<td>
 							<t:textfield class="numerical" t:id="buyReturns"
 								t:label="${message:buy-returns-label}" />
-							${currencySymbol}
+								&nbsp;<t:currencysymbolvalue/>
 						</td>
 					</tr>
 				</table>

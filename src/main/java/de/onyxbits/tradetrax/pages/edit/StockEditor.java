@@ -108,9 +108,6 @@ public class StockEditor {
 	@Property
 	private String comment;
 
-	@Property
-	private String currencySymbol;
-
 	@Inject
 	private Session session;
 
@@ -150,7 +147,6 @@ public class StockEditor {
 	@CommitAfter
 	protected void setupRender() {
 		try {
-			currencySymbol = moneyRepresentation.getCurrencySymbol();
 			stock = (Stock) session.get(Stock.class, stockId);
 			if (stock == null) {
 				stock = new Stock();

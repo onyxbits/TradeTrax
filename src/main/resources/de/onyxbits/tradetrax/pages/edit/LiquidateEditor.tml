@@ -72,7 +72,7 @@
 					<t:textfield class="numerical" t:id="sellPrice" name="sellprice"
 						onclick="SelectAll('sellPrice');" />
 					&nbsp;
-					${currencySymbol}
+					<t:currencysymbolvalue/>
 					<p />
 					<input type="submit" value="${message:liquidate}" />
 				</div>

@@ -29,7 +29,6 @@ import de.onyxbits.tradetrax.remix.StockPagedGridDataSource;
 import de.onyxbits.tradetrax.remix.StockState;
 import de.onyxbits.tradetrax.remix.TimeSpan;
 import de.onyxbits.tradetrax.services.EventLogger;
-import de.onyxbits.tradetrax.services.MoneyRepresentationImpl;
 import de.onyxbits.tradetrax.services.MoneyRepresentation;
 import de.onyxbits.tradetrax.services.SettingsStore;
 
@@ -41,8 +40,6 @@ public class Index {
 	@SessionAttribute(Layout.FOCUSID)
 	private long focusedStockId;
 
-	@Property
-	private String currencySymbol;
 
 	@Property
 	@Persist
@@ -208,7 +205,6 @@ public class Index {
 			showFilter = true;
 		}
 		showJumplinks = count > 10;
-		currencySymbol = moneyRepresentation.getCurrencySymbol();
 	}
 
 	public BeanModel<Object> getLedgerModel() {

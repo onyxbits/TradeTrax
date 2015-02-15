@@ -72,8 +72,6 @@ public class LiquidateEditor {
 	@Validate("required")
 	private Payment methods;
 
-	@Property
-	private String currencySymbol;
 
 	@Property
 	private boolean splitable;
@@ -84,7 +82,6 @@ public class LiquidateEditor {
 
 	protected void setupRender() {
 		stock = (Stock) session.get(Stock.class, stockId);
-		currencySymbol = moneyRepresentation.getCurrencySymbol();
 		if (stock != null) {
 			sellPrice = moneyRepresentation.databaseToUser(stock.getSellPrice() * stock.getUnitCount(), false, false);
 			splitable = stock.getUnitCount() > 1;
