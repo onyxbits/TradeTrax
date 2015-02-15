@@ -231,6 +231,7 @@
 					<td colspan="2">
 						<t:submit type="submit" value="${message:filter-label}" />&nbsp;
 						<t:submit type="submit" t:id="reset" value="${message:reset-label}" />
+						<span id="filtermatches">${matches}</span>
 					</td>
 				</tr>
 			</table>

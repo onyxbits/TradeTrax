@@ -1189,6 +1189,13 @@ input.numerical {
   margin-top: 3px;
 }
 
+#filtermatches {
+  float:right;
+  display:inline;
+  font-style:italic;
+  font-size: smaller;
+}
+
 HTML>BODY DIV.t-error LI {
     margin-left: 20px;
 } 

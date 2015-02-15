@@ -1,5 +1,7 @@
 package de.onyxbits.tradetrax.pages;
 
+import java.text.ChoiceFormat;
+import java.text.MessageFormat;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
@@ -185,6 +187,9 @@ public class Index {
 
 	@Property
 	private boolean showJumplinks;
+	
+	@Property
+	private String matches;
 
 	public String styleFor(String tag) {
 		String tmp = settingsStore.get(SettingsStore.TCACFIELDS, AcquisitionFields.DEFAULT);
@@ -204,6 +209,13 @@ public class Index {
 		if (!showFilter && count >= ledger.getRowsPerPage()) {
 			showFilter = true;
 		}
+		String[] tmp = {
+				messages.get("matches.none"),
+				messages.get("matches.one"),
+				messages.format("matches.multiple",count)
+		};
+		double[] choices = {0,1,2};
+		matches=new ChoiceFormat(choices,tmp).format(count);
 		showJumplinks = count > 10;
 	}
 
