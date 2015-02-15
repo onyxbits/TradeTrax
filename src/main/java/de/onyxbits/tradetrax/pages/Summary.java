@@ -12,7 +12,6 @@ import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
-import org.apache.tapestry5.beaneditor.PropertyModel;
 import org.apache.tapestry5.corelib.components.EventLink;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
@@ -21,6 +20,7 @@ import org.hibernate.Session;
 
 import de.onyxbits.tradetrax.entities.Stock;
 import de.onyxbits.tradetrax.remix.TalliedStock;
+import de.onyxbits.tradetrax.remix.TalliedStockPagedGridDataSource;
 import de.onyxbits.tradetrax.services.SettingsStore;
 
 public class Summary {
@@ -66,14 +66,17 @@ public class Summary {
 
 	private HashMap<String, TalliedStock> tallied;
 
-	public BeanModel<TalliedStock> getTallyModel() {
-		BeanModel<TalliedStock> model = tallySource.createDisplayModel(TalliedStock.class, messages);
-		List<String> lst = model.getPropertyNames();
-		for (String s : lst) {
-			PropertyModel nameColumn = model.getById(s);
-			nameColumn.sortable(false);
-		}
+	public BeanModel<Object> getTallyModel() {
+		BeanModel<Object> model = tallySource.createDisplayModel(Object.class, messages);
+		model.addEmpty("name").sortable(true);
+		model.addEmpty("amount").sortable(true);
+		model.addEmpty("totalinvestment").sortable(true);
+		model.addEmpty("totalprofit").sortable(true);
 		return model;
+	}
+	
+	public TalliedStockPagedGridDataSource getData() {
+		return new TalliedStockPagedGridDataSource(usage);
 	}
 
 	protected Object onShow(String name) {
@@ -140,6 +143,5 @@ public class Summary {
 			usage.add(ts);
 		}
 		Collections.sort(usage);
-
 	}
 }
