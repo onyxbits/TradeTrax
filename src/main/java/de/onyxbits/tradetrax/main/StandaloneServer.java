@@ -138,7 +138,7 @@ public class StandaloneServer extends JFrame implements Runnable, WindowListener
 		for (int i = 0; i < recent.length; i++) {
 			recent[i] = new JMenuItem((i + 1) + ": ");
 			file.add(recent[i]);
-			configureRecentListEntry(i,null);
+			configureRecentListEntry(i, null);
 		}
 		file.add(new JSeparator());
 		file.add(openPublic);
@@ -183,6 +183,7 @@ public class StandaloneServer extends JFrame implements Runnable, WindowListener
 		server = new Server(cfg.getAddress());
 		server.setStopAtShutdown(true);
 		WebAppContext app = new WebAppContext();
+		app.setDefaultsDescriptor(null); // Don't complain about no JSP support.
 		app.setContextPath("/");
 		app.setSessionHandler(new SessionHandler());
 		app.setInitParameter("ledger", cfg.getLedger().getAbsolutePath());
@@ -235,10 +236,10 @@ public class StandaloneServer extends JFrame implements Runnable, WindowListener
 			Preferences prefs = Preferences.userNodeForPackage(PrefKeys.class);
 			String fname = prefs.get(PrefKeys.RECENT + i, null);
 			if (fname == null) {
-				configureRecentListEntry(i,null);
+				configureRecentListEntry(i, null);
 			}
 			else {
-				configureRecentListEntry(i,new File(fname));
+				configureRecentListEntry(i, new File(fname));
 			}
 		}
 	}
@@ -281,7 +282,7 @@ public class StandaloneServer extends JFrame implements Runnable, WindowListener
 		addLedger.setEnabled(!busy);
 		openLedger.setEnabled(!busy);
 		openPublic.setEnabled(!busy);
-		for (JMenuItem mi:recent) {
+		for (JMenuItem mi : recent) {
 			mi.setEnabled(!busy);
 		}
 		JPanel content = (JPanel) getContentPane();
