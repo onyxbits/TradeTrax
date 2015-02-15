@@ -20,9 +20,9 @@ import org.hibernate.Session;
 import de.onyxbits.tradetrax.components.Layout;
 import de.onyxbits.tradetrax.entities.Stock;
 import de.onyxbits.tradetrax.pages.Index;
-import de.onyxbits.tradetrax.remix.MoneyRepresentation;
 import de.onyxbits.tradetrax.remix.Payment;
 import de.onyxbits.tradetrax.services.EventLogger;
+import de.onyxbits.tradetrax.services.MoneyRepresentation;
 import de.onyxbits.tradetrax.services.SettingsStore;
 
 public class LiquidateEditor {
@@ -54,6 +54,9 @@ public class LiquidateEditor {
 
 	@Inject
 	private EventLogger eventLogger;
+	
+	@Inject
+	private MoneyRepresentation moneyRepresentation;
 
 	@Inject
 	private SettingsStore settingsStore;
@@ -81,10 +84,9 @@ public class LiquidateEditor {
 
 	protected void setupRender() {
 		stock = (Stock) session.get(Stock.class, stockId);
-		MoneyRepresentation mr = new MoneyRepresentation(settingsStore);
-		currencySymbol = mr.getCurrencySymbol();
+		currencySymbol = moneyRepresentation.getCurrencySymbol();
 		if (stock != null) {
-			sellPrice = mr.databaseToUser(stock.getSellPrice() * stock.getUnitCount(), false, false);
+			sellPrice = moneyRepresentation.databaseToUser(stock.getSellPrice() * stock.getUnitCount(), false, false);
 			splitable = stock.getUnitCount() > 1;
 		}
 	}
@@ -95,7 +97,7 @@ public class LiquidateEditor {
 
 	public void onValidateFromSellForm() {
 		try {
-			new MoneyRepresentation(settingsStore).userToDatabase(sellPrice, 1);
+			moneyRepresentation.userToDatabase(sellPrice, 1);
 		}
 		catch (ParseException e) {
 			sellForm.recordError(messages.get("nan"));
@@ -106,18 +108,17 @@ public class LiquidateEditor {
 	protected Object onSuccessFromSellForm() {
 		try {
 			Stock s = (Stock) session.load(Stock.class, stockId);
-			MoneyRepresentation mr = new MoneyRepresentation(settingsStore);
 			long sp = 0;
 			if (methods == Payment.PERUNIT) {
-				sp = mr.userToDatabase(sellPrice, 1);
+				sp = moneyRepresentation.userToDatabase(sellPrice, 1);
 			}
 			else {
-				sp = mr.userToDatabase(sellPrice, s.getUnitCount());
+				sp = moneyRepresentation.userToDatabase(sellPrice, s.getUnitCount());
 			}
 			s.setLiquidated(new Date());
 			s.setSellPrice(sp);
 			focusedStockId = s.getId();
-			String profit = mr.databaseToUser((s.getSellPrice() - s.getBuyPrice()) * s.getUnitCount(),
+			String profit = moneyRepresentation.databaseToUser((s.getSellPrice() - s.getBuyPrice()) * s.getUnitCount(),
 					false, true);
 			alertManager.alert(Duration.SINGLE, Severity.SUCCESS,
 					messages.format("liquidate-success", stockId, profit));

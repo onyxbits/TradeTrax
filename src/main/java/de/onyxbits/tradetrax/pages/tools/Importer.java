@@ -32,8 +32,8 @@ import de.onyxbits.tradetrax.entities.Name;
 import de.onyxbits.tradetrax.entities.Stock;
 import de.onyxbits.tradetrax.entities.Variant;
 import de.onyxbits.tradetrax.pages.Index;
-import de.onyxbits.tradetrax.remix.MoneyRepresentation;
 import de.onyxbits.tradetrax.services.EventLogger;
+import de.onyxbits.tradetrax.services.MoneyRepresentation;
 import de.onyxbits.tradetrax.services.SettingsStore;
 
 /**
@@ -75,6 +75,7 @@ public class Importer {
 	@Property
 	private Stock row;
 
+	@Inject
 	private MoneyRepresentation moneyRepresentation;
 	private DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM);
 
@@ -84,7 +85,7 @@ public class Importer {
 
 	@Inject
 	private EventLogger eventLogger;
-
+	
 	public BeanModel<Stock> getLedgerModel() {
 		BeanModel<Stock> model = ledgerSource.createDisplayModel(Stock.class, messages);
 		List<String> lst = model.getPropertyNames();
@@ -104,7 +105,6 @@ public class Importer {
 	public Importer onSuccessFromCsvForm() {
 		CSVParser parser = null;
 		parsed = new Vector<Stock>();
-		moneyRepresentation = new MoneyRepresentation(settingsStore);
 		try {
 			parser = new CSVParser(new StringReader(rawcsv), CSVFormat.EXCEL.withHeader());
 			for (CSVRecord rec : parser) {

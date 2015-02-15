@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.beaneditor.BeanModel;
-import org.apache.tapestry5.beaneditor.PropertyModel;
 import org.apache.tapestry5.beaneditor.Validate;
 import org.apache.tapestry5.corelib.components.DateField;
 import org.apache.tapestry5.corelib.components.Form;
@@ -26,11 +25,12 @@ import de.onyxbits.tradetrax.entities.IdentUtil;
 import de.onyxbits.tradetrax.entities.Stock;
 import de.onyxbits.tradetrax.remix.AcquisitionFields;
 import de.onyxbits.tradetrax.remix.LedgerColumns;
-import de.onyxbits.tradetrax.remix.MoneyRepresentation;
 import de.onyxbits.tradetrax.remix.StockPagedGridDataSource;
 import de.onyxbits.tradetrax.remix.StockState;
 import de.onyxbits.tradetrax.remix.TimeSpan;
 import de.onyxbits.tradetrax.services.EventLogger;
+import de.onyxbits.tradetrax.services.MoneyRepresentationImpl;
+import de.onyxbits.tradetrax.services.MoneyRepresentation;
 import de.onyxbits.tradetrax.services.SettingsStore;
 
 /**
@@ -182,6 +182,9 @@ public class Index {
 
 	@Inject
 	private EventLogger eventLogger;
+	
+	@Inject
+	private MoneyRepresentation moneyRepresentation;
 
 	@Property
 	private boolean showJumplinks;
@@ -196,7 +199,6 @@ public class Index {
 
 	public void setupRender() {
 		buyAmount = 1;
-		MoneyRepresentation mr = new MoneyRepresentation(settingsStore);
 		stocks = new StockPagedGridDataSource(session).withName(filterName).withVariant(filterVariant)
 				.withState(filterState).withLocation(filterLocation).withComment(filterComment)
 				.withAcquisition(filterAcquisition, filterAcquisitionSpan)
@@ -206,7 +208,7 @@ public class Index {
 			showFilter = true;
 		}
 		showJumplinks = count > 10;
-		currencySymbol = mr.getCurrencySymbol();
+		currencySymbol = moneyRepresentation.getCurrencySymbol();
 	}
 
 	public BeanModel<Object> getLedgerModel() {
@@ -232,15 +234,14 @@ public class Index {
 	}
 
 	public void onValidateFromBuyForm() {
-		MoneyRepresentation mr = new MoneyRepresentation(settingsStore);
 		try {
-			mr.userToDatabase(buyCost, 1);
+			moneyRepresentation.userToDatabase(buyCost, 1);
 		}
 		catch (ParseException e) {
 			buyForm.recordError(buyCostField, messages.get("invalid-numberformat"));
 		}
 		try {
-			mr.userToDatabase(buyReturns, 1);
+			moneyRepresentation.userToDatabase(buyReturns, 1);
 		}
 		catch (ParseException e) {
 			buyForm.recordError(buyReturnsField, messages.get("invalid-numberformat"));
@@ -250,13 +251,12 @@ public class Index {
 	@CommitAfter
 	public Object onSuccessFromBuyForm() {
 		Stock item = new Stock();
-		MoneyRepresentation mr = new MoneyRepresentation(settingsStore);
 
 		item.setName(IdentUtil.findName(session, buyName));
 		item.setVariant(IdentUtil.findVariant(session, buyVariant));
 		try {
-			item.setBuyPrice(mr.userToDatabase(buyCost, 1));
-			item.setSellPrice(mr.userToDatabase(buyReturns, 1));
+			item.setBuyPrice(moneyRepresentation.userToDatabase(buyCost, 1));
+			item.setSellPrice(moneyRepresentation.userToDatabase(buyReturns, 1));
 		}
 		catch (ParseException e) {
 			// We already validated this

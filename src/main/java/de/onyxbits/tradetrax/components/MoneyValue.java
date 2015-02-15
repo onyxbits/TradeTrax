@@ -4,7 +4,7 @@ import org.apache.tapestry5.annotations.Parameter;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.ioc.annotations.Inject;
 
-import de.onyxbits.tradetrax.remix.MoneyRepresentation;
+import de.onyxbits.tradetrax.services.MoneyRepresentation;
 import de.onyxbits.tradetrax.services.SettingsStore;
 
 /**
@@ -42,10 +42,12 @@ public class MoneyValue {
 
 	@Inject
 	private SettingsStore settings;
+	
+	@Inject
+	private MoneyRepresentation moneyRepresentation;
 
 	protected void beginRender() {
-		MoneyRepresentation mr = new MoneyRepresentation(settings);
-		value = mr.databaseToUser(amount, precise, addSymbol);
+		value = moneyRepresentation.databaseToUser(amount, precise, addSymbol);
 		loss = amount < 0;
 	}
 }

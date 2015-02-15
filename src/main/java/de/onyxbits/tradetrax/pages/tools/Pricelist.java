@@ -16,7 +16,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 
 import de.onyxbits.tradetrax.entities.Stock;
-import de.onyxbits.tradetrax.remix.MoneyRepresentation;
+import de.onyxbits.tradetrax.services.MoneyRepresentation;
 import de.onyxbits.tradetrax.services.SettingsStore;
 
 /**
@@ -41,6 +41,9 @@ public class Pricelist {
 
 	@Inject
 	private SettingsStore settingsStore;
+	
+	@Inject
+	private MoneyRepresentation moneyRepresentation;
 
 	@Inject
 	private Messages messages;
@@ -67,7 +70,6 @@ public class Pricelist {
 			return;
 		}
 
-		MoneyRepresentation mr = new MoneyRepresentation(settingsStore);
 		HashMap<String, Long> seen = new HashMap<String, Long>();
 		StringBuilder sb = new StringBuilder();
 		int longestEntry = 0;
@@ -84,7 +86,7 @@ public class Pricelist {
 			if (sb.length() > longestEntry) {
 				longestEntry = sb.length();
 			}
-			String tmp = mr.databaseToUser(stock.getSellPrice(), false, true);
+			String tmp = moneyRepresentation.databaseToUser(stock.getSellPrice(), false, true);
 			if (tmp.length() > longestPrice) {
 				longestPrice = tmp.length();
 			}
@@ -107,7 +109,7 @@ public class Pricelist {
 		Arrays.sort(keys);
 
 		for (String key : keys) {
-			String tmp = mr.databaseToUser(seen.get(key), false, true);
+			String tmp = moneyRepresentation.databaseToUser(seen.get(key), false, true);
 			int pad = longestEntry - key.length() + longestPrice - tmp.length() + 2;
 			sb.append(key);
 			for (int i = 0; i < pad; i++) {

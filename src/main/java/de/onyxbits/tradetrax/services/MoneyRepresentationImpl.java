@@ -1,11 +1,10 @@
-package de.onyxbits.tradetrax.remix;
+package de.onyxbits.tradetrax.services;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Currency;
 import java.util.Locale;
 
-import de.onyxbits.tradetrax.services.SettingsStore;
 
 /**
  * Handles internal and external representation of monetary values as well as
@@ -19,12 +18,7 @@ import de.onyxbits.tradetrax.services.SettingsStore;
  * @author patrick
  * 
  */
-public class MoneyRepresentation {
-
-	/**
-	 * Scaling factor
-	 */
-	public static final long FACTOR = 10 * 10 * 10 * 10;
+public class MoneyRepresentationImpl implements MoneyRepresentation {
 
 	private NumberFormat numberFormat;
 
@@ -45,7 +39,7 @@ public class MoneyRepresentation {
 	 * @param suffixSymbol
 	 *          whether to append or prepend the currency symbol.
 	 */
-	public MoneyRepresentation(SettingsStore settings) {
+	public MoneyRepresentationImpl(SettingsStore settings) {
 
 		this.settingsStore = settings;
 		Locale locale = Locale.getDefault();
@@ -60,24 +54,15 @@ public class MoneyRepresentation {
 		currencySymbol = c.getSymbol();
 	}
 
-	/**
-	 * @return the currencySymbol
+	/* (non-Javadoc)
+	 * @see de.onyxbits.tradetrax.services.MoneyRepresention#getCurrencySymbol()
 	 */
 	public synchronized String getCurrencySymbol() {
 		return settingsStore.get(SettingsStore.CURRENCYSYMBOL, currencySymbol);
 	}
 
-	/**
-	 * Converts a user submitted value to internal representation
-	 * 
-	 * @param value
-	 *          a string such as "2.99", "4,99" or "-1"
-	 * @param units
-	 *          unitcount (in case the user is submitting the price for a stack of
-	 *          items). No safety checks are performed. Especially not for
-	 *          division by zero.
-	 * @return the value as an integer
-	 * @throws ParseException
+	/* (non-Javadoc)
+	 * @see de.onyxbits.tradetrax.services.MoneyRepresention#userToDatabase(java.lang.String, int)
 	 */
 	public synchronized long userToDatabase(String value, int units) throws ParseException {
 		if (value == null) {
@@ -88,16 +73,8 @@ public class MoneyRepresentation {
 		return (long) ((val / units) * FACTOR);
 	}
 
-	/**
-	 * Convert from internal representation to human readable
-	 * 
-	 * @param value
-	 *          an integer such as 499
-	 * @param precise
-	 *          false to clip digits, true to print the full value.
-	 * @param addSymbol
-	 *          true to add the currencysymbol
-	 * @return a string such as $4.99
+	/* (non-Javadoc)
+	 * @see de.onyxbits.tradetrax.services.MoneyRepresention#databaseToUser(long, boolean, boolean)
 	 */
 	public synchronized String databaseToUser(long value, boolean precise, boolean addSymbol) {
 		String ret = "BUG!";

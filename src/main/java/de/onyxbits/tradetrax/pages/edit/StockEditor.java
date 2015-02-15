@@ -29,8 +29,8 @@ import de.onyxbits.tradetrax.entities.IdentUtil;
 import de.onyxbits.tradetrax.entities.Stock;
 import de.onyxbits.tradetrax.pages.Index;
 import de.onyxbits.tradetrax.pages.tools.LedgerLog;
-import de.onyxbits.tradetrax.remix.MoneyRepresentation;
 import de.onyxbits.tradetrax.services.EventLogger;
+import de.onyxbits.tradetrax.services.MoneyRepresentation;
 import de.onyxbits.tradetrax.services.SettingsStore;
 
 public class StockEditor {
@@ -122,6 +122,9 @@ public class StockEditor {
 
 	@Inject
 	private EventLogger eventLogger;
+	
+	@Inject
+	private MoneyRepresentation moneyRepresentation;
 
 	@Inject
 	private SettingsStore settingsStore;
@@ -147,8 +150,7 @@ public class StockEditor {
 	@CommitAfter
 	protected void setupRender() {
 		try {
-			MoneyRepresentation mr = new MoneyRepresentation(settingsStore);
-			currencySymbol = mr.getCurrencySymbol();
+			currencySymbol = moneyRepresentation.getCurrencySymbol();
 			stock = (Stock) session.get(Stock.class, stockId);
 			if (stock == null) {
 				stock = new Stock();
@@ -173,8 +175,8 @@ public class StockEditor {
 			units = stock.getUnitCount();
 			// NOTE: fill buyPrice/sellPrice even if acquired/liquidated is null. The
 			// user might have entered expected prices!
-			buyPrice = mr.databaseToUser(stock.getBuyPrice(), true, false);
-			sellPrice = mr.databaseToUser(stock.getSellPrice(), true, false);
+			buyPrice = moneyRepresentation.databaseToUser(stock.getBuyPrice(), true, false);
+			sellPrice = moneyRepresentation.databaseToUser(stock.getSellPrice(), true, false);
 			acquired = stock.getAcquired();
 			liquidated = stock.getLiquidated();
 			liquidateable = (liquidated == null && stock.getId() > 0);
@@ -231,15 +233,14 @@ public class StockEditor {
 	}
 
 	public void onValidateFromEditForm() {
-		MoneyRepresentation mr = new MoneyRepresentation(settingsStore);
 		try {
-			mr.userToDatabase(buyPrice, 1);
+			moneyRepresentation.userToDatabase(buyPrice, 1);
 		}
 		catch (ParseException e) {
 			editForm.recordError(buyPriceField, messages.get("nan"));
 		}
 		try {
-			mr.userToDatabase(sellPrice, 1);
+			moneyRepresentation.userToDatabase(sellPrice, 1);
 		}
 		catch (ParseException e) {
 			editForm.recordError(sellPriceField, messages.get("nan"));
@@ -278,13 +279,12 @@ public class StockEditor {
 			else {
 				backup = new Stock(stock);
 			}
-			MoneyRepresentation mr = new MoneyRepresentation(settingsStore);
 			stock.setName(IdentUtil.findName(session, name));
 			stock.setVariant(IdentUtil.findVariant(session, variant));
 			stock.setAcquired(acquired);
 			stock.setLiquidated(liquidated);
-			stock.setSellPrice(mr.userToDatabase(sellPrice, 1));
-			stock.setBuyPrice(mr.userToDatabase(buyPrice, 1));
+			stock.setSellPrice(moneyRepresentation.userToDatabase(sellPrice, 1));
+			stock.setBuyPrice(moneyRepresentation.userToDatabase(buyPrice, 1));
 			stock.setUnitCount(units);
 			stock.setComment(comment);
 			stock.setLocation(location);

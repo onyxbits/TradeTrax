@@ -9,7 +9,6 @@ import org.hibernate.Session;
 
 import de.onyxbits.tradetrax.entities.LogEntry;
 import de.onyxbits.tradetrax.entities.Stock;
-import de.onyxbits.tradetrax.remix.MoneyRepresentation;
 
 public class EventLoggerImpl implements EventLogger {
 
@@ -17,10 +16,11 @@ public class EventLoggerImpl implements EventLogger {
 	private Session session;
 	private MoneyRepresentation moneyRepresentation;
 
-	public EventLoggerImpl(HibernateSessionSource source, Messages messages, SettingsStore settings) {
+	public EventLoggerImpl(HibernateSessionSource source, Messages messages, SettingsStore settings,
+			MoneyRepresentation moneyRepresentation) {
 		this.messages = messages;
 		this.session = source.create();
-		this.moneyRepresentation = new MoneyRepresentation(settings);
+		this.moneyRepresentation = moneyRepresentation;
 	}
 
 	public void liquidated(Stock stock) {

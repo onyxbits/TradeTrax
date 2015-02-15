@@ -21,7 +21,7 @@ import org.apache.tapestry5.util.EnumValueEncoder;
 
 import de.onyxbits.tradetrax.remix.AcquisitionFields;
 import de.onyxbits.tradetrax.remix.LedgerColumns;
-import de.onyxbits.tradetrax.remix.MoneyRepresentation;
+import de.onyxbits.tradetrax.services.MoneyRepresentation;
 import de.onyxbits.tradetrax.services.SettingsStore;
 
 public class Settings {
@@ -73,6 +73,9 @@ public class Settings {
 
 	@Inject
 	private SettingsStore settingsStore;
+	
+	@Inject
+	private MoneyRepresentation moneyRepresentation;
 
 	@Inject
 	private TypeCoercer typeCoercer;
@@ -102,9 +105,8 @@ public class Settings {
 	private final SelectModel ledgerColumnsModel = new EnumSelectModel(LedgerColumns.class, messages);
 
 	public void setupRender() {
-		MoneyRepresentation mr = new MoneyRepresentation(settingsStore);
 		financialFormLedgerTitle = settingsStore.get(SettingsStore.LEDGERTITLE, null);
-		financialFormCurrencySymbol = mr.getCurrencySymbol();
+		financialFormCurrencySymbol = moneyRepresentation.getCurrencySymbol();
 		financialFormDecimals = Currency.getInstance(Locale.getDefault()).getDefaultFractionDigits();
 		try {
 			financialFormDecimals = Integer.parseInt(settingsStore.get(SettingsStore.DECIMALS, null));

@@ -35,6 +35,7 @@ public class AppModule {
 		// invoking the constructor.
 		binder.bind(SettingsStore.class);
 		binder.bind(EventLogger.class);
+		binder.bind(MoneyRepresentation.class);
 	}
 
 	public static void contributeFactoryDefaults(MappedConfiguration<String, Object> configuration) {
