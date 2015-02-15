@@ -214,19 +214,11 @@ public class Index {
 		List<LedgerColumns> tmp = LedgerColumns.fromCsv(settingsStore.get(SettingsStore.TCLCOLUMNS,
 				LedgerColumns.DEFAULT));
 		for (LedgerColumns col : tmp) {
-			PropertyModel pm = model.addEmpty(col.getName());
-			if (LedgerColumns.BUYPRICE.getName().equals(col.getName())) {
-				pm.sortable(true);
-			}
-			if (LedgerColumns.SELLPRICE.getName().equals(col.getName())) {
-				pm.sortable(true);
-			}
-			if (LedgerColumns.LIQUIDATED.getName().equals(col.getName())) {
-				pm.sortable(true);
-			}
-			if (LedgerColumns.ACQUIRED.getName().equals(col.getName())) {
-				pm.sortable(true);
-			}
+			model.addEmpty(col.getName()).sortable(
+					LedgerColumns.BUYPRICE.getName().equals(col.getName())
+							|| LedgerColumns.SELLPRICE.getName().equals(col.getName())
+							|| LedgerColumns.LIQUIDATED.getName().equals(col.getName())
+							|| LedgerColumns.ACQUIRED.getName().equals(col.getName()));
 		}
 		return model;
 	}
