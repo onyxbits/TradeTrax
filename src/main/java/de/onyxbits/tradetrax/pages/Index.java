@@ -215,16 +215,16 @@ public class Index {
 				LedgerColumns.DEFAULT));
 		for (LedgerColumns col : tmp) {
 			PropertyModel pm = model.addEmpty(col.getName());
-			if ("buyPrice".equals(col.getName())) {
+			if (LedgerColumns.BUYPRICE.getName().equals(col.getName())) {
 				pm.sortable(true);
 			}
-			if ("sellPrice".equals(col.getName())) {
+			if (LedgerColumns.SELLPRICE.getName().equals(col.getName())) {
 				pm.sortable(true);
 			}
-			if ("liquidated".equals(col.getName())) {
+			if (LedgerColumns.LIQUIDATED.getName().equals(col.getName())) {
 				pm.sortable(true);
 			}
-			if ("acquired".equals(col.getName())) {
+			if (LedgerColumns.ACQUIRED.getName().equals(col.getName())) {
 				pm.sortable(true);
 			}
 		}
