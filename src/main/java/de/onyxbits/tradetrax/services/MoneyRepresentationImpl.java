@@ -57,7 +57,7 @@ public class MoneyRepresentationImpl implements MoneyRepresentation {
 	/* (non-Javadoc)
 	 * @see de.onyxbits.tradetrax.services.MoneyRepresention#getCurrencySymbol()
 	 */
-	public synchronized String getCurrencySymbol() {
+	public String getCurrencySymbol() {
 		return settingsStore.get(SettingsStore.CURRENCYSYMBOL, currencySymbol);
 	}
 
