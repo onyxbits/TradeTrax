@@ -282,8 +282,10 @@ public class StandaloneServer extends JFrame implements Runnable, WindowListener
 		addLedger.setEnabled(!busy);
 		openLedger.setEnabled(!busy);
 		openPublic.setEnabled(!busy);
-		for (JMenuItem mi : recent) {
-			mi.setEnabled(!busy);
+		if (busy) {
+			for (JMenuItem mi : recent) {
+				mi.setEnabled(false);
+			}
 		}
 		JPanel content = (JPanel) getContentPane();
 		CardLayout cl = (CardLayout) content.getLayout();
