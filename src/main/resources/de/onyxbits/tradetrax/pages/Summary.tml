@@ -53,10 +53,10 @@
 			</t:if>
 		</p:amountCell>
 		<p:totalInvestmentCell>
-			<t:moneyvalue amount="${row.totalInvestment}" />
+			<t:moneyvalue amount="${row.totalInvestment}" addSymbol="false" />
 		</p:totalInvestmentCell>
 		<p:totalProfitCell>
-			<t:moneyvalue amount="${row.totalProfit}" />
+			<t:moneyvalue amount="${row.totalProfit}" addSymbol="false" />
 		</p:totalProfitCell>
 	</table>
 
