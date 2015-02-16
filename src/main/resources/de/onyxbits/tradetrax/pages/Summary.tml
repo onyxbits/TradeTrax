@@ -13,15 +13,20 @@
 				<t:if test="ownership">
 					${ownership}
 					<p:else>
-						<em>${message:not-in-stock}</em>
+						<em>${message:none}</em>
 					</p:else>
 				</t:if>
 			</td>
 		</tr>
 		<tr>
 			<th title="${message:total-investment-tooltip}">${message:total-investment-label}</th>
-			<td class="numerical">
-				<t:moneyvalue amount="${totalInvestment}" />
+			<td>
+				<t:if test="ownership">
+					<p:else>
+						<em>${message:none}</em>
+					</p:else>
+					<t:moneyvalue amount="${totalInvestment}" />
+				</t:if>
 			</td>
 		</tr>
 		<tr>
@@ -53,7 +58,13 @@
 			</t:if>
 		</p:amountCell>
 		<p:totalInvestmentCell>
-			<t:moneyvalue amount="${row.totalInvestment}" addSymbol="false" />
+			<t:if test="row.ownership">
+				<p:else>
+					<em>${message:none}</em>
+				</p:else>
+				<t:moneyvalue amount="${row.totalInvestment}"
+					addSymbol="false" />
+			</t:if>
 		</p:totalInvestmentCell>
 		<p:totalProfitCell>
 			<t:moneyvalue amount="${row.totalProfit}" addSymbol="false" />
