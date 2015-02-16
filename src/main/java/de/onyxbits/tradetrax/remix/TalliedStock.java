@@ -41,6 +41,9 @@ public class TalliedStock implements Comparable<TalliedStock> {
 
 	@Property
 	public long totalInvestment;
+	
+	@Property
+	public String ownership;
 
 	@Property
 	public long totalProfit;

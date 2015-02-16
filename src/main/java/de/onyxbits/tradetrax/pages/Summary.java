@@ -1,6 +1,7 @@
 package de.onyxbits.tradetrax.pages;
 
 import java.sql.Timestamp;
+import java.text.ChoiceFormat;
 import java.text.DateFormat;
 import java.util.Collections;
 import java.util.HashMap;
@@ -74,7 +75,7 @@ public class Summary {
 		model.addEmpty("totalprofit").sortable(true);
 		return model;
 	}
-	
+
 	public TalliedStockPagedGridDataSource getData() {
 		return new TalliedStockPagedGridDataSource(usage);
 	}
@@ -140,6 +141,19 @@ public class Summary {
 		Iterator<String> it = tallied.keySet().iterator();
 		while (it.hasNext()) {
 			TalliedStock ts = tallied.get(it.next());
+			if (ts.assetCount > 0) {
+				double[] limits = { 1, 2 };
+				String[] assets = {
+						messages.get("assets.one"),
+						messages.format("assets.multiple", ts.assetCount) };
+				String[] items = {
+						messages.get("items.one"),
+						messages.format("items.multiple", ts.totalUnits) };
+				ChoiceFormat cfa = new ChoiceFormat(limits, assets);
+				ChoiceFormat cfi = new ChoiceFormat(limits, items);
+				ts.ownership = messages.format("in-stock", cfa.format(ts.assetCount),
+						cfi.format(ts.totalUnits));
+			}
 			usage.add(ts);
 		}
 		Collections.sort(usage);

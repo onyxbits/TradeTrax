@@ -38,7 +38,12 @@
 			<a t:id="show" t:context="${row.name}">${row.name}</a>
 		</p:nameCell>
 		<p:amountCell>
-			${row.assetCount} / ${row.totalUnits}
+			<t:if test="row.ownership">
+				<p:else>
+					<em>${message:not-in-stock}</em>
+				</p:else>
+				${row.ownership}
+			</t:if>
 		</p:amountCell>
 		<p:totalInvestmentCell>
 			<t:moneyvalue amount="${row.totalInvestment}" />
