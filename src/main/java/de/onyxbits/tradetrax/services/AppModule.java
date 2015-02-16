@@ -20,6 +20,8 @@ import org.apache.tapestry5.services.RequestHandler;
 import org.apache.tapestry5.services.Response;
 import org.slf4j.Logger;
 
+import de.onyxbits.tradetrax.main.Version;
+
 /**
  * This module is automatically included as part of the Tapestry IoC Registry,
  * it's a good place to configure and extend Tapestry, or to place your own
@@ -47,7 +49,7 @@ public class AppModule {
 		// (a random hexadecimal number), but may be further overriden by
 		// DevelopmentModule or
 		// QaModule.
-		configuration.override(SymbolConstants.APPLICATION_VERSION, "v1.4");
+		configuration.override(SymbolConstants.APPLICATION_VERSION, "v"+Version.NAME);
 	}
 
 	public static void contributeApplicationDefaults(MappedConfiguration<String, Object> configuration) {

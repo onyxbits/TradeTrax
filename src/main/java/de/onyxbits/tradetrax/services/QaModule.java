@@ -13,6 +13,8 @@ import org.apache.tapestry5.services.RequestHandler;
 import org.apache.tapestry5.services.Response;
 import org.slf4j.Logger;
 
+import de.onyxbits.tradetrax.main.Version;
+
 /**
  * This module is automatically included as part of the Tapestry IoC Registry if <em>tapestry.execution-mode</em>
  * includes <code>qa</code> ("quality assurance").
@@ -38,6 +40,6 @@ public class QaModule
         // assets. Web browsers will cache assets because of the far future expires
         // header. If existing assets are changed, the version number should also
         // change, to force the browser to download new versions.
-        configuration.add(SymbolConstants.APPLICATION_VERSION, "1.2-SNAPSHOT-QA");
+        configuration.add(SymbolConstants.APPLICATION_VERSION, "v"+Version.NAME+"-SNAPSHOT-QA");
     }
 }
