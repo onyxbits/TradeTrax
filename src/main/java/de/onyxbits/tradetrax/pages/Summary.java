@@ -52,6 +52,9 @@ public class Summary {
 
 	@Property
 	private List<TalliedStock> usage;
+	
+	@Property
+	private String ownership;
 
 	@Inject
 	private BeanModelSource tallySource;
@@ -141,21 +144,32 @@ public class Summary {
 		Iterator<String> it = tallied.keySet().iterator();
 		while (it.hasNext()) {
 			TalliedStock ts = tallied.get(it.next());
-			if (ts.assetCount > 0) {
-				double[] limits = { 1, 2 };
-				String[] assets = {
-						messages.get("assets.one"),
-						messages.format("assets.multiple", ts.assetCount) };
-				String[] items = {
-						messages.get("items.one"),
-						messages.format("items.multiple", ts.totalUnits) };
-				ChoiceFormat cfa = new ChoiceFormat(limits, assets);
-				ChoiceFormat cfi = new ChoiceFormat(limits, items);
-				ts.ownership = messages.format("in-stock", cfa.format(ts.assetCount),
-						cfi.format(ts.totalUnits));
-			}
+			ts.ownership=owned(ts.assetCount,ts.totalUnits);
 			usage.add(ts);
 		}
 		Collections.sort(usage);
+		ownership=owned(assetsOnHand,itemsOnHand);
+	}
+
+	/**
+	 * Create a nicely formated ownership summary
+	 * 
+	 * @param ac
+	 *          asset count
+	 * @param ic
+	 *          item count
+	 * @return a formated string or null if empty handed.
+	 */
+	private String owned(int ac, int ic) {
+		String ret=null;
+		if (ac > 0) {
+			double[] limits = { 1, 2 };
+			String[] assets = { messages.get("assets.one"), messages.format("assets.multiple", ac) };
+			String[] items = { messages.get("items.one"), messages.format("items.multiple", ic) };
+			ChoiceFormat cfa = new ChoiceFormat(limits, assets);
+			ChoiceFormat cfi = new ChoiceFormat(limits, items);
+			ret = messages.format("in-stock", cfa.format(ac), cfi.format(ic));
+		}
+		return ret;
 	}
 }

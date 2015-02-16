@@ -9,7 +9,14 @@
 		</tr>
 		<tr>
 			<th title="${message:amount-on-hand-tooltip}">${message:amount-on-hand-label}</th>
-			<td class="numerical">${assetsOnHand} / ${itemsOnHand}</td>
+			<td>
+				<t:if test="ownership">
+					${ownership}
+					<p:else>
+						<em>${message:not-in-stock}</em>
+					</p:else>
+				</t:if>
+			</td>
 		</tr>
 		<tr>
 			<th title="${message:total-investment-tooltip}">${message:total-investment-label}</th>
