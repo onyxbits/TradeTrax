@@ -35,12 +35,6 @@ public class Summary {
 	@Property
 	private long expectedProfit;
 
-	@Property
-	private int assetsOnHand;
-
-	@Property
-	private int itemsOnHand;
-
 	@Inject
 	private Session session;
 
@@ -52,7 +46,7 @@ public class Summary {
 
 	@Property
 	private List<TalliedStock> usage;
-	
+
 	@Property
 	private String ownership;
 
@@ -117,6 +111,8 @@ public class Summary {
 		// in a background service and cache the results.
 		usage = new Vector<TalliedStock>();
 		tallied = new HashMap<String, TalliedStock>();
+		int assetsOnHand = 0;
+		int itemsOnHand = 0;
 		@SuppressWarnings("unchecked")
 		List<Stock> lst = session.createCriteria(Stock.class).list();
 		for (Stock stock : lst) {
@@ -144,11 +140,11 @@ public class Summary {
 		Iterator<String> it = tallied.keySet().iterator();
 		while (it.hasNext()) {
 			TalliedStock ts = tallied.get(it.next());
-			ts.ownership=owned(ts.assetCount,ts.totalUnits);
+			ts.ownership = owned(ts.assetCount, ts.totalUnits);
 			usage.add(ts);
 		}
 		Collections.sort(usage);
-		ownership=owned(assetsOnHand,itemsOnHand);
+		ownership = owned(assetsOnHand, itemsOnHand);
 	}
 
 	/**
@@ -161,7 +157,7 @@ public class Summary {
 	 * @return a formated string or null if empty handed.
 	 */
 	private String owned(int ac, int ic) {
-		String ret=null;
+		String ret = null;
 		if (ac > 0) {
 			double[] limits = { 1, 2 };
 			String[] assets = { messages.get("assets.one"), messages.format("assets.multiple", ac) };
