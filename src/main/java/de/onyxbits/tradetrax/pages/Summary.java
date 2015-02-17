@@ -118,20 +118,23 @@ public class Summary {
 		for (Stock stock : lst) {
 			if (stock.getAcquired() != null) {
 				TalliedStock ts = getCounterFor(stock);
+				long buyPrice = stock.getBuyPrice();
+				long sellPrice = stock.getSellPrice();
+				int unitCount = stock.getUnitCount();
 				if (stock.getLiquidated() == null) {
-					long inv = stock.getBuyPrice() * stock.getUnitCount();
+					long inv = buyPrice * unitCount;
 					totalInvestment += inv;
 					assetsOnHand++;
-					itemsOnHand += stock.getUnitCount();
-					if (stock.getSellPrice() != 0) {
-						expectedProfit += (stock.getSellPrice() - stock.getBuyPrice()) * stock.getUnitCount();
+					itemsOnHand += unitCount;
+					if (sellPrice != 0) {
+						expectedProfit += (sellPrice - buyPrice) * unitCount;
 					}
 					ts.assetCount++;
-					ts.totalUnits += stock.getUnitCount();
+					ts.totalUnits += unitCount;
 					ts.totalInvestment += inv;
 				}
 				else {
-					long pro = (stock.getSellPrice() - stock.getBuyPrice()) * stock.getUnitCount();
+					long pro = (sellPrice - buyPrice) * unitCount;
 					totalProfit += pro;
 					ts.totalProfit += pro;
 				}
