@@ -50,6 +50,8 @@ public class AppModule {
 		// DevelopmentModule or
 		// QaModule.
 		configuration.override(SymbolConstants.APPLICATION_VERSION, "v"+Version.NAME);
+		configuration.override(SymbolConstants.CLUSTERED_SESSIONS,false);
+		configuration.override(SymbolConstants.OMIT_GENERATOR_META,true);
 	}
 
 	public static void contributeApplicationDefaults(MappedConfiguration<String, Object> configuration) {
