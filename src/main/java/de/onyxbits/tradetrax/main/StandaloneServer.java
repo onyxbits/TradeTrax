@@ -186,7 +186,7 @@ public class StandaloneServer extends JFrame implements Runnable, WindowListener
 		app.setDefaultsDescriptor(null); // Don't complain about no JSP support.
 		app.setContextPath("/");
 		app.setSessionHandler(new SessionHandler());
-		app.setInitParameter("ledger", cfg.getLedger().getAbsolutePath());
+		app.setInitParameter(AppConstants.IPNLEDGERPATH, cfg.getLedger().getAbsolutePath());
 		// DIRTY HACK: Compute a resource path that works with files on disk (in the
 		// IDE) as well as in a jar.
 		String dirtyhack = getClass().getResource("/WEB-INF/web.xml").toString();

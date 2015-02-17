@@ -1,19 +1,24 @@
 package de.onyxbits.tradetrax.main;
 
-
 /**
  * Central place for storing the version information
  * 
  * @author patrick
  * 
  */
-public class Version {
+public class AppConstants {
 
 	/**
 	 * The human readable version name without any prefixes (e.g. "v") or suffixes
 	 * (e.g. "-SNAPSHOT-DEV")
 	 */
-	public static final String NAME;
+	public static final String VERSION;
+
+	/**
+	 * Init Parameter Name "Ledger": the parameter name by which to configure the
+	 * ledger path in web.xml
+	 */
+	public static final String IPNLEDGERPATH = "ledger";
 
 	static {
 		String tmp = "UNKNOWN";
@@ -25,6 +30,6 @@ public class Version {
 		}
 		catch (Exception e) {
 		}
-		NAME = tmp;
+		VERSION = tmp;
 	}
 }

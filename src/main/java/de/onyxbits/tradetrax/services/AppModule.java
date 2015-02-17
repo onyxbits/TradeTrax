@@ -20,7 +20,7 @@ import org.apache.tapestry5.services.RequestHandler;
 import org.apache.tapestry5.services.Response;
 import org.slf4j.Logger;
 
-import de.onyxbits.tradetrax.main.Version;
+import de.onyxbits.tradetrax.main.AppConstants;
 
 /**
  * This module is automatically included as part of the Tapestry IoC Registry,
@@ -49,7 +49,7 @@ public class AppModule {
 		// (a random hexadecimal number), but may be further overriden by
 		// DevelopmentModule or
 		// QaModule.
-		configuration.override(SymbolConstants.APPLICATION_VERSION, "v"+Version.NAME);
+		configuration.override(SymbolConstants.APPLICATION_VERSION, "v"+AppConstants.VERSION);
 		configuration.override(SymbolConstants.CLUSTERED_SESSIONS,false);
 		configuration.override(SymbolConstants.OMIT_GENERATOR_META,true);
 	}
@@ -137,7 +137,7 @@ public class AppModule {
 
 	public void contributeHibernateSessionSource(OrderedConfiguration<HibernateConfigurer> configurer) {
 
-		String path = globals.getServletContext().getInitParameter("ledger");
+		String path = globals.getServletContext().getInitParameter(AppConstants.IPNLEDGERPATH);
 		// WARNING: This is here for the benefit of developers so they can switch
 		// ledgers without having to use the StandaloneServer. WAR deployments
 		// should be configured through the web.xml file and not a system property.

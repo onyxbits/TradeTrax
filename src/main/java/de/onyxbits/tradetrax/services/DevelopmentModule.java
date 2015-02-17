@@ -3,7 +3,7 @@ package de.onyxbits.tradetrax.services;
 import org.apache.tapestry5.*;
 import org.apache.tapestry5.ioc.MappedConfiguration;
 
-import de.onyxbits.tradetrax.main.Version;
+import de.onyxbits.tradetrax.main.AppConstants;
 
 /**
  * This module is automatically included as part of the Tapestry IoC Registry if
@@ -20,6 +20,6 @@ public class DevelopmentModule {
 		// assets. Web browsers will cache assets because of the far future expires
 		// header. If existing assets are changed, the version number should also
 		// change, to force the browser to download new versions.
-		configuration.add(SymbolConstants.APPLICATION_VERSION, "v"+Version.NAME + "-SNAPSHOT-DEV");
+		configuration.add(SymbolConstants.APPLICATION_VERSION, "v"+AppConstants.VERSION + "-SNAPSHOT-DEV");
 	}
 }
