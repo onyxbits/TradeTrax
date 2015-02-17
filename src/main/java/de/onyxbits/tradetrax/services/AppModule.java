@@ -129,7 +129,7 @@ public class AppModule {
 		// contributed filter
 		// within the pipeline.
 
-		configuration.add("Timing", filter);
+		//configuration.add("Timing", filter);
 	}
 
 	@Inject
