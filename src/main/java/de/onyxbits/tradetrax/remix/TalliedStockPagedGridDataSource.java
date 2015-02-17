@@ -10,6 +10,26 @@ import org.apache.tapestry5.grid.SortConstraint;
 
 public class TalliedStockPagedGridDataSource implements GridDataSource {
 
+	/**
+	 * Column
+	 */
+	public static final String TOTALPROFIT = "totalprofit";
+
+	/**
+	 * Column
+	 */
+	public static final String TOTALINVESTMENT = "totalinvestment";
+
+	/**
+	 * Column
+	 */
+	public static final String AMOUNT = "amount";
+
+	/**
+	 * Column
+	 */
+	public static final String NAME = "name";
+
 	private List<TalliedStock> data;
 
 	public TalliedStockPagedGridDataSource(List<TalliedStock> data) {
@@ -26,17 +46,17 @@ public class TalliedStockPagedGridDataSource implements GridDataSource {
 			boolean ascending = sc.getColumnSort() == ColumnSort.ASCENDING;
 			int crit = TalliedStock.ONNAME;
 			PropertyModel pm = sc.getPropertyModel();
-			if ("totalprofit".equals(pm.getId())) {
-				crit=TalliedStock.ONPROFIT;
+			if (TOTALPROFIT.equals(pm.getId())) {
+				crit = TalliedStock.ONPROFIT;
 			}
-			if ("totalinvestment".equals(pm.getId())) {
-				crit=TalliedStock.ONINVESTMENT;
+			if (TOTALINVESTMENT.equals(pm.getId())) {
+				crit = TalliedStock.ONINVESTMENT;
 			}
-			if ("amount".equals(pm.getId())) {
-				crit=TalliedStock.ONAMOUNT;
+			if (AMOUNT.equals(pm.getId())) {
+				crit = TalliedStock.ONAMOUNT;
 			}
 			for (TalliedStock ts : data) {
-				ts.sortBy(crit,ascending);
+				ts.sortBy(crit, ascending);
 			}
 			Collections.sort(data);
 		}

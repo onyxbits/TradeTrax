@@ -66,10 +66,10 @@ public class Summary {
 
 	public BeanModel<Object> getTallyModel() {
 		BeanModel<Object> model = tallySource.createDisplayModel(Object.class, messages);
-		model.addEmpty("name").sortable(true);
-		model.addEmpty("amount").sortable(true);
-		model.addEmpty("totalinvestment").sortable(true);
-		model.addEmpty("totalprofit").sortable(true);
+		model.addEmpty(TalliedStockPagedGridDataSource.NAME).sortable(true);
+		model.addEmpty(TalliedStockPagedGridDataSource.AMOUNT).sortable(true);
+		model.addEmpty(TalliedStockPagedGridDataSource.TOTALINVESTMENT).sortable(true);
+		model.addEmpty(TalliedStockPagedGridDataSource.TOTALPROFIT).sortable(true);
 		return model;
 	}
 
