@@ -133,7 +133,9 @@
 				<t:moneyvalue amount="${row.buyPrice}" addSymbol="false" />
 			</p:buyPriceCell>
 			<p:sellPriceCell>
-				<t:moneyvalue amount="${row.sellPrice}" addSymbol="false" />
+				<t:if test="${row.liquidated}">
+					<t:moneyvalue amount="${row.sellPrice}" addSymbol="false" />
+				</t:if>
 			</p:sellPriceCell>
 			<p:locationCell>${row.location}</p:locationCell>
 			<p:commentCell>${row.comment}</p:commentCell>

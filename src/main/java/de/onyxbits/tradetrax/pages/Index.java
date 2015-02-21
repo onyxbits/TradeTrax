@@ -1,7 +1,6 @@
 package de.onyxbits.tradetrax.pages;
 
 import java.text.ChoiceFormat;
-import java.text.MessageFormat;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
