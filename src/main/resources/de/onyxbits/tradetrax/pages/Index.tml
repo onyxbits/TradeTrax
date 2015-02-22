@@ -205,7 +205,7 @@
 					</th>
 					<td>
 						<t:select t:id="filterAcquisitionSpan" />&nbsp;
-						<t:datefield t:id="filterAcquisition"
+						<t:datefield t:id="filterAcquisition" t:format="prop:dateFormat"
 							t:label="${message:filter-acquisition-label}" value="filterAcquisition"
 							name="filterAcquisition" onclick="SelectAll('filterAcquisition');" />
 					</td>
@@ -216,7 +216,7 @@
 					</th>
 					<td>
 						<t:select t:id="filterLiquidationSpan" />&nbsp;
-						<t:datefield t:id="filterLiquidation"
+						<t:datefield t:id="filterLiquidation" t:format="prop:dateFormat"
 							t:label="${message:filter-liquidation-label}" value="filterLiquidation"
 							name="filterLiquidation" onclick="SelectAll('filterLiquidation');" />
 					</td>

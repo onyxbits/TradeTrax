@@ -1,6 +1,7 @@
 package de.onyxbits.tradetrax.pages;
 
 import java.text.ChoiceFormat;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Calendar;
 import java.util.Date;
@@ -42,6 +43,9 @@ public class Index {
 	private long focusedStockId;
 
 
+	@Property
+	private DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM);
+	
 	@Property
 	@Persist
 	private boolean showFilter;
