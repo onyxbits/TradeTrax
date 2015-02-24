@@ -1,10 +1,9 @@
 package de.onyxbits.tradetrax.components;
 
+import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Vector;
-
-import net.objecthunter.exp4j.Expression;
-import net.objecthunter.exp4j.ExpressionBuilder;
 
 import org.apache.tapestry5.*;
 import org.apache.tapestry5.annotations.*;
@@ -17,9 +16,8 @@ import org.apache.tapestry5.SymbolConstants;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 
+import de.onyxbits.jbee.Evaluator;
 import de.onyxbits.tradetrax.entities.Bookmark;
-import de.onyxbits.tradetrax.main.MinusPercentage;
-import de.onyxbits.tradetrax.main.PlusPercentage;
 import de.onyxbits.tradetrax.pages.Index;
 import de.onyxbits.tradetrax.pages.edit.StockEditor;
 import de.onyxbits.tradetrax.services.SettingsStore;
@@ -174,12 +172,12 @@ public class Layout {
 			return;
 		}
 		try {
-			Expression expr = new ExpressionBuilder(expression).operator(new PlusPercentage(),
-					new MinusPercentage()).build();
+			BigDecimal result = new Evaluator().evaluateOrThrow(expression);
 			while (results.size() >= 5) {
 				results.remove(results.size() - 1);
 			}
-			results.add(0, messages.format("evaluated", expression, "" + expr.evaluate()));
+			results.add(0,
+					messages.format("evaluated", expression, DecimalFormat.getInstance().format(result)));
 		}
 		catch (Exception exp) {
 			results.add(0, messages.format("error", expression));

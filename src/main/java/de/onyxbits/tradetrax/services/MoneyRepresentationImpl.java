@@ -1,10 +1,12 @@
 package de.onyxbits.tradetrax.services;
 
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.Currency;
 import java.util.Locale;
 
+import de.onyxbits.jbee.Evaluator;
 
 /**
  * Handles internal and external representation of monetary values as well as
@@ -54,27 +56,41 @@ public class MoneyRepresentationImpl implements MoneyRepresentation {
 		currencySymbol = c.getSymbol();
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see de.onyxbits.tradetrax.services.MoneyRepresention#getCurrencySymbol()
 	 */
 	public String getCurrencySymbol() {
 		return settingsStore.get(SettingsStore.CURRENCYSYMBOL, currencySymbol);
 	}
 
-	/* (non-Javadoc)
-	 * @see de.onyxbits.tradetrax.services.MoneyRepresention#userToDatabase(java.lang.String, int)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * de.onyxbits.tradetrax.services.MoneyRepresention#userToDatabase(java.lang
+	 * .String, int)
 	 */
 	public synchronized long userToDatabase(String value, int units) throws ParseException {
 		if (value == null) {
 			return 0;
 		}
-		// FIXME: don't use double here!
-		double val = numberFormatPrecise.parse(value).doubleValue();
-		return (long) ((val / units) * FACTOR);
+		try {
+		  Evaluator e = new Evaluator();
+		  BigDecimal val = e.evaluateOrThrow(value);
+		  return val.divide(new BigDecimal(units)).multiply(new BigDecimal(FACTOR)).longValue();
+		}
+		catch (Exception e) {
+			throw new ParseException(value,0);
+		}
 	}
 
-	/* (non-Javadoc)
-	 * @see de.onyxbits.tradetrax.services.MoneyRepresention#databaseToUser(long, boolean, boolean)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see de.onyxbits.tradetrax.services.MoneyRepresention#databaseToUser(long,
+	 * boolean, boolean)
 	 */
 	public synchronized String databaseToUser(long value, boolean precise, boolean addSymbol) {
 		String ret = "BUG!";
@@ -94,7 +110,7 @@ public class MoneyRepresentationImpl implements MoneyRepresentation {
 	}
 
 	private void checkSettings() {
-		String old = numberFormat.getMaximumFractionDigits()+"";
+		String old = numberFormat.getMaximumFractionDigits() + "";
 		String digits = settingsStore.get(SettingsStore.DECIMALS, old);
 		if (!old.equals(digits)) {
 			try {
