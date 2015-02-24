@@ -106,10 +106,10 @@ public class Layout {
 
 	@Property
 	@SessionAttribute(Layout.CALCRESULT)
-	private Vector<String> results;
+	private Vector<String> expressionList;
 
 	@Property
-	private String result;
+	private String expressionItem;
 
 	@Component(id = "expression")
 	private TextField expressionField;
@@ -160,27 +160,21 @@ public class Layout {
 	}
 
 	public void onSuccessFromCalculatorForm() {
-		if (results == null) {
-			results = new Vector<String>();
+		if (expressionList == null) {
+			expressionList = new Vector<String>();
 		}
 		if (expression == null) {
 			// People might want to clear the result list, but I don't want to clutter
 			// the form with more controls than necessary. So we creatively interpret
 			// an empty input as a wish to empty the list. This way we get around a
 			// lot of extra code as well.
-			results.clear();
+			expressionList.clear();
 			return;
 		}
-		try {
-			BigDecimal result = new Evaluator().evaluateOrThrow(expression);
-			while (results.size() >= 5) {
-				results.remove(results.size() - 1);
-			}
-			results.add(0,
-					messages.format("evaluated", expression, DecimalFormat.getInstance().format(result)));
+
+		while (expressionList.size() >= 5) {
+			expressionList.remove(expressionList.size() - 1);
 		}
-		catch (Exception exp) {
-			results.add(0, messages.format("error", expression));
-		}
+		expressionList.add(0, expression);
 	}
 }

@@ -70,7 +70,7 @@
 		</script>
 	</head>
 	<body>
-		<a name="top"/>
+		<a name="top" />
 		<div id="wrapper">
 			<header id="header" class="clearfix">
 				<t:if test="ledgerTitle">
@@ -168,12 +168,10 @@
 
 							</t:form>
 							<p />
-							<t:loop source="results" value="result">
-								<code>
-									<pre>
-										${result}
-									</pre>
-								</code>
+							<t:loop source="expressionList" value="expressionItem">
+								<pre>
+									<t:CalculatedValue input="expressionItem" />
+								</pre>
 							</t:loop>
 						</div>
 					</t:if>
@@ -193,7 +191,7 @@
 				</div>
 			</footer>
 		</div>
-		<a name="bottom"/>
+		<a name="bottom" />
 	</body>
 </html>
 
