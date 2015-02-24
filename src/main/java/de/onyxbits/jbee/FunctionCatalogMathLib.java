@@ -69,24 +69,6 @@ public class FunctionCatalogMathLib extends ReflectedMathLib {
 	 *           999999999.
 	 */
 	public BigDecimal pow(BigDecimal base, BigDecimal exponent) throws ArithmeticException {
-		MathContext mc = getMathContext();
-		int exp = exponent.intValueExact();
-		if (exp < 0) {
-			exp = -exp;
-			if (mc == null) {
-				return BigDecimal.ONE.divide(base.pow(exp));
-			}
-			else {
-				return BigDecimal.ONE.divide(base.pow(exp, mc));
-			}
-		}
-		else {
-			if (mc == null) {
-				return base.pow(exp);
-			}
-			else {
-				return base.pow(exp, mc);
-			}
-		}
+		return onExponentiation(base,exponent);
 	}
 }

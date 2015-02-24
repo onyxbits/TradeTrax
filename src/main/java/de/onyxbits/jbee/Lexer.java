@@ -185,6 +185,10 @@ final class Lexer {
 				idx++;
 				return '|';
 			}
+			case '#': {
+				idx++;
+				return '#';
+			}
 			case '^': {
 				idx++;
 				return '^';

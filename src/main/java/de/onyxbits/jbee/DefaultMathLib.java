@@ -168,6 +168,31 @@ public class DefaultMathLib implements MathLib {
 	/**
 	 * {@inheritDoc}
 	 */
+	public BigDecimal onExponentiation(BigDecimal base, BigDecimal exponent) {
+		MathContext mc = getMathContext();
+		int exp = exponent.intValueExact();
+		if (exp < 0) {
+			exp = -exp;
+			if (mc == null) {
+				return BigDecimal.ONE.divide(base.pow(exp));
+			}
+			else {
+				return BigDecimal.ONE.divide(base.pow(exp, mc));
+			}
+		}
+		else {
+			if (mc == null) {
+				return base.pow(exp);
+			}
+			else {
+				return base.pow(exp, mc);
+			}
+		}
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
 	public BigDecimal onNegation(BigDecimal num) {
 		MathContext mc = getMathContext();
 		if (mc == null) {

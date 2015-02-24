@@ -191,6 +191,17 @@ public interface MathLib {
 	public BigDecimal onMovePoint(BigDecimal num, BigDecimal dir);
 
 	/**
+	 * Called on exponentiation
+	 * 
+	 * @param base
+	 *          the base
+	 * @param exponent
+	 *          the exponent
+	 * @return the power
+	 */
+	public BigDecimal onExponentiation(BigDecimal base, BigDecimal exponent);
+
+	/**
 	 * Called when the expression to evaluate is empty.
 	 * 
 	 * @return the number, the empty expression should evaluate to. NOTE: Instead
