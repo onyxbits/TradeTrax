@@ -1,7 +1,5 @@
 package de.onyxbits.tradetrax.components;
 
-import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Vector;
 
@@ -16,7 +14,6 @@ import org.apache.tapestry5.SymbolConstants;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 
-import de.onyxbits.jbee.Evaluator;
 import de.onyxbits.tradetrax.entities.Bookmark;
 import de.onyxbits.tradetrax.pages.Index;
 import de.onyxbits.tradetrax.pages.edit.StockEditor;
