@@ -1,0 +1,9 @@
+<t:container xmlns:t="http://tapestry.apache.org/schema/tapestry_5_1_0.xsd"
+	xmlns:p="tapestry:parameter">
+	<ul style="list-style-type:square" >
+		<li>
+			<span style="float:left;">${expression}</span>
+		</li>
+	</ul>
+	<span style="float:right;font-size:large">${result}</span>
+</t:container>
