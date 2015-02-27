@@ -74,7 +74,7 @@ public class Index {
 	private String buyLocation;
 
 	@Property
-	private int buyAmount;
+	private int buyAmount=1;
 
 	@Property
 	private StockPagedGridDataSource stocks;
@@ -223,7 +223,6 @@ public class Index {
 	}
 
 	public void setupRender() {
-		buyAmount = 1;
 		stocks = new StockPagedGridDataSource(session).withName(filterName).withVariant(filterVariant)
 				.withState(filterState).withLocation(filterLocation).withComment(filterComment)
 				.withAcquisition(filterAcquisition, filterAcquisitionSpan)
