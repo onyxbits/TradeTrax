@@ -79,7 +79,10 @@ public class MoneyRepresentationImpl implements MoneyRepresentation {
 		try {
 		  Evaluator e = new Evaluator();
 		  BigDecimal val = e.evaluateOrThrow(value);
-		  return val.divide(new BigDecimal(units)).multiply(new BigDecimal(FACTOR)).longValue();
+		  if (units!=0) {
+		  	val=val.divide(new BigDecimal(units));
+		  }
+		  return val.multiply(new BigDecimal(FACTOR)).longValue();
 		}
 		catch (Exception e) {
 			throw new ParseException(value,0);
