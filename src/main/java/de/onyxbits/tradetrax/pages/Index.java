@@ -7,15 +7,18 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.tapestry5.Block;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.beaneditor.Validate;
 import org.apache.tapestry5.corelib.components.DateField;
+import org.apache.tapestry5.corelib.components.EventLink;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Grid;
 import org.apache.tapestry5.corelib.components.Select;
 import org.apache.tapestry5.corelib.components.Submit;
 import org.apache.tapestry5.corelib.components.TextField;
+import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.*;
@@ -42,13 +45,8 @@ public class Index {
 	@SessionAttribute(Layout.FOCUSID)
 	private long focusedStockId;
 
-
 	@Property
 	private DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.MEDIUM);
-	
-	@Property
-	@Persist
-	private boolean showFilter;
 
 	@Inject
 	private Session session;
@@ -184,15 +182,28 @@ public class Index {
 
 	@Inject
 	private EventLogger eventLogger;
-	
+
 	@Inject
 	private MoneyRepresentation moneyRepresentation;
 
 	@Property
-	private boolean showJumplinks;
-	
-	@Property
 	private String matches;
+
+	@Inject
+	private Block acquisitionblock;
+
+	@Inject
+	private Block filterblock;
+
+	@InjectComponent
+	private Zone flipview;
+
+	@Component(parameters = { "event=toggleform" })
+	private EventLink flipToFilterForm, flipToAcquisitionForm;
+
+	@Property
+	@Persist
+	private boolean showFilterForm;
 
 	public String styleFor(String tag) {
 		String tmp = settingsStore.get(SettingsStore.TCACFIELDS, AcquisitionFields.DEFAULT);
@@ -202,6 +213,15 @@ public class Index {
 		return "";
 	}
 
+	public Block getActiveForm() {
+		if (showFilterForm) {
+			return filterblock;
+		}
+		else {
+			return acquisitionblock;
+		}
+	}
+
 	public void setupRender() {
 		buyAmount = 1;
 		stocks = new StockPagedGridDataSource(session).withName(filterName).withVariant(filterVariant)
@@ -209,17 +229,12 @@ public class Index {
 				.withAcquisition(filterAcquisition, filterAcquisitionSpan)
 				.withLiquidation(filterLiquidation, filterLiquidationSpan);
 		int count = stocks.getAvailableRows();
-		if (!showFilter && count >= ledger.getRowsPerPage()) {
-			showFilter = true;
-		}
 		String[] tmp = {
 				messages.get("matches.none"),
 				messages.get("matches.one"),
-				messages.format("matches.multiple",count)
-		};
-		double[] choices = {0,1,2};
-		matches=new ChoiceFormat(choices,tmp).format(count);
-		showJumplinks = count > 10;
+				messages.format("matches.multiple", count) };
+		double[] choices = { 0, 1, 2 };
+		matches = new ChoiceFormat(choices, tmp).format(count);
 	}
 
 	public BeanModel<Object> getLedgerModel() {
@@ -257,6 +272,11 @@ public class Index {
 		catch (ParseException e) {
 			buyForm.recordError(buyReturnsField, messages.get("invalid-numberformat"));
 		}
+	}
+
+	public Object onToggleForm() {
+		showFilterForm = !showFilterForm;
+		return flipview;
 	}
 
 	@CommitAfter
@@ -314,19 +334,19 @@ public class Index {
 		filterLiquidation = null;
 		filterLocation = null;
 		filterComment = null;
-		showFilter = false;
+		showFilterForm = false;
 		return this;
 	}
 
 	public Index withFilterName(String name) {
 		this.filterName = name;
-		showFilter = true;
+		showFilterForm = true;
 		return this;
 	}
 
 	public Index withFilterVariant(String name) {
 		this.filterVariant = name;
-		showFilter = true;
+		showFilterForm = true;
 		return this;
 	}
 

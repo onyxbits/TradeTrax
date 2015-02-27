@@ -1190,9 +1190,9 @@ input.numerical {
 
 #filtermatches {
   float:right;
-  display:inline;
   font-style:italic;
   font-size: smaller;
+  vertical-align:bottom;
 }
 
 HTML>BODY DIV.t-error LI {

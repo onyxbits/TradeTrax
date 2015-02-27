@@ -2,92 +2,13 @@
 	helpurl="${message:helpurl}" xmlns:t="http://tapestry.apache.org/schema/tapestry_5_3.xsd"
 	xmlns:p="tapestry:parameter">
 
-	<t:form t:id="buyForm" t:clientValidation="none">
-		<fieldset class="form-wrapper">
-			<legend>
-				<span class="fieldset-legend">${message:buyform-title}</span>
-			</legend>
-			<div class="fieldset-wrapper">
-				<t:errors />
-				<table class="blind" style="table-layout: fixed;">
-					<tr>
-						<td>
-							<t:label for="buyName" title="${message:buy-name-tooltip}" />
-						</td>
-						<td>
-							<t:textfield t:id="buyName" t:mixins="autocomplete"
-								t:label="${message:buy-name-label}" />
-						</td>
-					</tr>
-					<tr style="${styleFor('buyVariant')}">
-						<td>
-							<t:label for="buyVariant" title="${message:buy-variant-tooltip}" />
-						</td>
-						<td>
-							<t:textfield t:id="buyVariant" t:mixins="autocomplete"
-								t:label="${message:buy-variant-label}" />
-						</td>
-					</tr>
+	<t:zone t:id="flipview" id="flipview" update="show">
+		<t:delegate to="activeForm" />
+	</t:zone>
 
-					<tr style="${styleFor('buyAmount')}">
-						<td>
-							<t:label for="buyAmount" title="${message:buy-units-tooltip}" />
-						</td>
-						<td>
-							<t:textfield class="numerical" t:id="buyAmount"
-								t:label="${message:buy-units-label}" />
-						</td>
-					</tr>
-
-					<tr style="${styleFor('buyLocation')}">
-						<td>
-							<t:label for="buyLocation" title="${message:buy-location-tooltip}" />
-						</td>
-						<td>
-							<t:textfield t:id="buyLocation" t:label="${message:buy-location-label}" />
-						</td>
-					</tr>
-
-					<tr style="${styleFor('buyCost')}">
-						<td>
-							<t:label for="buyCost" title="${message:buy-cost-tooltip}" />
-						</td>
-						<td>
-							<t:textfield class="numerical" t:id="buyCost"
-								t:label="${message:buy-cost-label}" />
-							&nbsp;<t:currencysymbolvalue/>
-						</td>
-					</tr>
-					<tr style="${styleFor('buyReturns')}">
-						<td>
-							<t:label for="buyReturns" title="${message:buy-returns-tooltip}" />
-						</td>
-						<td>
-							<t:textfield class="numerical" t:id="buyReturns"
-								t:label="${message:buy-returns-label}" />
-								&nbsp;<t:currencysymbolvalue/>
-						</td>
-					</tr>
-				</table>
-				<t:submit type="submit" value="${message:acquire}" />
-				<div class="assetaction" style="${styleFor('buyAdvanced')}">
-					<t:pagelink page="edit/StockEditor">${message:advanced-form}</t:pagelink>
-				</div>
-			</div>
-		</fieldset>
-	</t:form>
 
 	<p />
 
-	<t:if test="showjumplinks">
-		<div class="jumplink">
-			<a href="#bottom" class="jumplink">
-				${message:jump-down}
-				<img src="${context:/images/arrow-asc.png}" />
-			</a>
-		</div>
-	</t:if>
-	<div class="clearfix"></div>
 	<div id="table-scroll">
 		<table t:id="ledger" t:type="grid" t:model="ledgerModel" row="row"
 			t:source="stocks" t:rowsPerPage="25" t:pagerPosition="bottom">
@@ -148,95 +69,178 @@
 		</table>
 	</div>
 
-	<t:form t:id="filterForm">
-		<t:checkbox t:id="showFilter" t:mixins="triggerfragment"
-			fragment="filterFragment" />
-		<t:label for="showFilter">${message:show-filter}</t:label>
-		<t:if test="showjumplinks">
-			<div class="jumplink">
-				<a href="#top" class="jumplink">
-					${message:jump-up}
-					<img src="${context:/images/arrow-desc.png}" />
-				</a>
-			</div>
-		</t:if>
-		<t:formfragment t:id="filterFragment" visible="showFilter">
+	<t:block id="acquisitionblock">
+		<t:form t:id="buyForm" t:clientValidation="none">
+			<fieldset class="form-wrapper">
+				<legend>
+					<span class="fieldset-legend">${message:buyform-title}</span>
+					<a t:id="flipToFilterForm" style="float:right;" t:zone="flipview">
+						<img src="${context:images/flipview.png}" />
+					</a>
+				</legend>
+				<div class="fieldset-wrapper">
+					<t:errors />
+					<table class="blind" style="table-layout: fixed;">
+						<tr>
+							<td>
+								<t:label for="buyName" title="${message:buy-name-tooltip}" />
+							</td>
+							<td>
+								<t:textfield t:id="buyName" t:mixins="autocomplete"
+									t:label="${message:buy-name-label}" />
+							</td>
+						</tr>
+						<tr style="${styleFor('buyVariant')}">
+							<td>
+								<t:label for="buyVariant" title="${message:buy-variant-tooltip}" />
+							</td>
+							<td>
+								<t:textfield t:id="buyVariant" t:mixins="autocomplete"
+									t:label="${message:buy-variant-label}" />
+							</td>
+						</tr>
 
-			<table class="kvtable">
-				<tr>
-					<th>
-						<t:label for="filterName" title="${message:filter-name-tooltip}" />
-					</th>
-					<td>
-						<t:textfield t:id="filterName" t:label="${message:filter-name-label}"
-							name="filterName" onclick="SelectAll('filterName');" />
-					</td>
-				</tr>
-				<tr>
-					<th>
-						<t:label for="filterVariant" title="${message:filter-variant-tooltip}" />
-					</th>
-					<td>
-						<t:textfield t:id="filterVariant" t:label="${message:filter-variant-label}"
-							name="filterVariant" onclick="SelectAll('filterVariant');" />
-					</td>
-				</tr>
-				<tr>
-					<th>
-						<t:label for="filterLocation" title="${message:filter-location-tooltip}" />
-					</th>
-					<td>
-						<t:textfield t:id="filterLocation" t:label="${message:filter-location-label}"
-							name="filterLocation" onclick="SelectAll('filterLocation');" />
-					</td>
-				</tr>
-				<tr>
-					<th>
-						<t:label for="filterComment" title="${message:filter-comment-tooltip}" />
-					</th>
-					<td>
-						<t:textfield t:id="filterComment" t:label="${message:filter-comment-label}"
-							name="filterComment" onclick="SelectAll('filterComment');" />
-					</td>
-				</tr>
-				<tr>
-					<th>
-						<t:label for="filterAcquisition" title="${message:filter-acquisition-tooltip}" />
-					</th>
-					<td>
-						<t:select t:id="filterAcquisitionSpan" />&nbsp;
-						<t:datefield t:id="filterAcquisition" t:format="prop:dateFormat"
-							t:label="${message:filter-acquisition-label}" value="filterAcquisition"
-							name="filterAcquisition" onclick="SelectAll('filterAcquisition');" />
-					</td>
-				</tr>
-				<tr>
-					<th>
-						<t:label for="filterLiquidation" title="${message:filter-liquidation-tooltip}" />
-					</th>
-					<td>
-						<t:select t:id="filterLiquidationSpan" />&nbsp;
-						<t:datefield t:id="filterLiquidation" t:format="prop:dateFormat"
-							t:label="${message:filter-liquidation-label}" value="filterLiquidation"
-							name="filterLiquidation" onclick="SelectAll('filterLiquidation');" />
-					</td>
-				</tr>
-				<tr>
-					<th>
-						<t:label for="filterState" title="${message:filter-state-tooltip}" />
-					</th>
-					<td>
-						<t:select t:id="filterState" t:label="${message:filter-state-label}" />
-					</td>
-				</tr>
-				<tr>
-					<td colspan="2">
-						<t:submit type="submit" value="${message:filter-label}" />&nbsp;
-						<t:submit type="submit" t:id="reset" value="${message:reset-label}" />
-						<span id="filtermatches">${matches}</span>
-					</td>
-				</tr>
-			</table>
-		</t:formfragment>
-	</t:form>
+						<tr style="${styleFor('buyAmount')}">
+							<td>
+								<t:label for="buyAmount" title="${message:buy-units-tooltip}" />
+							</td>
+							<td>
+								<t:textfield class="numerical" t:id="buyAmount"
+									t:label="${message:buy-units-label}" />
+							</td>
+						</tr>
+
+						<tr style="${styleFor('buyLocation')}">
+							<td>
+								<t:label for="buyLocation" title="${message:buy-location-tooltip}" />
+							</td>
+							<td>
+								<t:textfield t:id="buyLocation" t:label="${message:buy-location-label}" />
+							</td>
+						</tr>
+
+						<tr style="${styleFor('buyCost')}">
+							<td>
+								<t:label for="buyCost" title="${message:buy-cost-tooltip}" />
+							</td>
+							<td>
+								<t:textfield class="numerical" t:id="buyCost"
+									t:label="${message:buy-cost-label}" />
+							&nbsp;
+								<t:currencysymbolvalue />
+							</td>
+						</tr>
+						<tr style="${styleFor('buyReturns')}">
+							<td>
+								<t:label for="buyReturns" title="${message:buy-returns-tooltip}" />
+							</td>
+							<td>
+								<t:textfield class="numerical" t:id="buyReturns"
+									t:label="${message:buy-returns-label}" />
+								&nbsp;
+								<t:currencysymbolvalue />
+							</td>
+						</tr>
+					</table>
+					<t:submit type="submit" value="${message:acquire}" />
+					<div class="assetaction" style="${styleFor('buyAdvanced')}">
+						<t:pagelink page="edit/StockEditor">${message:advanced-form}</t:pagelink>
+					</div>
+				</div>
+			</fieldset>
+		</t:form>
+
+	</t:block>
+
+
+
+	<t:block id="filterblock">
+		<t:form t:id="filterForm">
+
+			<fieldset class="form-wrapper">
+				<legend>
+					<span class="fieldset-legend">${message:filterform-title}</span>
+					<a t:id="flipToAcquisitionForm" style="float:right;" t:zone="flipview">
+						<img src="${context:images/flipview.png}" />
+					</a>
+				</legend>
+				<div class="fieldset-wrapper">
+					<table class="blind">
+						<tr>
+							<td>
+								<t:label for="filterName" title="${message:filter-name-tooltip}" />
+							</td>
+							<td>
+								<t:textfield t:id="filterName" t:label="${message:filter-name-label}"
+									name="filterName" onclick="SelectAll('filterName');" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<t:label for="filterVariant" title="${message:filter-variant-tooltip}" />
+							</td>
+							<td>
+								<t:textfield t:id="filterVariant" t:label="${message:filter-variant-label}"
+									name="filterVariant" onclick="SelectAll('filterVariant');" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<t:label for="filterLocation" title="${message:filter-location-tooltip}" />
+							</td>
+							<td>
+								<t:textfield t:id="filterLocation" t:label="${message:filter-location-label}"
+									name="filterLocation" onclick="SelectAll('filterLocation');" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<t:label for="filterComment" title="${message:filter-comment-tooltip}" />
+							</td>
+							<td>
+								<t:textfield t:id="filterComment" t:label="${message:filter-comment-label}"
+									name="filterComment" onclick="SelectAll('filterComment');" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<t:label for="filterAcquisition" title="${message:filter-acquisition-tooltip}" />
+							</td>
+							<td>
+								<t:select t:id="filterAcquisitionSpan" />&nbsp;
+								<t:datefield t:id="filterAcquisition" t:format="prop:dateFormat"
+									t:label="${message:filter-acquisition-label}" value="filterAcquisition"
+									name="filterAcquisition" onclick="SelectAll('filterAcquisition');" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<t:label for="filterLiquidation" title="${message:filter-liquidation-tooltip}" />
+							</td>
+							<td>
+								<t:select t:id="filterLiquidationSpan" />&nbsp;
+								<t:datefield t:id="filterLiquidation" t:format="prop:dateFormat"
+									t:label="${message:filter-liquidation-label}" value="filterLiquidation"
+									name="filterLiquidation" onclick="SelectAll('filterLiquidation');" />
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<t:label for="filterState" title="${message:filter-state-tooltip}" />
+							</td>
+							<td>
+								<t:select t:id="filterState" t:label="${message:filter-state-label}" />
+							</td>
+						</tr>
+					</table>
+
+					<t:submit type="submit" value="${message:filter-label}" />&nbsp;
+					<t:submit type="submit" t:id="reset" value="${message:reset-label}" />
+					<span id="filtermatches">${matches}</span>
+
+
+				</div>
+			</fieldset>
+		</t:form>
+	</t:block>
 </html>
