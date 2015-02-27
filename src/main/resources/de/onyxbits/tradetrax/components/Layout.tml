@@ -67,6 +67,7 @@
 			document.getElementById(id).focus();
 			document.getElementById(id).select();
 			}
+			Effect.Highlight.prototype.initialize = function(element) { }
 		</script>
 	</head>
 	<body>
