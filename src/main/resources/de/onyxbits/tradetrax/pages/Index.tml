@@ -75,7 +75,7 @@
 				<legend>
 					<span class="fieldset-legend">${message:buyform-title}</span>
 					<a t:id="flipToFilterForm" style="float:right;" t:zone="flipview">
-						<img src="${context:images/flipview.png}" />
+						<img src="${context:images/flipview-right.png}" />
 					</a>
 				</legend>
 				<div class="fieldset-wrapper">
@@ -161,7 +161,7 @@
 				<legend>
 					<span class="fieldset-legend">${message:filterform-title}</span>
 					<a t:id="flipToAcquisitionForm" style="float:right;" t:zone="flipview">
-						<img src="${context:images/flipview.png}" />
+						<img src="${context:images/flipview-left.png}" />
 					</a>
 				</legend>
 				<div class="fieldset-wrapper">

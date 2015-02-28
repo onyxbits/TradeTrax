@@ -67,7 +67,9 @@
 			document.getElementById(id).focus();
 			document.getElementById(id).select();
 			}
-			Effect.Highlight.prototype.initialize = function(element) { }
+			Effect.Highlight.prototype.initialize = function(element) {}
+			preload = new Image();
+			preload.src="${context:images/flipview-left.png}";
 		</script>
 	</head>
 	<body>
