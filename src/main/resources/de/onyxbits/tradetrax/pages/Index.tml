@@ -74,9 +74,9 @@
 			<fieldset class="form-wrapper">
 				<legend>
 					<span class="fieldset-legend">${message:buyform-title}</span>
-					<a t:id="flipToFilterForm" style="float:right;" t:zone="flipview">
+					<t:eventlink t:event="toggleForm" style="float:right;" t:zone="flipview">
 						<img src="${context:images/flipview-right.png}" />
-					</a>
+					</t:eventlink>
 				</legend>
 				<div class="fieldset-wrapper">
 					<t:errors />
@@ -160,9 +160,9 @@
 			<fieldset class="form-wrapper">
 				<legend>
 					<span class="fieldset-legend">${message:filterform-title}</span>
-					<a t:id="flipToAcquisitionForm" style="float:right;" t:zone="flipview">
+					<t:eventlink t:event="toggleForm" style="float:right;" t:zone="flipview">
 						<img src="${context:images/flipview-left.png}" />
-					</a>
+					</t:eventlink>
 				</legend>
 				<div class="fieldset-wrapper">
 					<table class="blind">

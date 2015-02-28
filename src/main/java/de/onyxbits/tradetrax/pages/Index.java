@@ -11,7 +11,6 @@ import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.beaneditor.Validate;
 import org.apache.tapestry5.corelib.components.DateField;
-import org.apache.tapestry5.corelib.components.EventLink;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.Grid;
 import org.apache.tapestry5.corelib.components.Select;
@@ -196,9 +195,6 @@ public class Index {
 
 	@InjectComponent
 	private Zone flipview;
-
-	@Component(parameters = { "event=toggleform" })
-	private EventLink flipToFilterForm, flipToAcquisitionForm;
 
 	@Property
 	@Persist
