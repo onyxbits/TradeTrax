@@ -236,7 +236,10 @@
 
 					<t:submit type="submit" value="${message:filter-label}" />&nbsp;
 					<t:submit type="submit" t:id="reset" value="${message:reset-label}" />
-					<span id="filtermatches">${matches}</span>
+					<span id="filtermatches">
+						<t:inventoryValue assetCount="matchingAssetCount"
+							itemCount="matchingItemCount"></t:inventoryValue>
+					</span>
 
 
 				</div>

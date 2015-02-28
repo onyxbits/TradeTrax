@@ -1,6 +1,5 @@
 package de.onyxbits.tradetrax.pages;
 
-import java.text.ChoiceFormat;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Calendar;
@@ -205,6 +204,12 @@ public class Index {
 	@Persist
 	private boolean showFilterForm;
 
+	@Property
+	private long matchingItemCount;
+
+	@Property
+	private int matchingAssetCount;
+
 	public String styleFor(String tag) {
 		String tmp = settingsStore.get(SettingsStore.TCACFIELDS, AcquisitionFields.DEFAULT);
 		if (!tmp.contains(tag)) {
@@ -227,13 +232,8 @@ public class Index {
 				.withState(filterState).withLocation(filterLocation).withComment(filterComment)
 				.withAcquisition(filterAcquisition, filterAcquisitionSpan)
 				.withLiquidation(filterLiquidation, filterLiquidationSpan);
-		int count = stocks.getAvailableRows();
-		String[] tmp = {
-				messages.get("matches.none"),
-				messages.get("matches.one"),
-				messages.format("matches.multiple", count) };
-		double[] choices = { 0, 1, 2 };
-		matches = new ChoiceFormat(choices, tmp).format(count);
+		matchingAssetCount = stocks.getAvailableRows();
+		matchingItemCount = stocks.getItemCount();
 	}
 
 	public BeanModel<Object> getLedgerModel() {

@@ -10,21 +10,15 @@
 		<tr>
 			<th title="${message:amount-on-hand-tooltip}">${message:amount-on-hand-label}</th>
 			<td>
-				<t:if test="ownership">
-					${ownership}
-					<p:else>
-						<em>${message:none}</em>
-					</p:else>
-				</t:if>
+				<t:inventoryValue assetCount="assetsOnHand"
+					itemCount="itemsOnHand" none="${message:none}"/>
 			</td>
 		</tr>
 		<tr>
 			<th title="${message:total-investment-tooltip}">${message:total-investment-label}</th>
 			<td>
-				<t:if test="ownership">
-					<p:else>
-						<em>${message:none}</em>
-					</p:else>
+				<t:if test="assetsOnHand">
+					<p:else><t:moneyvalue amount="0" /></p:else>
 					<t:moneyvalue amount="${totalInvestment}" />
 				</t:if>
 			</td>
@@ -50,15 +44,16 @@
 			<a t:id="show" t:context="${row.name}">${row.name}</a>
 		</p:nameCell>
 		<p:amountCell>
-			<t:if test="row.ownership">
+			<t:if test="row.assetCount">
 				<p:else>
 					<em>${message:not-in-stock}</em>
 				</p:else>
-				${row.ownership}
+				<t:inventoryValue assetCount="row.assetCount"
+					itemCount="row.totalUnits" />
 			</t:if>
 		</p:amountCell>
 		<p:totalInvestmentCell>
-			<t:if test="row.ownership">
+			<t:if test="row.assetCount">
 				<p:else>
 					<em>${message:none}</em>
 				</p:else>

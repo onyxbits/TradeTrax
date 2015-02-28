@@ -43,9 +43,6 @@ public class TalliedStock implements Comparable<TalliedStock> {
 	public long totalInvestment;
 	
 	@Property
-	public String ownership;
-
-	@Property
 	public long totalProfit;
 
 	private boolean ascending;

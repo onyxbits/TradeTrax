@@ -194,6 +194,21 @@ public class StockPagedGridDataSource implements GridDataSource {
 	}
 
 	public int getAvailableRows() {
+		return ((Number) createFilterCriteria().setProjection(Projections.rowCount()).uniqueResult())
+				.intValue();
+	}
+	
+	public long getItemCount() {
+		Long l = (Long) createFilterCriteria().setProjection(Projections.sum("unitCount")).uniqueResult();
+		if (l==null) {
+			return 0;
+		}
+		else {
+			return l.longValue();
+		}
+	}
+
+	private Criteria createFilterCriteria() {
 		Criteria crit = session.createCriteria(Stock.class);
 		if (nameRestriction != null) {
 			crit.createAlias("name", "name");
@@ -218,7 +233,7 @@ public class StockPagedGridDataSource implements GridDataSource {
 		if (commentRestriction != null) {
 			crit.add(commentRestriction);
 		}
-		return ((Number) crit.setProjection(Projections.rowCount()).uniqueResult()).intValue();
+		return crit;
 	}
 
 	private void attachOrder(Criteria crit, SortConstraint sc) {
@@ -283,7 +298,7 @@ public class StockPagedGridDataSource implements GridDataSource {
 		if (commentRestriction != null) {
 			crit.add(commentRestriction);
 		}
-		this.preparedResults= crit.list();
+		this.preparedResults = crit.list();
 		this.startIndex = startIndex;
 	}
 

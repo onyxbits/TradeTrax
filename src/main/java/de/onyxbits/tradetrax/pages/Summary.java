@@ -1,7 +1,6 @@
 package de.onyxbits.tradetrax.pages;
 
 import java.sql.Timestamp;
-import java.text.ChoiceFormat;
 import java.text.DateFormat;
 import java.util.Collections;
 import java.util.HashMap;
@@ -47,9 +46,6 @@ public class Summary {
 	@Property
 	private List<TalliedStock> usage;
 
-	@Property
-	private String ownership;
-
 	@Inject
 	private BeanModelSource tallySource;
 
@@ -61,6 +57,12 @@ public class Summary {
 
 	@Component(id = "show")
 	private EventLink show;
+	
+	@Property
+	private int assetsOnHand;
+	
+	@Property
+	private int itemsOnHand;
 
 	private HashMap<String, TalliedStock> tallied;
 
@@ -111,8 +113,6 @@ public class Summary {
 		// in a background service and cache the results.
 		usage = new Vector<TalliedStock>();
 		tallied = new HashMap<String, TalliedStock>();
-		int assetsOnHand = 0;
-		int itemsOnHand = 0;
 		@SuppressWarnings("unchecked")
 		List<Stock> lst = session.createCriteria(Stock.class).list();
 		for (Stock stock : lst) {
@@ -143,32 +143,8 @@ public class Summary {
 		Iterator<String> it = tallied.keySet().iterator();
 		while (it.hasNext()) {
 			TalliedStock ts = tallied.get(it.next());
-			ts.ownership = owned(ts.assetCount, ts.totalUnits);
 			usage.add(ts);
 		}
 		Collections.sort(usage);
-		ownership = owned(assetsOnHand, itemsOnHand);
-	}
-
-	/**
-	 * Create a nicely formated ownership summary
-	 * 
-	 * @param ac
-	 *          asset count
-	 * @param ic
-	 *          item count
-	 * @return a formated string or null if empty handed.
-	 */
-	private String owned(int ac, int ic) {
-		String ret = null;
-		if (ac > 0) {
-			double[] limits = { 1, 2 };
-			String[] assets = { messages.get("assets.one"), messages.format("assets.multiple", ac) };
-			String[] items = { messages.get("items.one"), messages.format("items.multiple", ic) };
-			ChoiceFormat cfa = new ChoiceFormat(limits, assets);
-			ChoiceFormat cfi = new ChoiceFormat(limits, items);
-			ret = messages.format("in-stock", cfa.format(ac), cfi.format(ic));
-		}
-		return ret;
 	}
 }
