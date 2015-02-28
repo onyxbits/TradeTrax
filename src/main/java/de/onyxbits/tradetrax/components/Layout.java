@@ -7,6 +7,7 @@ import org.apache.tapestry5.*;
 import org.apache.tapestry5.annotations.*;
 import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.corelib.components.TextField;
+import org.apache.tapestry5.corelib.components.Zone;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.*;
 import org.apache.tapestry5.BindingConstants;
@@ -114,6 +115,9 @@ public class Layout {
 	@Component(id = "calculatorform")
 	private Form calculator;
 
+	@InjectComponent
+	private Zone resultlist;
+
 	public List<Bookmark> getBookmarks() {
 		return session.createCriteria(Bookmark.class).addOrder(Order.asc("id")).list();
 	}
@@ -156,7 +160,7 @@ public class Layout {
 		return index;
 	}
 
-	public void onSuccessFromCalculatorForm() {
+	public Object onSuccessFromCalculatorForm() {
 		if (expressionList == null) {
 			expressionList = new Vector<String>();
 		}
@@ -166,12 +170,13 @@ public class Layout {
 			// an empty input as a wish to empty the list. This way we get around a
 			// lot of extra code as well.
 			expressionList.clear();
-			return;
+			return resultlist;
 		}
 
 		while (expressionList.size() >= 5) {
 			expressionList.remove(expressionList.size() - 1);
 		}
 		expressionList.add(0, expression);
+		return resultlist;
 	}
 }

@@ -68,7 +68,8 @@
 			document.getElementById(id).select();
 			}
 			Effect.Highlight.prototype.initialize = function(element) {}
-			preload = new Image();
+			preload =
+			new Image();
 			preload.src="${context:images/flipview-left.png}";
 		</script>
 	</head>
@@ -161,7 +162,7 @@
 					<t:if test="showcalculator">
 						<div class="block block-block">
 							<h2>${message:calculator-title}</h2>
-							<t:form t:id="calculatorform" autofocus="false">
+							<t:form t:id="calculatorform" autofocus="false" zone="resultlist">
 
 								<input t:id="expression" name="search" size="20"
 									onclick="SelectAll('expression');" />
@@ -171,11 +172,13 @@
 
 							</t:form>
 							<p />
-							<t:loop source="expressionList" value="expressionItem">
-								<pre>
-									<t:CalculatedValue input="expressionItem" />
-								</pre>
-							</t:loop>
+							<t:zone id="resultlist" t:id="resultlist">
+								<t:loop source="expressionList" value="expressionItem">
+									<pre>
+										<t:CalculatedValue input="expressionItem" />
+									</pre>
+								</t:loop>
+							</t:zone>
 						</div>
 					</t:if>
 				</aside>
