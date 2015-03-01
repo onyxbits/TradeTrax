@@ -5,6 +5,11 @@
 	<t:zone t:id="flipview" id="flipview" update="show">
 		<t:delegate to="activeForm" />
 	</t:zone>
+	<script>
+		$('flipview').observe(Tapestry.ZONE_UPDATED_EVENT, function(event) {
+		Form.focusFirstElement(document.forms[0]);
+		});
+	</script>
 
 
 	<p />
@@ -70,11 +75,12 @@
 	</div>
 
 	<t:block id="acquisitionblock">
-		<t:form t:id="buyForm" t:clientValidation="none">
+		<t:form t:id="buyForm" t:clientValidation="none" autofocus="false">
 			<fieldset class="form-wrapper">
 				<legend>
 					<span class="fieldset-legend">${message:buyform-title}</span>
-					<t:eventlink t:event="toggleForm" style="float:right;" t:zone="flipview">
+					<t:eventlink t:event="toggleForm" style="float:right;"
+						t:zone="flipview">
 						<img src="${context:images/flipview-right.png}" />
 					</t:eventlink>
 				</legend>
@@ -155,12 +161,13 @@
 
 
 	<t:block id="filterblock">
-		<t:form t:id="filterForm">
+		<t:form t:id="filterForm" autofocus="false">
 
 			<fieldset class="form-wrapper">
 				<legend>
 					<span class="fieldset-legend">${message:filterform-title}</span>
-					<t:eventlink t:event="toggleForm" style="float:right;" t:zone="flipview">
+					<t:eventlink t:event="toggleForm" style="float:right;"
+						t:zone="flipview">
 						<img src="${context:images/flipview-left.png}" />
 					</t:eventlink>
 				</legend>
