@@ -72,7 +72,7 @@ public class Index {
 	private String buyLocation;
 
 	@Property
-	private int buyAmount=1;
+	private int buyAmount = 1;
 
 	@Property
 	private StockPagedGridDataSource stocks;
@@ -204,6 +204,10 @@ public class Index {
 	private long matchingItemCount;
 
 	@Property
+	@Persist
+	private boolean autofocusBuyForm;
+
+	@Property
 	private int matchingAssetCount;
 
 	public String styleFor(String tag) {
@@ -230,6 +234,10 @@ public class Index {
 				.withLiquidation(filterLiquidation, filterLiquidationSpan);
 		matchingAssetCount = stocks.getAvailableRows();
 		matchingItemCount = stocks.getItemCount();
+	}
+	
+	public void afterRender() {
+		autofocusBuyForm = false;
 	}
 
 	public BeanModel<Object> getLedgerModel() {
@@ -301,6 +309,7 @@ public class Index {
 		eventLogger.acquired(item);
 		withNoFilters();
 		ledger.reset();
+		autofocusBuyForm = true;
 		return Index.class;
 	}
 

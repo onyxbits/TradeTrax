@@ -75,7 +75,7 @@
 	</div>
 
 	<t:block id="acquisitionblock">
-		<t:form t:id="buyForm" t:clientValidation="none" autofocus="false">
+		<t:form t:id="buyForm" t:clientValidation="none" autofocus="${autofocusBuyForm}">
 			<fieldset class="form-wrapper">
 				<legend>
 					<span class="fieldset-legend">${message:buyform-title}</span>
