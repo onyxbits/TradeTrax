@@ -70,13 +70,13 @@
 			Effect.Highlight.prototype.initialize = function(element) {}
 			preload1
 			=new Image();
-			preload.src="${context:images/flipview-left.png}";
-			preload1 =new Image();
-			preload.src="${context:images/flipview-left-highlight.png}";
-			preload1 =new Image();
-			preload.src="${context:images/flipview-right.png}";
-			preload1 =new Image();
-			preload.src="${context:images/flipview-right-highlight.png}";
+			preload1.src="${context:images/flipview-left.png}";
+			preload2 =new Image();
+			preload2.src="${context:images/flipview-left-highlight.png}";
+			preload3 =new Image();
+			preload3.src="${context:images/flipview-right.png}";
+			preload4 =new Image();
+			preload4.src="${context:images/flipview-right-highlight.png}";
 		</script>
 	</head>
 	<body>
