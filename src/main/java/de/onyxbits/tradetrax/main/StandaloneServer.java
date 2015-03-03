@@ -16,6 +16,8 @@ import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.security.SecureRandom;
 import java.text.MessageFormat;
 import java.util.List;
@@ -41,6 +43,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.session.SessionHandler;
 import org.eclipse.jetty.webapp.WebAppContext;
@@ -183,7 +186,6 @@ public class StandaloneServer extends JFrame implements Runnable, WindowListener
 		server = new Server(cfg.getAddress());
 		server.setStopAtShutdown(true);
 		WebAppContext app = new WebAppContext();
-		app.setDefaultsDescriptor(null); // Don't complain about no JSP support.
 		app.setContextPath("/");
 		app.setSessionHandler(new SessionHandler());
 		app.setInitParameter(AppConstants.IPNLEDGERPATH, cfg.getLedger().getAbsolutePath());
@@ -192,6 +194,7 @@ public class StandaloneServer extends JFrame implements Runnable, WindowListener
 		String dirtyhack = getClass().getResource("/WEB-INF/web.xml").toString();
 		dirtyhack = dirtyhack.substring(0, dirtyhack.length() - "/WEB-INF/web.xml".length() + 1);
 		app.setDescriptor(dirtyhack + "WEB-INF/web.xml");
+		//app.setDefaultsDescriptor(dirtyhack + "WEB-INF/web.xml"); // Don't complain about no JSP support in jetty9
 		app.setResourceBase(dirtyhack);
 
 		server.setHandler(app);
@@ -294,8 +297,7 @@ public class StandaloneServer extends JFrame implements Runnable, WindowListener
 		}
 		else {
 			cl.show(content, RUNNING_CARD);
-			String message = MessageFormat.format(i18n.getString("readymessage"), server.getURI(),
-					server.getURI());
+			String message = MessageFormat.format(i18n.getString("readymessage"), whereami(), whereami());
 			about.setText(message);
 			WebAppContext wac = (WebAppContext) server.getHandler();
 			LedgerConfig cfg = new LedgerConfig();
@@ -323,10 +325,22 @@ public class StandaloneServer extends JFrame implements Runnable, WindowListener
 	 */
 	private void openInBrowser() {
 		try {
-			Desktop.getDesktop().browse(server.getURI());
+			Desktop.getDesktop().browse(whereami());
 		}
 		catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	private URI whereami() {
+		Connector con = server.getConnectors()[0];
+		try {
+			return new URI("http", null, con.getHost(), con.getPort(), "/", null, null);
+		}
+		catch (URISyntaxException e) {
+			// Should not happen
+			// e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 	}
 

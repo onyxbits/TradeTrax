@@ -218,7 +218,7 @@
 	</repositories>
 
 	<properties>
-		<jettyVersion>9.3.0.M1</jettyVersion>
+		<jettyVersion>8.1.16.v20140903</jettyVersion>
 		<tapestry-release-version>5.3.8</tapestry-release-version>
 		<servlet-api-release-version>2.5</servlet-api-release-version>
 		<testng-release-version>5.14.10</testng-release-version>
