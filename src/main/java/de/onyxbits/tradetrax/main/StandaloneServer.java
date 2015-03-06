@@ -15,12 +15,14 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigInteger;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.SecureRandom;
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Properties;
 import java.util.ResourceBundle;
 import java.util.Vector;
 import java.util.prefs.Preferences;
@@ -43,6 +45,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
+import org.apache.log4j.LogManager;
+import org.apache.log4j.PropertyConfigurator;
 import org.eclipse.jetty.server.Connector;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.session.SessionHandler;
@@ -194,7 +198,8 @@ public class StandaloneServer extends JFrame implements Runnable, WindowListener
 		String dirtyhack = getClass().getResource("/WEB-INF/web.xml").toString();
 		dirtyhack = dirtyhack.substring(0, dirtyhack.length() - "/WEB-INF/web.xml".length() + 1);
 		app.setDescriptor(dirtyhack + "WEB-INF/web.xml");
-		//app.setDefaultsDescriptor(dirtyhack + "WEB-INF/web.xml"); // Don't complain about no JSP support in jetty9
+		// app.setDefaultsDescriptor(dirtyhack + "WEB-INF/web.xml"); // Don't
+		// complain about no JSP support in jetty9
 		app.setResourceBase(dirtyhack);
 
 		server.setHandler(app);
@@ -469,6 +474,29 @@ public class StandaloneServer extends JFrame implements Runnable, WindowListener
 	public static void main(String[] args) {
 		File homedir = new File(System.getProperty("user.home"), "TradeTrax");
 		System.setProperty("app.homedir", System.getProperty("app.homedir", homedir.getAbsolutePath()));
+		Properties props = new Properties();
+		try {
+			InputStream configStream = new Object().getClass().getResourceAsStream("/log4j.properties");
+			props.load(configStream);
+			configStream.close();
+			props
+					.setProperty("log4j.rootCategory", props.getProperty("log4j.rootCategory") + ", logfile");
+			props.setProperty("log4j.appender.logfile", "org.apache.log4j.FileAppender");
+			File logfile = new File(System.getProperty("app.homedir"), "tradetrax.log");
+			logfile.getParentFile().mkdirs();
+			if (logfile.exists()) {
+				logfile.renameTo(new File(System.getProperty("app.homedir"), "tradetrax_log.old"));
+			}
+			props.setProperty("log4j.appender.logfile.file", logfile.getAbsolutePath());
+			props.setProperty("log4j.appender.logfile.layout", "org.apache.log4j.PatternLayout");
+			props.setProperty("og4j.appender.logfile.layout.ConversionPattern",
+					"[%d{MMM dd HH:mm:ss}] %-5p (%F:%L) - %m%n");
+			LogManager.resetConfiguration();
+			PropertyConfigurator.configure(props);
+		}
+		catch (IOException e) {
+			System.err.println("Error: Cannot access logfile");
+		}
 		Preferences prefs = Preferences.userNodeForPackage(PrefKeys.class);
 		String randhmac = new BigInteger(130, new SecureRandom()).toString(32);
 		String hmac = prefs.get(PrefKeys.HMACPASSPHRASE, randhmac);
