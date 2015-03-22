@@ -2,6 +2,7 @@ package de.onyxbits.tradetrax.main;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
@@ -78,11 +79,20 @@ public class LedgerConfig {
 
 		if (isPublicAccess()) {
 			try {
-				address = new InetSocketAddress(InetAddress.getLocalHost().getHostAddress(), port);
+				// Autodiscover a public IP address by making a pseudo connection to an
+				// outside host and checking which network interface the OS would like
+				// to route it through. This is not guaranteed to work, but in setups
+				// where it doesn't, the user probably knows why and can force an
+				// address.
+				DatagramSocket s = new DatagramSocket();
+				s.connect(InetAddress.getByAddress(new byte[] { 1, 1, 1, 1 }), 0);
+				address = new InetSocketAddress(s.getLocalAddress(), port);
+				s.close();
 			}
-			catch (UnknownHostException e) {
+			catch (Exception e) {
 				e.printStackTrace();
 			}
+
 		}
 	}
 }
