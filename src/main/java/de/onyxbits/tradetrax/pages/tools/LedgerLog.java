@@ -57,11 +57,10 @@ public class LedgerLog {
 	@Component(id = "filterForm")
 	private Form filterForm;
 
-	private DateFormat dateFormat = DateFormat.getDateInstance(DateFormat.SHORT);
-	private DateFormat timeFormat = DateFormat.getTimeInstance(DateFormat.MEDIUM);
+	private DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM,DateFormat.MEDIUM);
 
 	public String getFullTime() {
-		return dateFormat.format(row.getTimestamp()) + " " + timeFormat.format(row.getTimestamp());
+		return dateFormat.format(row.getTimestamp());
 	}
 
 	public BeanModel<LogEntry> getLogModel() {
