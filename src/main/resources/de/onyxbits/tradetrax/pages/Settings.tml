@@ -36,6 +36,15 @@
 								t:label="${message:decimals-title}" />
 						</td>
 					</tr>
+					<tr>
+						<td title="${message:width-tooltip}">
+							<t:label for="financialformWidth" />
+						</td>
+						<td>
+							<t:textfield class="numerical" t:id="financialformWidth"
+								t:label="${message:width-title}" />
+						</td>
+					</tr>
 				</table>
 				<t:submit type="submit" value="${message:save}" />
 			</div>

@@ -47,6 +47,11 @@ public interface SettingsStore {
 	 * When the ledger was created
 	 */
 	public static final String CREATED = "created";
+	
+	/**
+	 * How wide the page may be
+	 */
+	public static final String PAGEWIDTH = "pagewidth";
 
 	/**
 	 * Get a setting

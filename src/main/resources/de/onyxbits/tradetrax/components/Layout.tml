@@ -81,7 +81,7 @@
 	</head>
 	<body>
 		<a name="top" />
-		<div id="wrapper">
+		<div id="wrapper" style="max-width:${layoutWidth}px !important">
 			<header id="header" class="clearfix">
 				<t:if test="ledgerTitle">
 					<h3 id="ledger-title" title="${message:ledger-title-tooltip}">${ledgerTitle}</h3>

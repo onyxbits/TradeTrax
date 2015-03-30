@@ -19,6 +19,7 @@ import org.apache.tapestry5.ioc.services.TypeCoercer;
 import org.apache.tapestry5.util.EnumSelectModel;
 import org.apache.tapestry5.util.EnumValueEncoder;
 
+import de.onyxbits.tradetrax.components.Layout;
 import de.onyxbits.tradetrax.remix.AcquisitionFields;
 import de.onyxbits.tradetrax.remix.LedgerColumns;
 import de.onyxbits.tradetrax.services.MoneyRepresentation;
@@ -44,8 +45,7 @@ public class Settings {
 	private boolean uiFormShowCalculator;
 
 	@Property
-	@Validate(value = "min=25")
-	private int resultsPerPage = 25;
+	private int financialFormWidth;
 
 	@Component(id = "financialForm")
 	private Form financialForm;
@@ -58,6 +58,9 @@ public class Settings {
 
 	@Component(id = "financialFormCurrencySymbol")
 	private TextField financialFormCurrencySymbolField;
+	
+	@Component(id = "financialFormWidth")
+	private TextField financialFormWidthField;
 
 	@Component(id = "uiForm")
 	private Form uiForm;
@@ -109,6 +112,7 @@ public class Settings {
 		financialFormCurrencySymbol = moneyRepresentation.getCurrencySymbol();
 		financialFormDecimals = Currency.getInstance(Locale.getDefault()).getDefaultFractionDigits();
 		try {
+			financialFormWidth = Integer.parseInt(settingsStore.get(SettingsStore.PAGEWIDTH,""+Layout.DEFAULTWIDTH));
 			financialFormDecimals = Integer.parseInt(settingsStore.get(SettingsStore.DECIMALS, null));
 		}
 		catch (Exception e) {
@@ -140,11 +144,12 @@ public class Settings {
 
 		}
 	}
-
+	
 	public void onSuccessFromFinancialForm() {
 		settingsStore.set(SettingsStore.LEDGERTITLE, financialFormLedgerTitle);
 		settingsStore.set(SettingsStore.CURRENCYSYMBOL, financialFormCurrencySymbol);
 		settingsStore.set(SettingsStore.DECIMALS, financialFormDecimals + "");
+		settingsStore.set(SettingsStore.PAGEWIDTH,financialFormWidth+"");
 	}
 
 	public void onSuccessFromUiForm() {

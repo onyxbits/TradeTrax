@@ -36,6 +36,8 @@ public class Layout {
 
 	public static final String CALCRESULT = "calcresult";
 
+	public static final int DEFAULTWIDTH = 1000;
+
 	@SessionAttribute(Layout.FOCUSID)
 	private long focusedStockId;
 
@@ -117,12 +119,23 @@ public class Layout {
 
 	@InjectComponent
 	private Zone resultlist;
+	
+	@Property
+	private int layoutWidth;
+	
 
+	@SuppressWarnings("unchecked")
 	public List<Bookmark> getBookmarks() {
 		return session.createCriteria(Bookmark.class).addOrder(Order.asc("id")).list();
 	}
 
 	protected void setupRender() {
+		try {
+			layoutWidth = Integer.parseInt(settingsStore.get(SettingsStore.PAGEWIDTH,""+DEFAULTWIDTH));
+		}
+		catch (Exception e) {
+			
+		}
 		try {
 			long l = focusedStockId; // make sure that we throw
 			search = l + "";
