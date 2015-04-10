@@ -79,7 +79,7 @@
 			<fieldset class="form-wrapper">
 				<legend>
 					<span class="fieldset-legend">${message:buyform-title}</span>
-					<t:eventlink t:event="toggleForm" style="float:right;"
+					<t:eventlink t:event="toggleForm" class="formtoggler"
 						t:zone="flipview">
 						<img src="${context:images/flipview-right.png}" onmouseover="this.src='${context:images/flipview-right-highlight.png}'" onmouseout="this.src='${context:images/flipview-right.png}'" />
 					</t:eventlink>
@@ -166,7 +166,7 @@
 			<fieldset class="form-wrapper">
 				<legend>
 					<span class="fieldset-legend">${message:filterform-title}</span>
-					<t:eventlink t:event="toggleForm" style="float:right;"
+					<t:eventlink t:event="toggleForm" class="formtoggler"
 						t:zone="flipview">
 						<img src="${context:images/flipview-left.png}" onmouseover="this.src='${context:images/flipview-left-highlight.png}'" onmouseout="this.src='${context:images/flipview-left.png}'" />
 					</t:eventlink>

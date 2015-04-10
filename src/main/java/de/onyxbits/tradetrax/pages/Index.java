@@ -21,6 +21,7 @@ import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.*;
 import org.apache.tapestry5.services.BeanModelSource;
+import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 import org.hibernate.Session;
 
 import de.onyxbits.tradetrax.components.Layout;
@@ -38,6 +39,7 @@ import de.onyxbits.tradetrax.services.SettingsStore;
 /**
  * Start page of application tradetracker.
  */
+@Import(library = "context:js/mousetrap.min.js")
 public class Index {
 
 	@SessionAttribute(Layout.FOCUSID)
@@ -210,6 +212,9 @@ public class Index {
 	@Property
 	private int matchingAssetCount;
 
+	@Inject
+	private JavaScriptSupport javaScriptSupport;
+
 	public String styleFor(String tag) {
 		String tmp = settingsStore.get(SettingsStore.TCACFIELDS, AcquisitionFields.DEFAULT);
 		if (!tmp.contains(tag)) {
@@ -235,9 +240,17 @@ public class Index {
 		matchingAssetCount = stocks.getAvailableRows();
 		matchingItemCount = stocks.getItemCount();
 	}
-	
+
 	public void afterRender() {
 		autofocusBuyForm = false;
+
+		// Let the Escape key toggle the forms. It is slightly messy to do it this
+		// way. Using getElementById() would be preferable, but the id is assigned
+		// dynamically.
+		javaScriptSupport
+				.addScript("Mousetrap.prototype.stopCallback = function(e, element) {return false;};");
+		javaScriptSupport
+				.addScript("Mousetrap.bind('esc', function() {document.getElementsByClassName('formtoggler')[0].click();});");
 	}
 
 	public BeanModel<Object> getLedgerModel() {

@@ -1231,3 +1231,7 @@ div.jumplink {
   float: right;
   display: inline;
 }
+
+a.formtoggler {
+  float:right;
+}
