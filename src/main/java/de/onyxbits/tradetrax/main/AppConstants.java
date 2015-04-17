@@ -26,7 +26,7 @@ public class AppConstants {
 			// TODO: Ideally this would somehow come from pom.xml, but there doesn't
 			// seem to be a good way to transport it from there that works for the JAR
 			// as well as the WAR version.
-			tmp = "1.5";
+			tmp = "1.6";
 		}
 		catch (Exception e) {
 		}
