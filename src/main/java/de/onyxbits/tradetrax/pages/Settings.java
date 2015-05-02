@@ -5,9 +5,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Vector;
 
+import org.apache.tapestry5.Link;
 import org.apache.tapestry5.SelectModel;
 import org.apache.tapestry5.ValueEncoder;
 import org.apache.tapestry5.annotations.Component;
+import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.Validate;
 import org.apache.tapestry5.corelib.components.Checkbox;
@@ -16,6 +18,8 @@ import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.services.TypeCoercer;
+import org.apache.tapestry5.services.PageRenderLinkSource;
+import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 import org.apache.tapestry5.util.EnumSelectModel;
 import org.apache.tapestry5.util.EnumValueEncoder;
 
@@ -25,6 +29,7 @@ import de.onyxbits.tradetrax.remix.LedgerColumns;
 import de.onyxbits.tradetrax.services.MoneyRepresentation;
 import de.onyxbits.tradetrax.services.SettingsStore;
 
+@Import(library = "context:js/mousetrap.min.js")
 public class Settings {
 
 	@Property
@@ -106,6 +111,12 @@ public class Settings {
 
 	@Property
 	private final SelectModel ledgerColumnsModel = new EnumSelectModel(LedgerColumns.class, messages);
+	
+	@Inject
+	private JavaScriptSupport javaScriptSupport;
+
+	@Inject
+	private PageRenderLinkSource linkSource;
 
 	public void setupRender() {
 		financialFormLedgerTitle = settingsStore.get(SettingsStore.LEDGERTITLE, null);
@@ -166,5 +177,13 @@ public class Settings {
 	public void onSuccessFromTcForm() {
 		settingsStore.set(SettingsStore.TCLCOLUMNS, LedgerColumns.toCsv(ledgerColumnsList));
 		settingsStore.set(SettingsStore.TCACFIELDS, AcquisitionFields.toCsv(acquisitionFieldsList));
+	}
+	
+	public void afterRender() {
+		Link link = linkSource.createPageRenderLink(Index.class);
+		javaScriptSupport
+				.addScript("Mousetrap.prototype.stopCallback = function(e, element) {return false;};");
+		javaScriptSupport.addScript("Mousetrap.bind('esc', function() {window.location='"
+				+ link.toAbsoluteURI() + "'; return false;});");
 	}
 }
