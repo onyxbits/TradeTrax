@@ -6,6 +6,7 @@ import org.apache.tapestry5.alerts.AlertManager;
 import org.apache.tapestry5.alerts.Duration;
 import org.apache.tapestry5.alerts.Severity;
 import org.apache.tapestry5.annotations.Component;
+import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
 import org.apache.tapestry5.beaneditor.PropertyModel;
@@ -15,6 +16,7 @@ import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.BeanModelSource;
+import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
@@ -29,6 +31,7 @@ import de.onyxbits.tradetrax.services.SettingsStore;
  * @author patrick
  * 
  */
+@Import(library = "context:js/mousetrap.min.js")
 public class UnitsEditor {
 
 	@Property
@@ -66,6 +69,9 @@ public class UnitsEditor {
 
 	@Inject
 	private SettingsStore settingsStore;
+	
+	@Inject
+	private JavaScriptSupport javaScriptSupport;
 
 	@SuppressWarnings("unchecked")
 	public List<Stock> getStocks() {
@@ -135,6 +141,12 @@ public class UnitsEditor {
 
 	protected Long onPassivate() {
 		return stockId;
+	}
+	
+	public void afterRender() {
+		javaScriptSupport
+				.addScript("Mousetrap.prototype.stopCallback = function(e, element) {return false;};");
+		javaScriptSupport.addScript("Mousetrap.bind('esc', function() {window.history.back(); return false;});");
 	}
 
 }

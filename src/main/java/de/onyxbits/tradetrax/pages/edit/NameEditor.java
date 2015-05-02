@@ -6,6 +6,7 @@ import org.apache.tapestry5.alerts.AlertManager;
 import org.apache.tapestry5.alerts.Duration;
 import org.apache.tapestry5.alerts.Severity;
 import org.apache.tapestry5.annotations.Component;
+import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.InjectPage;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.Validate;
@@ -15,6 +16,7 @@ import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 import org.hibernate.Session;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
@@ -33,6 +35,7 @@ import de.onyxbits.tradetrax.services.EventLogger;
  * @author patrick
  * 
  */
+@Import(library = "context:js/mousetrap.min.js")
 public class NameEditor {
 
 	@Property
@@ -70,6 +73,9 @@ public class NameEditor {
 
 	@Component(id = "show")
 	private EventLink show;
+	
+	@Inject
+	private JavaScriptSupport javaScriptSupport;
 
 	protected Object onShow() {
 		Name n = (Name) session.get(Name.class, nameId);
@@ -165,5 +171,11 @@ public class NameEditor {
 		catch (Exception e) {
 			alertManager.alert(Duration.SINGLE, Severity.WARN, messages.format("exception", e));
 		}
+	}
+	
+	public void afterRender() {
+		javaScriptSupport
+				.addScript("Mousetrap.prototype.stopCallback = function(e, element) {return false;};");
+		javaScriptSupport.addScript("Mousetrap.bind('esc', function() {window.history.back(); return false;});");
 	}
 }

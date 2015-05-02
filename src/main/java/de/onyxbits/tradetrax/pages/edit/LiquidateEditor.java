@@ -7,6 +7,7 @@ import org.apache.tapestry5.alerts.AlertManager;
 import org.apache.tapestry5.alerts.Duration;
 import org.apache.tapestry5.alerts.Severity;
 import org.apache.tapestry5.annotations.Component;
+import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.annotations.SessionAttribute;
@@ -15,6 +16,7 @@ import org.apache.tapestry5.corelib.components.Form;
 import org.apache.tapestry5.hibernate.annotations.CommitAfter;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
+import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 import org.hibernate.Session;
 
 import de.onyxbits.tradetrax.components.Layout;
@@ -25,6 +27,7 @@ import de.onyxbits.tradetrax.services.EventLogger;
 import de.onyxbits.tradetrax.services.MoneyRepresentation;
 import de.onyxbits.tradetrax.services.SettingsStore;
 
+@Import(library = "context:js/mousetrap.min.js")
 public class LiquidateEditor {
 
 	@SessionAttribute(Layout.FOCUSID)
@@ -75,6 +78,9 @@ public class LiquidateEditor {
 
 	@Property
 	private boolean splitable;
+	
+	@Inject
+	private JavaScriptSupport javaScriptSupport;
 
 	protected void onActivate(Long stockId) {
 		this.stockId = stockId;
@@ -128,5 +134,11 @@ public class LiquidateEditor {
 			return null;
 		}
 		return Index.class;
+	}
+	
+	public void afterRender() {
+		javaScriptSupport
+				.addScript("Mousetrap.prototype.stopCallback = function(e, element) {return false;};");
+		javaScriptSupport.addScript("Mousetrap.bind('esc', function() {window.history.back(); return false;});");
 	}
 }

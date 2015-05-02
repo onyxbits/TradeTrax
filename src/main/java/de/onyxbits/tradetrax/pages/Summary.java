@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
 
-import org.apache.tapestry5.Link;
 import org.apache.tapestry5.annotations.Component;
 import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.InjectPage;
@@ -18,7 +17,6 @@ import org.apache.tapestry5.corelib.components.EventLink;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.BeanModelSource;
-import org.apache.tapestry5.services.PageRenderLinkSource;
 import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 import org.hibernate.Session;
 
@@ -74,9 +72,6 @@ public class Summary {
 	@Inject
 	private JavaScriptSupport javaScriptSupport;
 	
-	@Inject
-	private PageRenderLinkSource linkSource;
-
 	public BeanModel<Object> getTallyModel() {
 		BeanModel<Object> model = tallySource.createDisplayModel(Object.class, messages);
 		model.addEmpty(TalliedStockPagedGridDataSource.NAME).sortable(true);
@@ -160,10 +155,8 @@ public class Summary {
 	}
 	
 	public void afterRender() {
-		Link link = linkSource.createPageRenderLink(Index.class);
 		javaScriptSupport
 				.addScript("Mousetrap.prototype.stopCallback = function(e, element) {return false;};");
-		javaScriptSupport
-				.addScript("Mousetrap.bind('esc', function() {window.location='"+link.toAbsoluteURI()+"'; return false;});");
+		javaScriptSupport.addScript("Mousetrap.bind('esc', function() {window.history.back(); return false;});");
 	}
 }

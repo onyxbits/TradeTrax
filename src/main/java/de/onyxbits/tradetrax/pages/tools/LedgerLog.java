@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.util.List;
 
 import org.apache.tapestry5.annotations.Component;
+import org.apache.tapestry5.annotations.Import;
 import org.apache.tapestry5.annotations.Persist;
 import org.apache.tapestry5.annotations.Property;
 import org.apache.tapestry5.beaneditor.BeanModel;
@@ -13,6 +14,7 @@ import org.apache.tapestry5.corelib.components.TextField;
 import org.apache.tapestry5.ioc.Messages;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.services.BeanModelSource;
+import org.apache.tapestry5.services.javascript.JavaScriptSupport;
 import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.criterion.Order;
@@ -27,6 +29,7 @@ import de.onyxbits.tradetrax.services.SettingsStore;
  * @author patrick
  * 
  */
+@Import(library = "context:js/mousetrap.min.js")
 public class LedgerLog {
 
 	@Property
@@ -57,7 +60,11 @@ public class LedgerLog {
 	@Component(id = "filterForm")
 	private Form filterForm;
 
-	private DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM,DateFormat.MEDIUM);
+	@Inject
+	private JavaScriptSupport javaScriptSupport;
+
+	private DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.MEDIUM,
+			DateFormat.MEDIUM);
 
 	public String getFullTime() {
 		return dateFormat.format(row.getTimestamp());
@@ -80,14 +87,21 @@ public class LedgerLog {
 	@SuppressWarnings("unchecked")
 	public List<LogEntry> getLogentries() {
 		Criteria ret = session.createCriteria(LogEntry.class).addOrder(Order.desc("timestamp"));
-		if (filter!=null && filter.length()!=0) {
-			ret.add(Restrictions.ilike("details","%"+filter+"%"));
+		if (filter != null && filter.length() != 0) {
+			ret.add(Restrictions.ilike("details", "%" + filter + "%"));
 		}
 		return ret.list();
 	}
-	
+
 	public LedgerLog withFilter(String filter) {
-		this.filter=filter;
+		this.filter = filter;
 		return this;
-	} 
+	}
+
+	public void afterRender() {
+		javaScriptSupport
+				.addScript("Mousetrap.prototype.stopCallback = function(e, element) {return false;};");
+		javaScriptSupport
+				.addScript("Mousetrap.bind('esc', function() {window.history.back(); return false;});");
+	}
 }
