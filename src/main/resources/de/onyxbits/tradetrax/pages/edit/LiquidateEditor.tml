@@ -70,9 +70,9 @@
 					<select t:type="select" t:id="methods"></select>
 					&nbsp;
 					<t:textfield class="numerical" t:id="sellPrice" name="sellprice"
-						onclick="SelectAll('sellPrice');" />
+						t:mixins="OverrideFieldFocus" onclick="SelectAll('sellPrice');" />
 					&nbsp;
-					<t:currencysymbolvalue/>
+					<t:currencysymbolvalue />
 					<p />
 					<input type="submit" value="${message:liquidate}" />
 				</div>
