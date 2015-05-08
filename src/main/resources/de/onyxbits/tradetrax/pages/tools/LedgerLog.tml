@@ -9,7 +9,7 @@
 			</legend>
 			<div class="fieldset-wrapper">
 				<t:textfield t:id="filter" name="filter"
-					onclick="SelectAll('sellPrice');" />
+					onclick="SelectAll('filter');" />
 					&nbsp;
 				<input type="submit" value="${message:filter}" />
 			</div>
