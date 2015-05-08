@@ -16,9 +16,23 @@
 		</fieldset>
 	</t:form>
 	<t:grid exclude="id" reorder="timestamp,what,details" t:model="logModel"
-		source="logentries" row="row">
+		source="logs" row="row">
 		<p:timestampCell>${fulltime}</p:timestampCell>
 	</t:grid>
 
+	<t:if test="showPurgeForm">
+		<t:form t:id="purgeForm">
+			<fieldset class="form-wrapper">
+				<legend>
+					<span class="fieldset-legend">${message:purge-title}</span>
+				</legend>
+				<div class="fieldset-wrapper">
+					<t:select t:id="purgeType" />
+					&nbsp;
+					<input type="submit" value="${message:purge}" />
+				</div>
+			</fieldset>
+		</t:form>
+	</t:if>
 
 </html>
