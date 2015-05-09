@@ -204,6 +204,9 @@ public class StandaloneServer extends JFrame implements Runnable, WindowListener
 
 		server.setHandler(app);
 		server.start();
+		// Cosmetic: force the webapp to fully initialize, so the index page loads
+		// instantly when handing control over to the browser.
+		whereami().toURL().openConnection().getInputStream().close();
 		openInBrowser();
 	}
 
