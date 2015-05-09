@@ -236,7 +236,7 @@
 								<t:label for="filterState" title="${message:filter-state-tooltip}" />
 							</td>
 							<td>
-								<t:select t:id="filterState" t:label="${message:filter-state-label}" />
+								<t:select t:id="filterState" t:label="${message:filter-state-label}" onchange="this.form.submit()" />
 							</td>
 						</tr>
 					</table>
