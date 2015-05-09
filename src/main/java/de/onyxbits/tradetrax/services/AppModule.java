@@ -1,7 +1,6 @@
 package de.onyxbits.tradetrax.services;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.apache.tapestry5.*;
 import org.apache.tapestry5.hibernate.HibernateConfigurer;
@@ -12,11 +11,7 @@ import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Inject;
 import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.services.ApplicationGlobals;
-import org.apache.tapestry5.services.Request;
 import org.apache.tapestry5.services.RequestFilter;
-import org.apache.tapestry5.services.RequestHandler;
-import org.apache.tapestry5.services.Response;
-import org.slf4j.Logger;
 
 import de.onyxbits.tradetrax.main.AppConstants;
 
@@ -85,7 +80,7 @@ public class AppModule {
 	 * the service interface and would be "RequestFilter". Since Tapestry already
 	 * defines a service named "RequestFilter" we use an explicit service id that
 	 * we can reference inside the contribution method.
-	 */
+	 *
 	public RequestFilter buildTimingFilter(final Logger log) {
 		return new RequestFilter() {
 			public boolean service(Request request, Response response, RequestHandler handler)
@@ -108,7 +103,7 @@ public class AppModule {
 				}
 			}
 		};
-	}
+	}*/
 
 	/**
 	 * This is a contribution to the RequestHandler service configuration. This is
@@ -118,7 +113,7 @@ public class AppModule {
 	 * 
 	 * @Local, there would be an error due to the other service(s) that implement
 	 *         RequestFilter (defined in other modules).
-	 */
+	 *
 	public void contributeRequestHandler(OrderedConfiguration<RequestFilter> configuration,
 			@Local RequestFilter filter) {
 		// Each contribution to an ordered configuration has a name, When necessary,
@@ -128,7 +123,7 @@ public class AppModule {
 		// within the pipeline.
 
 		//configuration.add("Timing", filter);
-	}
+	}*/
 
 	@Inject
 	private ApplicationGlobals globals;
