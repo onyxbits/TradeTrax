@@ -9,9 +9,7 @@ import org.apache.tapestry5.ioc.MappedConfiguration;
 import org.apache.tapestry5.ioc.OrderedConfiguration;
 import org.apache.tapestry5.ioc.ServiceBinder;
 import org.apache.tapestry5.ioc.annotations.Inject;
-import org.apache.tapestry5.ioc.annotations.Local;
 import org.apache.tapestry5.services.ApplicationGlobals;
-import org.apache.tapestry5.services.RequestFilter;
 
 import de.onyxbits.tradetrax.main.AppConstants;
 
