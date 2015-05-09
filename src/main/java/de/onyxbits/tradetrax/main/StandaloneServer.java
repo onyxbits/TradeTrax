@@ -309,7 +309,7 @@ public class StandaloneServer extends JFrame implements Runnable, WindowListener
 			about.setText(message);
 			WebAppContext wac = (WebAppContext) server.getHandler();
 			LedgerConfig cfg = new LedgerConfig();
-			File f = new File(wac.getInitParameter("ledger"));
+			File f = new File(wac.getInitParameter(AppConstants.IPNLEDGERPATH));
 			cfg.setLedger(f);
 			setTitle("TradeTrax: " + f.getName());
 			openPublic.setSelected(cfg.isPublicAccess());
