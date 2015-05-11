@@ -128,6 +128,7 @@ public class LedgerLog {
 	@CommitAfter
 	public void onSuccessFromPurgeForm() {
 		if (purgeType == null) {
+			alertManager.alert(Duration.SINGLE, Severity.INFO, messages.get("feedback.0"));
 			return;
 		}
 
@@ -167,10 +168,10 @@ public class LedgerLog {
 		String[] s = {
 				messages.get("feedback.0"),
 				messages.get("feedback.1"),
-				messages.getFormatter("feedback.x").format(lst.size())
-		};
-		double[] limits = {0,1,2};
-		alertManager.alert(Duration.SINGLE, Severity.INFO,new ChoiceFormat(limits,s).format(lst.size()));
+				messages.getFormatter("feedback.x").format(lst.size()) };
+		double[] limits = { 0, 1, 2 };
+		alertManager.alert(Duration.SINGLE, Severity.INFO,
+				new ChoiceFormat(limits, s).format(lst.size()));
 
 	}
 }
